@@ -10,9 +10,10 @@ import { CoreModule } from './core/core.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+import { ActionsDashboardComponent } from './actions-dashboard/actions-dashboard.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ActionsDashboardComponent],
   imports: [
     BrowserModule,
     FormsModule,
