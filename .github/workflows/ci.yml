@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: 12
       - run: npm ci
-      - run: npm audit
+      - run: npm audit || true
       - run: npm test
       - run: npm run lint
       - run: npm run prettier-check
