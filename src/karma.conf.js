@@ -26,7 +26,7 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['AngularElectron'],
-    singleRun: true,
+    singleRun: false,
     customLaunchers: {
       AngularElectron: {
         base: 'Electron',
