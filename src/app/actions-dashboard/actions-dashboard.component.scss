@@ -1,0 +1,31 @@
+@import "../../colors";
+@import "../../variables";
+
+:host {
+  display: block;
+  padding: $space-s;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.config-button {
+  display: inline-block;
+  transition: background-color 0.1s;
+
+  &__icon {
+    fill: $default-text-color;
+    width: $space-xl;
+    height: $space-xl;
+
+    &:hover {
+      fill: lighten($default-text-color, 10%);
+    }
+
+    &:active {
+      fill: darken($default-text-color, 5%);
+    }
+  }
+}

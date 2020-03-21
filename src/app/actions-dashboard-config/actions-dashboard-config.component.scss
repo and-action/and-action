@@ -1,0 +1,24 @@
+@import "../../variables";
+@import "../../colors";
+
+:host {
+  display: block;
+  padding: $space-s;
+  background-color: $white;
+}
+
+.repositories-form {
+  max-width: 768px;
+  margin: auto;
+}
+
+.repository-list-item {
+  font-size: $font-size-l;
+  padding: $space-s;
+  border-bottom: 1px solid $default-border-color;
+
+  &__label {
+    cursor: pointer;
+    margin-left: $space-m;
+  }
+}

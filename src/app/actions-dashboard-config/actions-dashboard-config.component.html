@@ -1,0 +1,38 @@
+<h1>Dashboard Settings</h1>
+
+<form class="repositories-form" ngForm>
+  <ul class="u-margin-bottom-l">
+    <li *ngFor="let viewerOrOrganization of viewerAndOrganizations">
+      <h2>{{ viewerOrOrganization.login }}</h2>
+      <ul class="u-margin-bottom-xxl">
+        <li
+          class="repository-list-item"
+          *ngFor="let repository of viewerOrOrganization.repositories"
+        >
+          <input
+            type="checkbox"
+            [(ngModel)]="model[repository.nameWithOwner]"
+            [id]="repository.nameWithOwner"
+            [name]="repository.nameWithOwner"
+          />
+          <label
+            class="repository-list-item__label"
+            [for]="repository.nameWithOwner"
+            >{{ repository.name }}</label
+          >
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="button-list">
+    <a
+      class="button button--secondary"
+      [routerLink]="['/', appRouting.DASHBOARD]"
+      >Cancel</a
+    >
+    <button type="button" class="button button--primary" (click)="onSave()">
+      Save
+    </button>
+  </div>
+</form>

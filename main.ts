@@ -2,6 +2,7 @@ import { app, BrowserWindow, screen, session } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import { LoginService } from './login.service';
+import { DashboardConfigService } from './dashboard-config.service';
 
 let appWindow: BrowserWindow = null;
 
@@ -9,6 +10,7 @@ const args = process.argv.slice(1);
 const isServe = args.some(val => val === '--serve');
 
 const loginService = new LoginService(isServe);
+const dashboardConfigService = new DashboardConfigService();
 
 function createWindow(): BrowserWindow {
   const size = screen.getPrimaryDisplay().workAreaSize;
