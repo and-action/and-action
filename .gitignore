@@ -104,8 +104,9 @@ dist
 # TernJS port file
 .tern-port
 
-/*.js
-/*.js.map
+*.js
+*.js.map
 !angular.webpack.js
 
 release/
+/dashboard-config.json
