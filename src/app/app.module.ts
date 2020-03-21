@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ActionsDashboardComponent } from './actions-dashboard/actions-dashboard.component';
 import { AndActionDataService } from './core/and-action-data.service';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [AppComponent, ActionsDashboardComponent, LoginComponent],
@@ -22,7 +23,8 @@ import { AndActionDataService } from './core/and-action-data.service';
     ReactiveFormsModule,
     HttpClientModule,
     CoreModule,
-    AppRoutingModule
+    AppRoutingModule,
+    GraphQLModule
   ],
   providers: [
     {
