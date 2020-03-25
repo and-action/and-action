@@ -4,6 +4,7 @@ export interface Repository {
   description: string;
   isPrivate: boolean;
   defaultBranchRef: Ref;
+  url: string;
 }
 
 export interface Ref {

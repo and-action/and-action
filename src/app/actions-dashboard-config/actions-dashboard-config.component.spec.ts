@@ -5,6 +5,7 @@ import { ApolloTestingModule } from 'apollo-angular/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ActionsDashboardConfigComponent', () => {
   let component: ActionsDashboardConfigComponent;
@@ -12,7 +13,11 @@ describe('ActionsDashboardConfigComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ApolloTestingModule, RouterTestingModule],
+      imports: [
+        ApolloTestingModule,
+        HttpClientTestingModule,
+        RouterTestingModule
+      ],
       declarations: [ActionsDashboardConfigComponent]
     }).compileComponents();
   }));
