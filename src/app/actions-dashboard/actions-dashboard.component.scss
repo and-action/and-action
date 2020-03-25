@@ -16,16 +16,63 @@
   transition: background-color 0.1s;
 
   &__icon {
-    fill: $default-text-color;
     width: $space-xl;
     height: $space-xl;
+  }
+}
 
-    &:hover {
-      fill: lighten($default-text-color, 10%);
-    }
+.viewer-or-organization {
+  display: inline-block;
 
-    &:active {
-      fill: darken($default-text-color, 5%);
-    }
+  &__link {
+    display: flex;
+    align-items: center;
+  }
+
+  &__avatar {
+    width: $space-xl;
+    height: $space-xl;
+    border-radius: $default-border-radius;
+    margin-right: $space-s;
+  }
+}
+
+.organization-list {
+  &__item {
+    margin-bottom: $space-xxl;
+  }
+}
+
+.repository-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: $space-m $space-m;
+  align-items: stretch;
+
+  &__item {
+    display: block;
+    box-shadow: 0px 0px 23px -6px rgba(0,0,0,0.1);
+  }
+
+  &__item-content {
+    height: 100%;
+  }
+}
+
+@media (max-width: 2048px) {
+  .repository-list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .repository-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .repository-list {
+    grid-template-columns: 1fr;
   }
 }
