@@ -46,4 +46,10 @@
     height: $space-m;
     margin-right: $space-s;
   }
+
+  &__fork-info {
+    margin-top: $space-xxs;
+    font-size: $font-size-s;
+    color: $secondary-text-color;
+  }
 }

@@ -48,6 +48,10 @@ const repositoriesQuery = gql`
           defaultBranchRef {
             name
           }
+          parent {
+            nameWithOwner
+            url
+          }
           url
         }
       }
@@ -64,6 +68,10 @@ const repositoriesQuery = gql`
               isPrivate
               defaultBranchRef {
                 name
+              }
+              parent {
+                nameWithOwner
+                url
               }
               url
             }

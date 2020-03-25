@@ -19,7 +19,8 @@ describe('ActionsDashboardItemComponent', () => {
     description: '',
     isPrivate: false,
     defaultBranchRef: { name: '' },
-    url: 'https://github.com/owner/repo'
+    url: 'https://github.com/owner/repo',
+    parent: null
   };
 
   beforeEach(async(() => {
