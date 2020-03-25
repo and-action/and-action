@@ -4,11 +4,17 @@ import gql from 'graphql-tag';
 import { Repository } from './repository';
 import { Organization } from './organization';
 import { GithubViewer } from './github-viewer';
-import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { flatMap, map, reduce } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Workflow, WorkflowWithWorkflowRuns } from './workflow';
+import { WorkflowRun } from './workflow-run';
 
 interface RepositoryQueryResult {
   viewer: {
     login: string;
+    avatarUrl: string;
+    url: string;
     repositories: {
       nodes: Repository[];
     };
@@ -16,6 +22,8 @@ interface RepositoryQueryResult {
       nodes: [
         {
           login: string;
+          avatarUrl: string;
+          url: string;
           repositories: {
             nodes: Repository[];
           };
@@ -29,6 +37,8 @@ const repositoriesQuery = gql`
   query Repositories {
     viewer {
       login
+      avatarUrl
+      url
       repositories(first: 100, orderBy: { direction: ASC, field: NAME }) {
         nodes {
           name
@@ -38,11 +48,14 @@ const repositoriesQuery = gql`
           defaultBranchRef {
             name
           }
+          url
         }
       }
       organizations(first: 100) {
         nodes {
           login
+          avatarUrl
+          url
           repositories(first: 100, orderBy: { direction: ASC, field: NAME }) {
             nodes {
               name
@@ -52,6 +65,7 @@ const repositoriesQuery = gql`
               defaultBranchRef {
                 name
               }
+              url
             }
           }
         }
@@ -64,7 +78,7 @@ const repositoriesQuery = gql`
   providedIn: 'root'
 })
 export class GithubDataService {
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, private http: HttpClient) {}
 
   loadRepositories() {
     return this.apollo
@@ -75,16 +89,53 @@ export class GithubDataService {
         map(queryResult => {
           const viewer: GithubViewer = {
             login: queryResult.data.viewer.login,
+            avatarUrl: queryResult.data.viewer.avatarUrl,
+            url: queryResult.data.viewer.url,
             repositories: queryResult.data.viewer.repositories.nodes
           };
           const organizations: Organization[] = queryResult.data.viewer.organizations.nodes.map(
             organization => ({
               login: organization.login,
+              avatarUrl: organization.avatarUrl,
+              url: organization.url,
               repositories: organization.repositories.nodes
             })
           );
           return [viewer, ...organizations];
         })
       );
+  }
+
+  loadWorkflows(repositoryNameWithOwner: string) {
+    return this.http.get<{ total_count: number; workflows: Workflow[] }>(
+      `https://api.github.com/repos/${repositoryNameWithOwner}/actions/workflows`
+    );
+  }
+
+  loadDefaultBranchWorkflowRuns(repository: Repository) {
+    return this.loadWorkflows(repository.nameWithOwner).pipe(
+      flatMap(workflowsResult => from(workflowsResult.workflows)),
+      flatMap(workflow =>
+        this.http
+          .get<{ total_count: number; workflow_runs: WorkflowRun[] }>(
+            `https://api.github.com/repos/${repository.nameWithOwner}/actions/workflows/${workflow.id}/runs?branch=${repository.defaultBranchRef.name}`
+          )
+          .pipe(
+            map(workflowRunsResult => ({
+              workflow,
+              workflowRuns: workflowRunsResult.workflow_runs
+            }))
+          )
+      ),
+      reduce(
+        (acc, workflowWithWorkflowRuns) => [...acc, workflowWithWorkflowRuns],
+        [] as WorkflowWithWorkflowRuns[]
+      ),
+      map(workflowsWithWorkflowRuns =>
+        workflowsWithWorkflowRuns.sort((a, b) =>
+          a.workflow.name.localeCompare(b.workflow.name)
+        )
+      )
+    );
   }
 }

@@ -1,9 +1,13 @@
-import { ipcMain } from 'electron';
+import { app, ipcMain } from 'electron';
 import { IpcChannel } from './ipc-channel';
 import * as fs from 'fs';
 import { ActionsDashboardConfig } from './src/app/core/actions-dashboard-config';
+import * as path from 'path';
 
-const DASHBOARD_CONFIG_FILENAME = 'dashboard-config.json';
+const DASHBOARD_CONFIG_FILENAME = path.join(
+  app.getPath('userData'),
+  'dashboard-config.json'
+);
 
 export class DashboardConfigService {
   constructor() {

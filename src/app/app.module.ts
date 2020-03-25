@@ -16,12 +16,14 @@ import { AndActionDataService } from './core/and-action-data.service';
 import { GraphQLModule } from './graphql.module';
 import { ActionsDashboardConfigComponent } from './actions-dashboard-config/actions-dashboard-config.component';
 import { HttpGithubAuthorizationInterceptor } from './http-github-authorization-interceptor';
+import { ActionsDashboardItemComponent } from './actions-dashboard-item/actions-dashboard-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ActionsDashboardComponent,
     ActionsDashboardConfigComponent,
+    ActionsDashboardItemComponent,
     LoginComponent
   ],
   imports: [

@@ -1,0 +1,42 @@
+@import "../../colors";
+@import "../../variables";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  background-color: $white;
+  padding: $space-m;
+  border-radius: $default-border-radius;
+}
+
+.title {
+  font-size: $font-size-l;
+  text-wrap: normal;
+  margin-bottom: $space-s;
+}
+
+.branch-title {
+  display: flex;
+  font-size: $font-size-s;
+
+  &__icon {
+    fill: $default-text-color;
+    width: $space-s;
+    height: $space-s;
+    margin-right: $space-xxs;
+  }
+}
+
+.workflow-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  &__item {
+    margin-top: $space-xs;
+    margin-right: $space-xs;
+  }
+
+  &__item-link {
+    color: $white;
+  }
+}

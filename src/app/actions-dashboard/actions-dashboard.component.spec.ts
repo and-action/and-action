@@ -2,6 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActionsDashboardComponent } from './actions-dashboard.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ApolloTestingModule } from 'apollo-angular/testing';
+import { AndActionDataService } from '../core/and-action-data.service';
+import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 
 describe('ActionsDashboardComponent', () => {
   let component: ActionsDashboardComponent;
@@ -9,12 +13,22 @@ describe('ActionsDashboardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [
+        ApolloTestingModule,
+        HttpClientTestingModule,
+        RouterTestingModule
+      ],
       declarations: [ActionsDashboardComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    const andActionDataService = TestBed.inject(AndActionDataService);
+    spyOnProperty(
+      andActionDataService,
+      'actionsDashboardConfig'
+    ).and.returnValue(new ActionsDashboardConfig([]));
+
     fixture = TestBed.createComponent(ActionsDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

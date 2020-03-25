@@ -1,0 +1,51 @@
+<h3 class="title">
+  <a [href]="repository.url" target="_blank" rel="noopener">{{
+    repository.name
+  }}</a>
+</h3>
+<ng-container
+  *ngIf="workflowsWithWorkflowRuns$ | async as workflowsWithWorkflowRuns"
+>
+  <ng-container *ngIf="workflowsWithWorkflowRuns.length > 0">
+    <a
+      [href]="repository.url"
+      target="_blank"
+      rel="noopener"
+      class="branch-title"
+    >
+      <svg class="branch-title__icon">
+        <use xlink:href="#icon-git-branch"></use>
+      </svg>
+
+      <span>{{ repository.defaultBranchRef.name }}</span>
+    </a>
+    <ul class="workflow-list">
+      <li
+        *ngFor="let workflowWithWorkflowRuns of workflowsWithWorkflowRuns"
+        class="workflow-list__item"
+      >
+        <a
+          *ngIf="
+            (workflowWithWorkflowRuns?.workflowRuns)[0]?.html_url;
+            else label
+          "
+          [href]="workflowWithWorkflowRuns.workflowRuns[0].html_url"
+          target="_blank"
+          rel="noopener"
+          class="workflow-list__item-link"
+          [ngClass]="getTagClasses(workflowWithWorkflowRuns.workflowRuns[0])"
+          >{{ workflowWithWorkflowRuns.workflow.name }}</a
+        >
+        <ng-template #label
+          ><span class="u-tag u-tag--none">{{
+            workflowWithWorkflowRuns.workflow.name
+          }}</span></ng-template
+        >
+      </li>
+    </ul>
+  </ng-container>
+
+  <p *ngIf="workflowsWithWorkflowRuns.length === 0" class="u-text-placeholder">
+    No workflows configured
+  </p>
+</ng-container>

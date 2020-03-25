@@ -5,3 +5,40 @@
     </svg>
   </a>
 </div>
+
+<ul>
+  <li
+    class="organization-list__item"
+    *ngFor="let viewerOrOrganization of viewerAndOrganizations$ | async"
+  >
+    <ng-container *ngIf="viewerOrOrganization.repositories as repositories">
+      <ng-container *ngIf="repositories.length > 0">
+        <h2 class="viewer-or-organization">
+          <a
+            class="viewer-or-organization__link"
+            [href]="viewerOrOrganization.url"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              class="viewer-or-organization__avatar"
+              [src]="viewerOrOrganization.avatarUrl"
+            />
+            <span>{{ viewerOrOrganization.login }}</span>
+          </a>
+        </h2>
+        <ul class="repository-list">
+          <li
+            *ngFor="let repository of repositories"
+            class="repository-list__item"
+          >
+            <app-actions-dashboard-item
+              class="repository-list__item-content"
+              [repository]="repository"
+            ></app-actions-dashboard-item>
+          </li>
+        </ul>
+      </ng-container>
+    </ng-container>
+  </li>
+</ul>

@@ -31,7 +31,19 @@ button {
 a {
   cursor: pointer;
   text-decoration: none;
-  color: inherit;
+  color: $default-text-color;
+  fill: $default-text-color;
+
+  &:hover {
+    text-decoration: underline;
+    color: lighten($default-text-color, 10%);
+    fill: lighten($default-text-color, 10%);
+  }
+
+  &:active {
+    color: darken($default-text-color, 5%);
+    fill: darken($default-text-color, 5%);
+  }
 }
 
 h1 {
@@ -44,10 +56,19 @@ h2 {
   margin-bottom: $space-m;
 }
 
+h3 {
+  margin-top: 0;
+  margin-bottom: $space-s;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+p {
+  margin: 0;
 }
 
 .button {
@@ -119,4 +140,44 @@ ul {
   &-l  { margin-bottom: $space-l; }
   &-xl { margin-bottom: $space-xl; }
   &-xxl { margin-bottom: $space-xxl; }
+}
+
+.u-text-placeholder {
+  color: $secondary-text-color;
+}
+
+.u-tag {
+  font-size: $font-size-s;
+  color: $white;
+  border-radius: 2px;
+  padding: 2px 6px;
+
+  &--queued {
+    background-color: #FFD600;
+  }
+
+  &--in_progress {
+    background-color: #CCAB00;
+  }
+
+  &--action_required {
+    background-color: #0091EA;
+  }
+
+  &--success {
+    background-color: #00C853;
+  }
+
+  &--failure, &--cancelled, &--timed_out {
+    background-color: #D50000;
+  }
+
+  &--neutral, &--none {
+    background-color: #757575;
+  }
+}
+
+.form-error {
+  color: #D50000;
+
 }
