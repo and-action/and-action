@@ -4,11 +4,13 @@ import { AppRouting } from './app-routing';
 import { ActionsDashboardComponent } from './actions-dashboard/actions-dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { ActionsDashboardConfigComponent } from './actions-dashboard-config/actions-dashboard-config.component';
+import { ActionsDashboardGuard } from './actions-dashboard/actions-dashboard.guard';
 
 const routes: Routes = [
   {
     path: AppRouting.DASHBOARD,
-    component: ActionsDashboardComponent
+    component: ActionsDashboardComponent,
+    canActivate: [ActionsDashboardGuard]
   },
   {
     path: AppRouting.DASHBOARD_CONFIG,
