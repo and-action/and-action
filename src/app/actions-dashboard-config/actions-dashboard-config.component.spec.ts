@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormsModule } from '@angular/forms';
 
 describe('ActionsDashboardConfigComponent', () => {
   let component: ActionsDashboardConfigComponent;
@@ -15,6 +16,7 @@ describe('ActionsDashboardConfigComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         ApolloTestingModule,
+        FormsModule,
         HttpClientTestingModule,
         RouterTestingModule
       ],

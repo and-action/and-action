@@ -12,7 +12,25 @@
   margin: auto;
 }
 
+.viewer-or-organization {
+  display: inline-block;
+
+  &__link {
+    display: flex;
+    align-items: center;
+  }
+
+  &__avatar {
+    width: $space-xl;
+    height: $space-xl;
+    border-radius: $default-border-radius;
+    margin-right: $space-s;
+  }
+}
+
 .repository-list-item {
+  display: flex;
+  align-items: center;
   font-size: $font-size-l;
   padding: $space-s;
   border-bottom: 1px solid $default-border-color;
@@ -20,5 +38,12 @@
   &__label {
     cursor: pointer;
     margin-left: $space-m;
+    display: flex;
+  }
+
+  &__icon {
+    width: $space-m;
+    height: $space-m;
+    margin-right: $space-s;
   }
 }

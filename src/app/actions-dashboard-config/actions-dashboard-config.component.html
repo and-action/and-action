@@ -1,9 +1,22 @@
 <h1>Dashboard Settings</h1>
 
-<form class="repositories-form" ngForm>
+<form class="repositories-form" #form="ngForm">
   <ul class="u-margin-bottom-l">
     <li *ngFor="let viewerOrOrganization of viewerAndOrganizations">
-      <h2>{{ viewerOrOrganization.login }}</h2>
+      <h2 class="viewer-or-organization">
+        <a
+          class="viewer-or-organization__link"
+          [href]="viewerOrOrganization.url"
+          target="_blank"
+          rel="noopener"
+        >
+          <img
+            class="viewer-or-organization__avatar"
+            [src]="viewerOrOrganization.avatarUrl"
+          />
+          <span>{{ viewerOrOrganization.login }}</span>
+        </a>
+      </h2>
       <ul class="u-margin-bottom-xxl">
         <li
           class="repository-list-item"
@@ -18,12 +31,26 @@
           <label
             class="repository-list-item__label"
             [for]="repository.nameWithOwner"
-            >{{ repository.name }}</label
           >
+            <svg class="repository-list-item__icon">
+              <use
+                *ngIf="repository.isPrivate; else gitLock"
+                xlink:href="#icon-git-repo"
+              ></use>
+              <ng-template #gitLock>
+                <use xlink:href="#icon-git-lock"></use>
+              </ng-template>
+            </svg>
+            <span>{{ repository.name }}</span>
+          </label>
         </li>
       </ul>
     </li>
   </ul>
+
+  <p class="form-error" *ngIf="!isFormValid()">
+    Please select at least one repository.
+  </p>
 
   <div class="button-list">
     <a

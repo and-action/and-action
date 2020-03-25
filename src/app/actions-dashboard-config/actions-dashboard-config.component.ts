@@ -48,10 +48,19 @@ export class ActionsDashboardConfigComponent implements OnInit {
       });
   }
 
+  isFormValid() {
+    return this.model && Object.keys(this.model).some(key => this.model[key]);
+  }
+
   onSave() {
+    if (!this.isFormValid()) {
+      return;
+    }
+
     const selectedRepositoriesForDashboard = Object.keys(this.model).filter(
       repositoryNameWithOwner => this.model[repositoryNameWithOwner]
     );
+
     this.andActionDataService
       .saveActionsDashboardConfig(
         new ActionsDashboardConfig(selectedRepositoriesForDashboard)
