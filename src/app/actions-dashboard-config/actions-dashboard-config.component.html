@@ -41,7 +41,15 @@
                 <use xlink:href="#icon-git-lock"></use>
               </ng-template>
             </svg>
-            <span>{{ repository.name }}</span>
+            <div>
+              <p>{{ repository.name }}</p>
+              <p
+                class="repository-list-item__fork-info"
+                *ngIf="repository.parent"
+              >
+                Forked from {{ repository.parent.nameWithOwner }}
+              </p>
+            </div>
           </label>
         </li>
       </ul>
