@@ -7,13 +7,14 @@ import { LoginService } from '../core/login.service';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { AppRouting } from '../app-routing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       declarations: [LoginComponent]
     }).compileComponents();
   }));

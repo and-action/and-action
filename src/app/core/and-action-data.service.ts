@@ -3,8 +3,9 @@ import { ActionsDashboardConfig } from './actions-dashboard-config';
 import { IpcChannel } from '../../../ipc-channel';
 import { Event } from 'electron';
 import { ElectronService } from './electron.service';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
+const ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY = 'actions-dashboard-config';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +19,20 @@ export class AndActionDataService {
   constructor(private electronService: ElectronService, private zone: NgZone) {}
 
   saveActionsDashboardConfig(actionsDashboardConfig: ActionsDashboardConfig) {
+    return this.electronService.isElectron
+      ? this.saveActionsDashboardConfigElectron(actionsDashboardConfig)
+      : this.saveActionsDashboardConfigWeb(actionsDashboardConfig);
+  }
+
+  initActionsDashboardConfig() {
+    this.electronService.isElectron
+      ? this.initActionsDashboardConfigElectron()
+      : this.initActionsDashboardConfigWeb();
+  }
+
+  private saveActionsDashboardConfigElectron(
+    actionsDashboardConfig: ActionsDashboardConfig
+  ) {
     const subject = new Subject<boolean>();
     this.electronService.ipcRenderer.once(
       IpcChannel.SAVE_ACTIONS_DASHBOARD_CONFIG_RESPONSE,
@@ -37,7 +52,18 @@ export class AndActionDataService {
     return subject.asObservable();
   }
 
-  initActionsDashboardConfig() {
+  private saveActionsDashboardConfigWeb(
+    actionsDashboardConfig: ActionsDashboardConfig
+  ) {
+    localStorage.setItem(
+      ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY,
+      JSON.stringify(actionsDashboardConfig)
+    );
+    this.myActionsDashboardConfig = actionsDashboardConfig;
+    return of(undefined);
+  }
+
+  private initActionsDashboardConfigElectron() {
     const subject = new Subject<void>();
     this.electronService.ipcRenderer.once(
       IpcChannel.LOAD_ACTIONS_DASHBOARD_CONFIG_RESPONSE,
@@ -52,5 +78,14 @@ export class AndActionDataService {
       IpcChannel.LOAD_ACTIONS_DASHBOARD_CONFIG
     );
     return subject.asObservable().toPromise();
+  }
+
+  private initActionsDashboardConfigWeb() {
+    const configString = localStorage.getItem(
+      ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY
+    );
+    this.myActionsDashboardConfig = configString
+      ? (JSON.parse(configString) as ActionsDashboardConfig)
+      : new ActionsDashboardConfig([]);
   }
 }
