@@ -1,4 +1,13 @@
-<h1>AndAction</h1>
-<button type="button" class="button button--primary" (click)="onLoginClick()">
-  Login
-</button>
+<div class="login-box">
+  <h1>AndAction</h1>
+  <button
+    type="button"
+    class="button button--primary u-flex-center"
+    (click)="onLoginClick()"
+  >
+    Login with
+    <svg class="login-button__icon">
+      <use xlink:href="#icon-mark-github"></use>
+    </svg>
+  </button>
+</div>
