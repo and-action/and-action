@@ -35,10 +35,10 @@
             <svg class="repository-list-item__icon">
               <use
                 *ngIf="repository.isPrivate; else gitLock"
-                xlink:href="#icon-git-repo"
+                xlink:href="#icon-git-lock"
               ></use>
               <ng-template #gitLock>
-                <use xlink:href="#icon-git-lock"></use>
+                <use xlink:href="#icon-git-repo"></use>
               </ng-template>
             </svg>
             <div>
