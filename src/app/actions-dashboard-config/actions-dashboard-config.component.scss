@@ -53,3 +53,10 @@
     color: $secondary-text-color;
   }
 }
+
+.error-box {
+  border-radius: 0.666em;
+  border: 2px solid darkorange;
+  padding: 1em;
+  margin-bottom: 1em;
+}

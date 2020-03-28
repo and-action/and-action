@@ -4,11 +4,12 @@ import gql from 'graphql-tag';
 import { Repository } from './repository';
 import { Organization } from './organization';
 import { GithubViewer } from './github-viewer';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { flatMap, map, reduce } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Workflow, WorkflowWithWorkflowRuns } from './workflow';
 import { WorkflowRun } from './workflow-run';
+import { GraphQLError } from 'graphql';
 
 interface RepositoryQueryResult {
   viewer: {
@@ -82,26 +83,33 @@ const repositoriesQuery = gql`
   }
 `;
 
+export interface Repositories {
+  viewerAndOrganizations: (GithubViewer | Organization)[];
+  errors: readonly GraphQLError[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class GithubDataService {
   constructor(private apollo: Apollo, private http: HttpClient) {}
 
-  loadRepositories() {
+  loadRepositories(): Observable<Repositories> {
     return this.apollo
       .watchQuery<RepositoryQueryResult>({
-        query: repositoriesQuery
+        query: repositoriesQuery,
+        errorPolicy: 'all'
       })
       .valueChanges.pipe(
         map(queryResult => {
+          console.log(queryResult);
           const viewer: GithubViewer = {
             login: queryResult.data.viewer.login,
             avatarUrl: queryResult.data.viewer.avatarUrl,
             url: queryResult.data.viewer.url,
             repositories: queryResult.data.viewer.repositories.nodes
           };
-          const organizations: Organization[] = queryResult.data.viewer.organizations.nodes.map(
+          const organizations: Organization[] = queryResult.data.viewer.organizations.nodes.filter(organization => organization != null).map(
             organization => ({
               login: organization.login,
               avatarUrl: organization.avatarUrl,
@@ -109,7 +117,10 @@ export class GithubDataService {
               repositories: organization.repositories.nodes
             })
           );
-          return [viewer, ...organizations];
+          return {
+            viewerAndOrganizations: [viewer, ...organizations],
+            errors: queryResult.errors
+          };
         })
       );
   }

@@ -27,8 +27,8 @@ export class ActionsDashboardComponent implements OnInit {
     this.viewerAndOrganizations$ = this.githubDataService
       .loadRepositories()
       .pipe(
-        map(organizations =>
-          organizations.map(organization => ({
+        map(repositories =>
+          repositories.viewerAndOrganizations.map(organization => ({
             ...organization,
             repositories: organization.repositories.filter(
               repository =>

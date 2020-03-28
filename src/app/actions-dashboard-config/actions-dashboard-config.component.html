@@ -1,6 +1,14 @@
 <h1>Dashboard Settings</h1>
 
 <form class="repositories-form" #form="ngForm">
+  <div *ngIf="errors" class="error-box">
+    <h4>Some errors occured while fetching repository data</h4>
+    <ul class="u-margin-bottom-l">
+      <li *ngFor="let error of errors">
+        {{ error.message }}
+      </li>
+    </ul>
+  </div>
   <ul class="u-margin-bottom-l">
     <li *ngFor="let viewerOrOrganization of viewerAndOrganizations">
       <h2 class="viewer-or-organization">

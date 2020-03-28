@@ -8,6 +8,7 @@ import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { Router } from '@angular/router';
 import { flatMap, reduce } from 'rxjs/operators';
+import { GraphQLError } from 'graphql';
 
 @Component({
   selector: 'app-actions-dashboard-config',
@@ -16,6 +17,7 @@ import { flatMap, reduce } from 'rxjs/operators';
 })
 export class ActionsDashboardConfigComponent implements OnInit {
   viewerAndOrganizations: (GithubViewer | Organization)[];
+  errors: readonly GraphQLError[];
   model: { [key: string]: boolean };
   appRouting = AppRouting;
 
@@ -32,8 +34,10 @@ export class ActionsDashboardConfigComponent implements OnInit {
     // TODO: geschachteltes Subscribe entfernen
     this.githubDataService
       .loadRepositories()
-      .subscribe(viewerAndOrganizations => {
-        this.viewerAndOrganizations = viewerAndOrganizations;
+      .subscribe(repositories => {
+        this.viewerAndOrganizations = repositories.viewerAndOrganizations;
+        this.errors = repositories.errors;
+        console.error(this.errors);
         from(this.viewerAndOrganizations)
           .pipe(
             flatMap(organization => from(organization.repositories)),
