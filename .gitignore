@@ -109,3 +109,6 @@ dist
 !angular.webpack.js
 
 release/
+
+# electron main-process config
+/environment.ts
