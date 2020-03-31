@@ -16,6 +16,15 @@
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
+            "optimization": false,
+            "outputHashing": "all",
+            "sourceMap": true,
+            "extractCss": true,
+            "namedChunks": false,
+            "aot": false,
+            "extractLicenses": true,
+            "vendorChunk": false,
+            "buildOptimizer": false,
             "assets": [
               "src/assets",
               "src/favicon.ico",
@@ -32,16 +41,13 @@
             }
           },
           "configurations": {
-            "dev": {
-              "optimization": false,
-              "outputHashing": "all",
+            "local": {
               "sourceMap": true,
-              "extractCss": true,
-              "namedChunks": false,
               "aot": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
+              "optimization": false,
+              "buildOptimizer": false
+            },
+            "dev": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -49,33 +55,7 @@
                 }
               ]
             },
-            "web": {
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": true,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.web.ts"
-                }
-              ]
-            },
             "production": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

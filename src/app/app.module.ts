@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import '../polyfills';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
@@ -17,6 +17,7 @@ import { GraphQLModule } from './graphql.module';
 import { ActionsDashboardConfigComponent } from './actions-dashboard-config/actions-dashboard-config.component';
 import { HttpGithubAuthorizationInterceptor } from './http-github-authorization-interceptor';
 import { ActionsDashboardItemComponent } from './actions-dashboard-item/actions-dashboard-item.component';
+import { SentryErrorHandler } from './sentry-error-handler';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ActionsDashboardItemComponent } from './actions-dashboard-item/actions-
     GraphQLModule
   ],
   providers: [
+    { provide: ErrorHandler, useClass: SentryErrorHandler },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpGithubAuthorizationInterceptor,

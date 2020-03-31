@@ -3,6 +3,15 @@ import * as path from 'path';
 import * as url from 'url';
 import { LoginService } from './login.service';
 import { DashboardConfigService } from './dashboard-config.service';
+import { environment } from './environment';
+import * as Sentry from '@sentry/node';
+
+if (environment.sentryDsn) {
+  Sentry.init({
+    dsn: environment.sentryDsn,
+    environment: environment.name
+  });
+}
 
 let appWindow: BrowserWindow = null;
 
