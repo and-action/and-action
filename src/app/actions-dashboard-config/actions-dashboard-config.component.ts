@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { flatMap, reduce } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-actions-dashboard-config',
+  selector: 'ana-actions-dashboard-config',
   templateUrl: './actions-dashboard-config.component.html',
   styleUrls: ['./actions-dashboard-config.component.scss']
 })

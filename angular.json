@@ -125,11 +125,11 @@
   "defaultProject": "and-action",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
+      "prefix": "ana",
       "styleext": "scss"
     },
     "@schematics/angular:directive": {
-      "prefix": "app"
+      "prefix": "ana"
     }
   }
 }

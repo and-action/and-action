@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AppRouting } from '../app-routing';
 
 @Component({
-  selector: 'app-login',
+  selector: 'ana-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })

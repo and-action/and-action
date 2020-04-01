@@ -4,7 +4,7 @@ import { LoginService } from './core/login.service';
 import { AppRouting } from './app-routing';
 
 @Component({
-  selector: 'app-root',
+  selector: 'ana-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

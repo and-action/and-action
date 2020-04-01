@@ -8,7 +8,7 @@ import { WorkflowRunStatus } from '../core/workflow-run-status';
 import { catchError, flatMap, retry } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-actions-dashboard-item',
+  selector: 'ana-actions-dashboard-item',
   templateUrl: './actions-dashboard-item.component.html',
   styleUrls: ['./actions-dashboard-item.component.scss']
 })
