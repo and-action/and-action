@@ -8,7 +8,7 @@ import { Organization } from '../core/organization';
 import { GithubViewer } from '../core/github-viewer';
 
 @Component({
-  selector: 'app-actions-dashboard',
+  selector: 'ana-actions-dashboard',
   templateUrl: './actions-dashboard.component.html',
   styleUrls: ['./actions-dashboard.component.scss']
 })
