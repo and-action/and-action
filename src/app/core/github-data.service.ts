@@ -27,7 +27,7 @@ interface RepositoryQueryResult {
           repositories: {
             nodes: Repository[];
           };
-        }
+        } | null
       ];
     };
   };
@@ -91,7 +91,8 @@ export class GithubDataService {
   loadRepositories() {
     return this.apollo
       .watchQuery<RepositoryQueryResult>({
-        query: repositoriesQuery
+        query: repositoriesQuery,
+        errorPolicy: 'ignore'
       })
       .valueChanges.pipe(
         map(queryResult => {
@@ -101,14 +102,14 @@ export class GithubDataService {
             url: queryResult.data.viewer.url,
             repositories: queryResult.data.viewer.repositories.nodes
           };
-          const organizations: Organization[] = queryResult.data.viewer.organizations.nodes.map(
-            organization => ({
+          const organizations: Organization[] = queryResult.data.viewer.organizations.nodes
+            .filter(organization => organization)
+            .map(organization => ({
               login: organization.login,
               avatarUrl: organization.avatarUrl,
               url: organization.url,
               repositories: organization.repositories.nodes
-            })
-          );
+            }));
           return [viewer, ...organizations];
         })
       );
