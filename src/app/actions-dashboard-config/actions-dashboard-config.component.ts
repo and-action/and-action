@@ -31,7 +31,7 @@ export class ActionsDashboardConfigComponent implements OnInit {
 
     // TODO: geschachteltes Subscribe entfernen
     this.githubDataService
-      .loadRepositories()
+      .loadViewerAndOrganizations()
       .subscribe(viewerAndOrganizations => {
         this.viewerAndOrganizations = viewerAndOrganizations;
         from(this.viewerAndOrganizations)

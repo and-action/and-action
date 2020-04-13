@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppRouting } from '../app-routing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { GithubDataService } from '../core/github-data.service';
-import { map } from 'rxjs/operators';
+import { flatMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Organization } from '../core/organization';
 import { GithubViewer } from '../core/github-viewer';
@@ -24,20 +24,24 @@ export class ActionsDashboardComponent implements OnInit {
   ngOnInit(): void {
     const repositoryNameWithOwnerList = this.andActionDataService
       .actionsDashboardConfig.selectedRepositoriesNameWithOwnerForDashboard;
+
     this.viewerAndOrganizations$ = this.githubDataService
-      .loadRepositories()
+      .loadViewerAndOrganizations()
       .pipe(
-        map(organizations =>
-          organizations.map(organization => ({
-            ...organization,
-            repositories: organization.repositories.filter(
-              repository =>
-                repositoryNameWithOwnerList.indexOf(
-                  repository.nameWithOwner
-                ) !== -1
-            )
-          }))
-        )
+        flatMap(organizations => {
+          organizations = organizations
+            .map(organization => ({
+              ...organization,
+              repositories: organization.repositories.filter(
+                repository =>
+                  repositoryNameWithOwnerList.indexOf(
+                    repository.nameWithOwner
+                  ) !== -1
+              )
+            }))
+            .filter(organization => organization.repositories.length > 0);
+          return this.githubDataService.pollWorkflowRuns(organizations);
+        })
       );
   }
 }

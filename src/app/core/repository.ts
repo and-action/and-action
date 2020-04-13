@@ -1,3 +1,5 @@
+import { WorkflowWithWorkflowRuns } from './workflow';
+
 export interface Repository {
   name: string;
   nameWithOwner: string;
@@ -6,6 +8,7 @@ export interface Repository {
   defaultBranchRef: Ref;
   parent: ParentRepository | null;
   url: string;
+  workflowsWithWorkflowRuns: WorkflowWithWorkflowRuns[];
 }
 
 export interface ParentRepository {
