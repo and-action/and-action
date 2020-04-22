@@ -3,10 +3,8 @@
     repository.name
   }}</a>
 </h3>
-<ng-container
-  *ngIf="workflowsWithWorkflowRuns$ | async as workflowsWithWorkflowRuns"
->
-  <ng-container *ngIf="workflowsWithWorkflowRuns.length > 0">
+<ng-container *ngIf="repository.workflowsWithWorkflowRuns">
+  <ng-container *ngIf="repository.workflowsWithWorkflowRuns.length > 0">
     <a
       [href]="repository.url"
       target="_blank"
@@ -21,7 +19,9 @@
     </a>
     <ul class="workflow-list">
       <li
-        *ngFor="let workflowWithWorkflowRuns of workflowsWithWorkflowRuns"
+        *ngFor="
+          let workflowWithWorkflowRuns of repository.workflowsWithWorkflowRuns
+        "
         class="workflow-list__item"
       >
         <a
@@ -45,7 +45,10 @@
     </ul>
   </ng-container>
 
-  <p *ngIf="workflowsWithWorkflowRuns.length === 0" class="u-text-placeholder">
+  <p
+    *ngIf="repository.workflowsWithWorkflowRuns.length === 0"
+    class="u-text-placeholder"
+  >
     No workflows configured
   </p>
 </ng-container>

@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AppRouting } from '../app-routing';
 import { GithubDataService } from '../core/github-data.service';
-import { from } from 'rxjs';
 import { GithubViewer } from '../core/github-viewer';
 import { Organization } from '../core/organization';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { Router } from '@angular/router';
-import { flatMap, reduce } from 'rxjs/operators';
 
 @Component({
   selector: 'ana-actions-dashboard-config',
@@ -29,22 +27,21 @@ export class ActionsDashboardConfigComponent implements OnInit {
     const selectedRepositories = this.andActionDataService
       .actionsDashboardConfig.selectedRepositoriesNameWithOwnerForDashboard;
 
-    // TODO: geschachteltes Subscribe entfernen
     this.githubDataService
-      .loadRepositories()
+      .loadViewerAndOrganizations()
       .subscribe(viewerAndOrganizations => {
         this.viewerAndOrganizations = viewerAndOrganizations;
-        from(this.viewerAndOrganizations)
-          .pipe(
-            flatMap(organization => from(organization.repositories)),
-            reduce((acc, current) => {
-              acc[current.nameWithOwner] = selectedRepositories.includes(
+        this.model = this.viewerAndOrganizations
+          .flatMap(organization => organization.repositories)
+          .reduce(
+            (acc, current) => ({
+              [current.nameWithOwner]: selectedRepositories.includes(
                 current.nameWithOwner
-              );
-              return acc;
-            }, {})
-          )
-          .subscribe(model => (this.model = model));
+              ),
+              ...acc
+            }),
+            {}
+          );
       });
   }
 

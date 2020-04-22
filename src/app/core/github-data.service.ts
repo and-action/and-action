@@ -4,10 +4,10 @@ import gql from 'graphql-tag';
 import { Repository } from './repository';
 import { Organization } from './organization';
 import { GithubViewer } from './github-viewer';
-import { from } from 'rxjs';
-import { flatMap, map, reduce } from 'rxjs/operators';
+import { forkJoin, timer } from 'rxjs';
+import { flatMap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Workflow, WorkflowWithWorkflowRuns } from './workflow';
+import { Workflow } from './workflow';
 import { WorkflowRun } from './workflow-run';
 
 interface RepositoryQueryResult {
@@ -88,7 +88,7 @@ const repositoriesQuery = gql`
 export class GithubDataService {
   constructor(private apollo: Apollo, private http: HttpClient) {}
 
-  loadRepositories() {
+  loadViewerAndOrganizations() {
     return this.apollo
       .watchQuery<RepositoryQueryResult>({
         query: repositoriesQuery,
@@ -115,36 +115,65 @@ export class GithubDataService {
       );
   }
 
-  loadWorkflows(repositoryNameWithOwner: string) {
-    return this.http.get<{ total_count: number; workflows: Workflow[] }>(
-      `https://api.github.com/repos/${repositoryNameWithOwner}/actions/workflows`
+  loadRepositoryWorkflowsWithWorkflowRuns(organization: Organization) {
+    return forkJoin(
+      organization.repositories.map(repository =>
+        this.loadDefaultBranchWorkflowRuns(repository).pipe(
+          map(workflowsWithWorkflowRuns => ({
+            ...repository,
+            workflowsWithWorkflowRuns
+          }))
+        )
+      )
     );
   }
 
-  loadDefaultBranchWorkflowRuns(repository: Repository) {
-    return this.loadWorkflows(repository.nameWithOwner).pipe(
-      flatMap(workflowsResult => from(workflowsResult.workflows)),
-      flatMap(workflow =>
-        this.http
-          .get<{ total_count: number; workflow_runs: WorkflowRun[] }>(
-            `https://api.github.com/repos/${repository.nameWithOwner}/actions/workflows/${workflow.id}/runs?branch=${repository.defaultBranchRef.name}`
+  pollWorkflowRuns(organizations: Organization[]) {
+    const _2MinutesInMillis = 2 * 60 * 1000;
+
+    return timer(0, _2MinutesInMillis).pipe(
+      flatMap(() =>
+        forkJoin(
+          organizations.map(organization =>
+            this.loadRepositoryWorkflowsWithWorkflowRuns(organization).pipe(
+              map(repositories => ({
+                ...organization,
+                repositories
+              }))
+            )
           )
-          .pipe(
-            map(workflowRunsResult => ({
-              workflow,
-              workflowRuns: workflowRunsResult.workflow_runs
-            }))
-          )
-      ),
-      reduce(
-        (acc, workflowWithWorkflowRuns) => [...acc, workflowWithWorkflowRuns],
-        [] as WorkflowWithWorkflowRuns[]
-      ),
-      map(workflowsWithWorkflowRuns =>
-        workflowsWithWorkflowRuns.sort((a, b) =>
-          a.workflow.name.localeCompare(b.workflow.name)
         )
       )
+    );
+  }
+
+  private loadDefaultBranchWorkflowRuns(repository: Repository) {
+    return this.loadWorkflows(repository.nameWithOwner).pipe(
+      map(workflowsResult =>
+        workflowsResult.workflows.sort((a, b) => a.name.localeCompare(b.name))
+      ),
+      flatMap(workflows =>
+        forkJoin(
+          workflows.map(workflow =>
+            this.http
+              .get<{ total_count: number; workflow_runs: WorkflowRun[] }>(
+                `https://api.github.com/repos/${repository.nameWithOwner}/actions/workflows/${workflow.id}/runs?branch=${repository.defaultBranchRef.name}`
+              )
+              .pipe(
+                map(workflowRunsResult => ({
+                  workflow,
+                  workflowRuns: workflowRunsResult.workflow_runs
+                }))
+              )
+          )
+        )
+      )
+    );
+  }
+
+  private loadWorkflows(repositoryNameWithOwner: string) {
+    return this.http.get<{ total_count: number; workflows: Workflow[] }>(
+      `https://api.github.com/repos/${repositoryNameWithOwner}/actions/workflows`
     );
   }
 }

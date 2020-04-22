@@ -4,6 +4,7 @@ import { LoginService } from './core/login.service';
 import { AppRouting } from './app-routing';
 import { environment } from '../environments/environment';
 import { EnvironmentName } from '../environments/environment-name';
+import { StatusIconService } from './status-icon.service';
 
 @Component({
   selector: 'ana-root',
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private statusIconService: StatusIconService
   ) {}
 
   ngOnInit() {
@@ -29,6 +31,8 @@ export class AppComponent implements OnInit {
     if (environment.name === EnvironmentName.PRODUCTION) {
       this.initGoogleTagManager();
     }
+
+    this.statusIconService.initFavicons();
   }
 
   private initGoogleTagManager() {
