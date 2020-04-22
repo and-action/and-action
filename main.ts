@@ -5,6 +5,7 @@ import { LoginService } from './login.service';
 import { DashboardConfigService } from './dashboard-config.service';
 import { environment } from './environment';
 import * as Sentry from '@sentry/node';
+import { TrayIconService } from './tray-icon.service';
 
 if (environment.sentryDsn) {
   Sentry.init({
@@ -20,6 +21,7 @@ const isServe = args.some(val => val === '--serve');
 
 const loginService = new LoginService(isServe);
 const dashboardConfigService = new DashboardConfigService();
+const trayIconService = new TrayIconService();
 
 function createWindow(): BrowserWindow {
   const size = screen.getPrimaryDisplay().workAreaSize;
@@ -72,6 +74,7 @@ try {
   app.on('ready', () => {
     session.defaultSession.cookies.remove('https://github.com', 'user_session');
     createWindow();
+    trayIconService.createTray();
   });
 
   // Quit when all windows are closed.
