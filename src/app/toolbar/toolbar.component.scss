@@ -1,0 +1,42 @@
+@import "../../colors";
+@import "../../variables";
+
+:host {
+  display: block;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__view-link {
+    text-decoration: none;
+    padding: $space-xs 0;
+    display: inline-block;
+
+    &:hover {
+      color: $default-text-color-hover;
+      border-bottom: 2px solid $default-text-color-hover;
+    }
+
+    &:not(:last-child) {
+      margin-right: $space-m;
+    }
+
+    &--active {
+      color: $default-text-color-active;
+      border-bottom: 2px solid $default-text-color-active;
+    }
+  }
+
+  &__config-button {
+    display: inline-block;
+    transition: background-color 0.1s;
+  }
+
+  &__config-button-icon {
+    width: $space-xl;
+    height: $space-xl;
+  }
+}
