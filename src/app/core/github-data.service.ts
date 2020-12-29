@@ -9,6 +9,7 @@ import { catchError, flatMap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Workflow } from './workflow';
 import { WorkflowRun } from './workflow-run';
+import { AndActionDataService } from './and-action-data.service';
 
 interface RepositoryQueryResult {
   viewer: {
@@ -42,6 +43,9 @@ const repositoriesQuery = gql`
       repositories(first: 100, orderBy: { direction: ASC, field: NAME }) {
         nodes {
           name
+          owner {
+            login
+          }
           nameWithOwner
           description
           isPrivate
@@ -63,6 +67,9 @@ const repositoriesQuery = gql`
           repositories(first: 100, orderBy: { direction: ASC, field: NAME }) {
             nodes {
               name
+              owner {
+                login
+              }
               nameWithOwner
               description
               isPrivate
@@ -86,7 +93,11 @@ const repositoriesQuery = gql`
   providedIn: 'root'
 })
 export class GithubDataService {
-  constructor(private apollo: Apollo, private http: HttpClient) {}
+  constructor(
+    private apollo: Apollo,
+    private http: HttpClient,
+    private andActionDataService: AndActionDataService
+  ) {}
 
   loadViewerAndOrganizations() {
     return this.apollo
@@ -113,6 +124,27 @@ export class GithubDataService {
           return [viewer, ...organizations];
         })
       );
+  }
+
+  loadOrganizationsWithSelectedRepositories() {
+    const repositoryNameWithOwnerList = this.andActionDataService
+      .actionsDashboardConfig.selectedRepositoriesNameWithOwnerForDashboard;
+
+    return this.loadViewerAndOrganizations().pipe(
+      map(organizations =>
+        organizations
+          .map(organization => ({
+            ...organization,
+            repositories: organization.repositories.filter(
+              repository =>
+                repositoryNameWithOwnerList.indexOf(
+                  repository.nameWithOwner
+                ) !== -1
+            )
+          }))
+          .filter(organization => organization.repositories.length > 0)
+      )
+    );
   }
 
   loadRepositoryWorkflowsWithWorkflowRuns(organization: Organization) {
