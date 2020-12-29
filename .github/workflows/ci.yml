@@ -30,7 +30,7 @@ jobs:
           node-version: 12
       - run: npm ci
       - run: npm run electron:mac
-      - run: echo "::set-env name=VERSION::$(node scripts/package-version.js)"
+      - run: echo "VERSION=$(node scripts/package-version.js)" >> $GITHUB_ENV
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
@@ -49,7 +49,7 @@ jobs:
           node-version: 12
       - run: npm ci
       - run: npm run electron:linux
-      - run: echo "::set-env name=VERSION::$(node scripts/package-version.js)"
+      - run: echo "VERSION=$(node scripts/package-version.js)" >> $GITHUB_ENV
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
