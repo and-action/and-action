@@ -1,0 +1,25 @@
+<header class="toolbar">
+  <div>
+    <a
+      class="toolbar__view-link"
+      [routerLink]="['/', appRouting.DASHBOARD]"
+      routerLinkActive="toolbar__view-link--active"
+      >Actions</a
+    >
+    <a
+      class="toolbar__view-link"
+      [routerLink]="['/', appRouting.COMMITS]"
+      routerLinkActive="toolbar__view-link--active"
+      >Commits & Deployments</a
+    >
+  </div>
+
+  <a
+    class="toolbar__config-button"
+    [routerLink]="['/', appRouting.DASHBOARD_CONFIG]"
+  >
+    <svg class="toolbar__config-button-icon">
+      <use xlink:href="#icon-settings"></use>
+    </svg>
+  </a>
+</header>

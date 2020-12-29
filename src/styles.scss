@@ -146,6 +146,14 @@ p {
   color: $secondary-text-color;
 }
 
+.u-nowrap {
+  white-space: nowrap;
+}
+
+.u-text-bold {
+  font-weight: bold;
+}
+
 .u-tag {
   font-size: $font-size-s;
   color: $white;
@@ -174,6 +182,26 @@ p {
 
   &--neutral, &--none {
     background-color: #757575;
+  }
+
+  &--color-0 {
+    background-color: $color-0;
+  }
+
+  &--color-1 {
+    background-color: $color-1;
+  }
+
+  &--color-2 {
+    background-color: $color-2;
+  }
+
+  &--color-3 {
+    background-color: $color-3;
+  }
+
+  &--color-4 {
+    background-color: $color-4;
   }
 }
 

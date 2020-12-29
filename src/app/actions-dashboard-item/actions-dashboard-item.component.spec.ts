@@ -11,6 +11,7 @@ describe('ActionsDashboardItemComponent', () => {
 
   const repositoryMock: Repository = {
     name: 'repo',
+    owner: { login: 'owner' },
     nameWithOwner: 'owner/repo',
     description: '',
     isPrivate: false,

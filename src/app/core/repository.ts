@@ -2,6 +2,7 @@ import { WorkflowWithWorkflowRuns } from './workflow';
 
 export interface Repository {
   name: string;
+  owner: { login: string };
   nameWithOwner: string;
   description: string;
   isPrivate: boolean;

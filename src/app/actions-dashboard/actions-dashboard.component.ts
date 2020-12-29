@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AppRouting } from '../app-routing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { GithubDataService } from '../core/github-data.service';
 import { flatMap, tap } from 'rxjs/operators';
@@ -14,7 +13,6 @@ import { StatusIconService } from '../status-icon.service';
   styleUrls: ['./actions-dashboard.component.scss']
 })
 export class ActionsDashboardComponent implements OnInit {
-  appRouting = AppRouting;
   viewerAndOrganizations$: Observable<(GithubViewer | Organization)[]>;
 
   constructor(
@@ -25,13 +23,11 @@ export class ActionsDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.viewerAndOrganizations$ = this.githubDataService
-      .loadViewerAndOrganizations()
+      .loadOrganizationsWithSelectedRepositories()
       .pipe(
         flatMap(organizations =>
           this.githubDataService
-            .pollWorkflowRuns(
-              this.getOrganizationsWithSelectedRepositories(organizations)
-            )
+            .pollWorkflowRuns(organizations)
             .pipe(
               tap(viewerAndOrganizations =>
                 this.statusIconService.updateStatusIcon(viewerAndOrganizations)
@@ -39,22 +35,5 @@ export class ActionsDashboardComponent implements OnInit {
             )
         )
       );
-  }
-
-  private getOrganizationsWithSelectedRepositories(
-    organizations: Organization[]
-  ) {
-    const repositoryNameWithOwnerList = this.andActionDataService
-      .actionsDashboardConfig.selectedRepositoriesNameWithOwnerForDashboard;
-
-    return organizations
-      .map(organization => ({
-        ...organization,
-        repositories: organization.repositories.filter(
-          repository =>
-            repositoryNameWithOwnerList.indexOf(repository.nameWithOwner) !== -1
-        )
-      }))
-      .filter(organization => organization.repositories.length > 0);
   }
 }
