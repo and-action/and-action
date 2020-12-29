@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AppRouting } from '../app-routing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { GithubDataService } from '../core/github-data.service';
 import { flatMap, tap } from 'rxjs/operators';
@@ -14,7 +13,6 @@ import { StatusIconService } from '../status-icon.service';
   styleUrls: ['./actions-dashboard.component.scss']
 })
 export class ActionsDashboardComponent implements OnInit {
-  appRouting = AppRouting;
   viewerAndOrganizations$: Observable<(GithubViewer | Organization)[]>;
 
   constructor(

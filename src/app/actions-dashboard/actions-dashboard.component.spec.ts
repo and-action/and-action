@@ -6,6 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ActionsDashboardComponent', () => {
   let component: ActionsDashboardComponent;
@@ -18,7 +19,8 @@ describe('ActionsDashboardComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule
       ],
-      declarations: [ActionsDashboardComponent]
+      declarations: [ActionsDashboardComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 

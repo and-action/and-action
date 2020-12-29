@@ -6,21 +6,6 @@
   padding: $space-s;
 }
 
-.top-bar {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.config-button {
-  display: inline-block;
-  transition: background-color 0.1s;
-
-  &__icon {
-    width: $space-xl;
-    height: $space-xl;
-  }
-}
-
 .viewer-or-organization {
   display: inline-block;
 
