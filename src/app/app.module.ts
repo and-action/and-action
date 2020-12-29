@@ -18,6 +18,7 @@ import { ActionsDashboardConfigComponent } from './actions-dashboard-config/acti
 import { HttpGithubAuthorizationInterceptor } from './http-github-authorization-interceptor';
 import { ActionsDashboardItemComponent } from './actions-dashboard-item/actions-dashboard-item.component';
 import { SentryErrorHandler } from './sentry-error-handler';
+import { CommitsDashboardComponent } from './commits-dashboard/commits-dashboard.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
@@ -27,6 +28,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     ActionsDashboardConfigComponent,
     ActionsDashboardItemComponent,
     LoginComponent,
+    CommitsDashboardComponent,
     ToolbarComponent
   ],
   imports: [

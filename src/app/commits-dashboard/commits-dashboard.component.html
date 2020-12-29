@@ -1,0 +1,71 @@
+<ana-toolbar class="toolbar u-margin-bottom-xxl"></ana-toolbar>
+
+<div class="repositories">
+  <ng-container *ngFor="let repository of repositories$ | async">
+    <div class="repository" *ngIf="repository">
+      <h3 class="repository__name">
+        <a [href]="repository.url" target="_blank" rel="noopener">
+          {{ repository.name }}
+        </a>
+      </h3>
+      <a
+        [href]="repository.url"
+        target="_blank"
+        rel="noopener"
+        class="repository__branch-name"
+      >
+        <svg class="repository__branch-icon">
+          <use xlink:href="#icon-git-branch"></use>
+        </svg>
+
+        <span>{{ repository.defaultBranchRef.name }}</span>
+      </a>
+
+      <ul class="repository__list">
+        <li
+          class="repository__commit"
+          *ngFor="let repositoryCommit of repository.commits"
+        >
+          <div
+            class="repository__commit-content"
+            [ngStyle]="getCommitStyle(repositoryCommit)"
+          >
+            <div class="repository__commit-message u-margin-bottom-xs">
+              <a
+                [href]="repositoryCommit.commitUrl"
+                target="_blank"
+                rel="noopener"
+                [innerHTML]="getCommitMessage(repositoryCommit.message)"
+              >
+              </a>
+            </div>
+
+            <div class="repository__commit-author u-margin-bottom-xs">
+              <a
+                [href]="
+                  repository.url +
+                  '/commits?author=' +
+                  repositoryCommit.author.login
+                "
+                target="_blank"
+                rel="noopener"
+              >
+                {{ repositoryCommit.author.name }}
+              </a>
+            </div>
+
+            <div class="u-margin-bottom-xs">
+              <span
+                *ngFor="let deployment of repositoryCommit.deployments"
+                class="repository__deployment u-tag u-tag--color-{{
+                  getColorIndexForEnvironment(deployment.environment)
+                }}"
+                >{{ deployment.environment }}</span
+              >
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </ng-container>
+</div>

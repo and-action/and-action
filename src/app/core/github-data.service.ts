@@ -9,6 +9,11 @@ import { catchError, flatMap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Workflow } from './workflow';
 import { WorkflowRun } from './workflow-run';
+import {
+  Commit,
+  Deployment,
+  RepositoryWithCommits
+} from '../commits-dashboard/commits-dashboard-models';
 import { AndActionDataService } from './and-action-data.service';
 
 interface RepositoryQueryResult {
@@ -89,6 +94,58 @@ const repositoriesQuery = gql`
   }
 `;
 
+const repositoryCommitsQuery = gql`
+  query RepositoryCommits($owner: String!, $name: String!) {
+    repository(owner: $owner, name: $name) {
+      url
+      defaultBranchRef {
+        name
+        target {
+          ... on Commit {
+            oid
+            abbreviatedOid
+            history(first: 100) {
+              edges {
+                node {
+                  parents(first: 10) {
+                    edges {
+                      node {
+                        oid
+                      }
+                    }
+                  }
+                  commitUrl
+                  oid
+                  abbreviatedOid
+                  message
+                  author {
+                    name
+                    user {
+                      login
+                    }
+                  }
+                  deployments(first: 10) {
+                    edges {
+                      node {
+                        id
+                        environment
+                        createdAt
+                        creator {
+                          login
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -158,6 +215,75 @@ export class GithubDataService {
         )
       )
     );
+  }
+
+  loadRepositoryCommits(owner: string, name: string) {
+    return this.apollo
+      .watchQuery<any>({
+        query: repositoryCommitsQuery,
+        variables: {
+          owner,
+          name
+        },
+        errorPolicy: 'ignore'
+      })
+      .valueChanges.pipe(
+        map(queryResult => {
+          const commits = queryResult.data.repository.defaultBranchRef.target.history.edges
+            .map(
+              ({ node }): Commit => ({
+                oid: node.oid,
+                abbreviatedOid: node.abbreviatedOid,
+                author: {
+                  name: node.author.name,
+                  login: node.author.user.login
+                },
+                commitUrl: node.commitUrl,
+                message: node.message,
+                isMergeCommit: node.parents.edges.length > 1,
+                deployments: node.deployments.edges.map(
+                  ({ node: deployment }): Deployment => ({
+                    id: deployment.id,
+                    creator: deployment.creator.login,
+                    environment: deployment.environment,
+                    timestamp: new Date(deployment.createdAt),
+                    isLatestDeploymentForEnvironment: false
+                  })
+                )
+              })
+            )
+            .filter(commit => commit.isMergeCommit);
+
+          const latestDeployments = commits.reduce((result, current) => {
+            current.deployments.forEach(deployment => {
+              if (
+                !result[deployment.environment] ||
+                result[deployment.environment] <
+                  current.deployments[deployment.environment]
+              ) {
+                result[deployment.environment] = deployment;
+              }
+            });
+            return result;
+          }, {});
+
+          Object.values(latestDeployments).forEach(
+            (deployment: Deployment) =>
+              (deployment.isLatestDeploymentForEnvironment = true)
+          );
+
+          const repository: RepositoryWithCommits = {
+            name,
+            owner,
+            defaultBranchRef: {
+              name: queryResult.data.repository.defaultBranchRef.name
+            },
+            url: queryResult.data.repository.url,
+            commits
+          };
+          return repository;
+        })
+      );
   }
 
   pollWorkflowRuns(organizations: Organization[]) {

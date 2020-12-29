@@ -146,6 +146,14 @@ p {
   color: $secondary-text-color;
 }
 
+.u-nowrap {
+  white-space: nowrap;
+}
+
+.u-text-bold {
+  font-weight: bold;
+}
+
 .u-tag {
   font-size: $font-size-s;
   color: $white;

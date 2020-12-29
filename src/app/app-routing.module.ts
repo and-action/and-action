@@ -5,6 +5,7 @@ import { ActionsDashboardComponent } from './actions-dashboard/actions-dashboard
 import { LoginComponent } from './login/login.component';
 import { ActionsDashboardConfigComponent } from './actions-dashboard-config/actions-dashboard-config.component';
 import { ActionsDashboardGuard } from './actions-dashboard/actions-dashboard.guard';
+import { CommitsDashboardComponent } from './commits-dashboard/commits-dashboard.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: AppRouting.DASHBOARD_CONFIG,
     component: ActionsDashboardConfigComponent
+  },
+  {
+    path: AppRouting.COMMITS,
+    component: CommitsDashboardComponent
   },
   {
     path: AppRouting.LOGIN,
