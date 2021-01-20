@@ -1,8 +1,5 @@
-import { Injectable, NgZone } from '@angular/core';
-import { ElectronService } from './electron.service';
-import { IpcChannel } from '../../../ipc-channel';
-import { Event } from 'electron';
-import { EMPTY, Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { EMPTY } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
@@ -16,16 +13,12 @@ export class LoginService {
 
   private myAccessToken?: string;
 
-  constructor(
-    private electronService: ElectronService,
-    private http: HttpClient,
-    private zone: NgZone
-  ) {}
+  constructor(private http: HttpClient) {}
 
   login() {
-    return this.electronService.isElectron
-      ? this.loginElectron()
-      : this.loginWeb();
+    // TODO: Remove return
+    window.location.href = 'https://and-action-login-api.herokuapp.com/login';
+    return EMPTY;
   }
 
   initAccessTokenFromCode(code: string) {
@@ -34,28 +27,5 @@ export class LoginService {
         code
       })
       .pipe(tap((data: any) => (this.myAccessToken = data.access_token)));
-  }
-
-  private loginElectron() {
-    const subject: Subject<void> = new Subject();
-
-    this.electronService.ipcRenderer.once(
-      IpcChannel.GITHUB_LOGIN_RESPONSE,
-      (event: Event, accessToken: string) => {
-        this.myAccessToken = accessToken;
-        this.zone.run(() => {
-          subject.next();
-          subject.complete();
-        });
-      }
-    );
-
-    this.electronService.ipcRenderer.send(IpcChannel.GITHUB_LOGIN);
-    return subject.asObservable();
-  }
-
-  private loginWeb() {
-    window.location.href = 'https://and-action-login-api.herokuapp.com/login';
-    return EMPTY;
   }
 }

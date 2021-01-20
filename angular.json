@@ -9,12 +9,12 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "optimization": false,
             "outputHashing": "all",
@@ -35,10 +35,7 @@
               "src/_redirects"
             ],
             "styles": ["src/styles.scss"],
-            "scripts": [],
-            "customWebpackConfig": {
-              "path": "./angular.webpack.js"
-            }
+            "scripts": []
           },
           "configurations": {
             "local": {
@@ -66,7 +63,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "and-action:build"
           },
@@ -89,12 +86,12 @@
           }
         },
         "test": {
-          "builder": "@angular-builders/custom-webpack:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills-test.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "scripts": [],
             "styles": ["src/styles.scss"],
             "assets": [
@@ -104,18 +101,14 @@
               "src/favicon.icns",
               "src/favicon.256x256.png",
               "src/favicon.512x512.png"
-            ],
-            "customWebpackConfig": {
-              "path": "./angular.webpack.js",
-              "target": "electron-renderer"
-            }
+            ]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "eslintConfig": "src/eslintrc.config.json",
-            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "tsConfig": ["tsconfig.app.json", "tsconfig.spec.json"],
             "exclude": ["**/node_modules/**"]
           }
         }

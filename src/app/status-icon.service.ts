@@ -4,9 +4,7 @@ import { Organization } from './core/organization';
 import { WorkflowRunStatus } from './core/workflow-run-status';
 import { WorkflowRunConclusion } from './core/workflow-run-conclusion';
 import { WorkflowRun } from './core/workflow-run';
-import { ElectronService } from './core/electron.service';
-import { IpcChannel } from '../../ipc-channel';
-import { StatusIconStatus } from '../../status-icon-status';
+import { StatusIconStatus } from './status-icon-status';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +13,7 @@ export class StatusIconService {
   private favicon16?: HTMLElement;
   private favicon32?: HTMLElement;
 
-  constructor(private electronService: ElectronService) {}
+  constructor() {}
 
   initFavicons() {
     this.favicon16 = this.appendIconToHead(16);
@@ -37,21 +35,14 @@ export class StatusIconService {
       ? StatusIconStatus.SUCCESS
       : StatusIconStatus.NONE;
 
-    if (this.electronService.isElectron) {
-      this.electronService.ipcRenderer.send(
-        IpcChannel.SET_TRAY_ICON_STATUS,
-        status
-      );
-    } else {
-      this.favicon16.setAttribute(
-        'href',
-        this.getFaviconFileNameForStatus(16, status)
-      );
-      this.favicon32.setAttribute(
-        'href',
-        this.getFaviconFileNameForStatus(32, status)
-      );
-    }
+    this.favicon16.setAttribute(
+      'href',
+      this.getFaviconFileNameForStatus(16, status)
+    );
+    this.favicon32.setAttribute(
+      'href',
+      this.getFaviconFileNameForStatus(32, status)
+    );
   }
 
   private hasWorkflowRunsWithError(workflowRuns: WorkflowRun[]) {
