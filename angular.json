@@ -68,11 +68,11 @@
             "browserTarget": "and-action:build"
           },
           "configurations": {
+            "local": {
+              "browserTarget": "and-action:build:local"
+            },
             "dev": {
               "browserTarget": "and-action:build:dev"
-            },
-            "web": {
-              "browserTarget": "and-action:build:web"
             },
             "production": {
               "browserTarget": "and-action:build:production"
@@ -89,7 +89,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "polyfills": "src/polyfills-test.ts",
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "scripts": [],
