@@ -3,6 +3,8 @@ import { EMPTY } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
+const loginApiUrl = 'https://and-action-login-api.herokuapp.com';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,13 +19,13 @@ export class LoginService {
 
   login() {
     // TODO: Remove return
-    window.location.href = 'https://and-action-login-api.herokuapp.com/login';
+    window.location.href = `${loginApiUrl}/login`;
     return EMPTY;
   }
 
   initAccessTokenFromCode(code: string) {
     return this.http
-      .post('https://and-action-login-api.herokuapp.com/access_token', {
+      .post(`${loginApiUrl}/access_token`, {
         code
       })
       .pipe(tap((data: any) => (this.myAccessToken = data.access_token)));

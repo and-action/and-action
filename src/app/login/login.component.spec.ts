@@ -4,7 +4,7 @@ import { LoginComponent } from './login.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { LoginService } from '../core/login.service';
-import { of } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { Router } from '@angular/router';
 import { AppRouting } from '../app-routing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -28,9 +28,7 @@ describe('LoginComponent', () => {
     const router = TestBed.inject(Router);
     const navigateSpy = spyOn(router, 'navigate');
     const loginService = TestBed.inject(LoginService);
-    const loginSpy = spyOn(loginService, 'login').and.returnValue(
-      of(undefined)
-    );
+    const loginSpy = spyOn(loginService, 'login').and.returnValue(EMPTY);
 
     const loginButton = fixture.debugElement.query(By.css('.button'));
     loginButton.nativeElement.click();
