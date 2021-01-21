@@ -4,54 +4,54 @@ on: [push]
 
 jobs:
   lint-and-test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js 12
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - run: npm ci
       - run: npm audit || true
       - run: npm test
       - run: npm run lint
       - run: npm run prettier-check
 
-  build-mac:
-    runs-on: macos-latest
-    needs: [lint-and-test]
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 12
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: npm ci
-      - run: npm run electron:mac
-      - run: echo "VERSION=$(node scripts/package-version.js)" >> $GITHUB_ENV
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v1
-        with:
-          name: app-bundle-mac
-          path: release/AndAction-${{ env.VERSION }}.dmg
-
-  build-linux:
+  build:
     runs-on: ubuntu-latest
-    needs: [lint-and-test]
 
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js 12
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - run: npm ci
-      - run: npm run electron:linux
-      - run: echo "VERSION=$(node scripts/package-version.js)" >> $GITHUB_ENV
+      - run: npm run build -- --configuration=dev
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: app-bundle-linux
-          path: release/AndAction-${{ env.VERSION }}.AppImage
+          name: app-bundle
+          path: dist
+
+  deploy-dev:
+    name: Deploy to Netlify Dev
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: [lint-and-test, build]
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_DEV }}
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v1
+        with:
+          name: app-bundle
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: npm install -g netlify-cli
+      - run: netlify deploy -d=app-bundle --prod -m="Deploy ${{ github.ref }} Commit ${{ github.sha }}"
