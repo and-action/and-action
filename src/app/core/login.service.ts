@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { EMPTY } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
@@ -18,9 +17,7 @@ export class LoginService {
   constructor(private http: HttpClient) {}
 
   login() {
-    // TODO: Remove return
     window.location.href = `${loginApiUrl}/login`;
-    return EMPTY;
   }
 
   initAccessTokenFromCode(code: string) {
