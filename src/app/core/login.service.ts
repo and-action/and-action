@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
-const loginApiUrl = 'https://and-action-login-api.herokuapp.com';
+const loginApiUrl = 'https://andaction-login-api.herokuapp.com';
 
 @Injectable({
   providedIn: 'root'
