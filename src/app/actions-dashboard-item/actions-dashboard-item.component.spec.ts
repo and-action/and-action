@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ActionsDashboardItemComponent } from './actions-dashboard-item.component';
 import { ApolloTestingModule } from 'apollo-angular/testing';
@@ -21,7 +21,7 @@ describe('ActionsDashboardItemComponent', () => {
     workflowsWithWorkflowRuns: []
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ApolloTestingModule, HttpClientTestingModule],
       declarations: [ActionsDashboardItemComponent]

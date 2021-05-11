@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ActionsDashboardConfigComponent } from './actions-dashboard-config.component';
 import { ApolloTestingModule } from 'apollo-angular/testing';
@@ -12,7 +12,7 @@ describe('ActionsDashboardConfigComponent', () => {
   let component: ActionsDashboardConfigComponent;
   let fixture: ComponentFixture<ActionsDashboardConfigComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         ApolloTestingModule,
