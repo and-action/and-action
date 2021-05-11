@@ -119,7 +119,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "ana",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "ana"
