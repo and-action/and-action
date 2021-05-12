@@ -29,7 +29,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     ActionsDashboardItemComponent,
     LoginComponent,
     CommitsDashboardComponent,
-    ToolbarComponent
+    ToolbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,23 +38,23 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     HttpClientModule,
     CoreModule,
     AppRoutingModule,
-    GraphQLModule
+    GraphQLModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: SentryErrorHandler },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpGithubAuthorizationInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: APP_INITIALIZER,
       useFactory: (andActionDataService: AndActionDataService) => () =>
         andActionDataService.initActionsDashboardConfig(),
       deps: [AndActionDataService],
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

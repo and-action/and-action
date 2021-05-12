@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 const loginApiUrl = 'https://andaction-login-api.herokuapp.com';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginService {
   get accessToken() {
@@ -23,7 +23,7 @@ export class LoginService {
   initAccessTokenFromCode(code: string) {
     return this.http
       .post(`${loginApiUrl}/access_token`, {
-        code
+        code,
       })
       .pipe(tap((data: any) => (this.myAccessToken = data.access_token)));
   }

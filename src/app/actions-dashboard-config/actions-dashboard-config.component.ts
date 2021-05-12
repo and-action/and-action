@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'ana-actions-dashboard-config',
   templateUrl: './actions-dashboard-config.component.html',
-  styleUrls: ['./actions-dashboard-config.component.scss']
+  styleUrls: ['./actions-dashboard-config.component.scss'],
 })
 export class ActionsDashboardConfigComponent implements OnInit {
   viewerAndOrganizations: (GithubViewer | Organization)[];
@@ -24,21 +24,22 @@ export class ActionsDashboardConfigComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const selectedRepositories = this.andActionDataService
-      .actionsDashboardConfig.selectedRepositoriesNameWithOwnerForDashboard;
+    const selectedRepositories =
+      this.andActionDataService.actionsDashboardConfig
+        .selectedRepositoriesNameWithOwnerForDashboard;
 
     this.githubDataService
       .loadViewerAndOrganizations()
-      .subscribe(viewerAndOrganizations => {
+      .subscribe((viewerAndOrganizations) => {
         this.viewerAndOrganizations = viewerAndOrganizations;
         this.model = this.viewerAndOrganizations
-          .flatMap(organization => organization.repositories)
+          .flatMap((organization) => organization.repositories)
           .reduce(
             (acc, current) => ({
               [current.nameWithOwner]: selectedRepositories.includes(
                 current.nameWithOwner
               ),
-              ...acc
+              ...acc,
             }),
             {}
           );
@@ -46,7 +47,7 @@ export class ActionsDashboardConfigComponent implements OnInit {
   }
 
   isFormValid() {
-    return this.model && Object.keys(this.model).some(key => this.model[key]);
+    return this.model && Object.keys(this.model).some((key) => this.model[key]);
   }
 
   onSave() {
@@ -55,7 +56,7 @@ export class ActionsDashboardConfigComponent implements OnInit {
     }
 
     const selectedRepositoriesForDashboard = Object.keys(this.model).filter(
-      repositoryNameWithOwner => this.model[repositoryNameWithOwner]
+      (repositoryNameWithOwner) => this.model[repositoryNameWithOwner]
     );
 
     this.andActionDataService

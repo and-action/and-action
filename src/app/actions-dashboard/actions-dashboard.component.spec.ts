@@ -12,17 +12,19 @@ describe('ActionsDashboardComponent', () => {
   let component: ActionsDashboardComponent;
   let fixture: ComponentFixture<ActionsDashboardComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        ApolloTestingModule,
-        HttpClientTestingModule,
-        RouterTestingModule
-      ],
-      declarations: [ActionsDashboardComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          ApolloTestingModule,
+          HttpClientTestingModule,
+          RouterTestingModule,
+        ],
+        declarations: [ActionsDashboardComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     const andActionDataService = TestBed.inject(AndActionDataService);

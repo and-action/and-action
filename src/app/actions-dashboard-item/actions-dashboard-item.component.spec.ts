@@ -18,15 +18,17 @@ describe('ActionsDashboardItemComponent', () => {
     defaultBranchRef: { name: '' },
     url: 'https://github.com/owner/repo',
     parent: null,
-    workflowsWithWorkflowRuns: []
+    workflowsWithWorkflowRuns: [],
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [ApolloTestingModule, HttpClientTestingModule],
-      declarations: [ActionsDashboardItemComponent]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [ApolloTestingModule, HttpClientTestingModule],
+        declarations: [ActionsDashboardItemComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ActionsDashboardItemComponent);

@@ -2,14 +2,14 @@ import {
   ActivatedRouteSnapshot,
   CanActivate,
   Router,
-  RouterStateSnapshot
+  RouterStateSnapshot,
 } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { AppRouting } from '../app-routing';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ActionsDashboardGuard implements CanActivate {
   constructor(

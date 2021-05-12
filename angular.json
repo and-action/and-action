@@ -34,9 +34,7 @@
               "src/favicon.512x512.png",
               "src/_redirects"
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           },
           "configurations": {

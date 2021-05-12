@@ -11,13 +11,13 @@ const LIGHT_COLORS = [
   'rgba(255, 214, 0, 0.2)',
   'rgba(0, 145, 234, 0.2)',
   'rgba(171, 67, 92, 0.2)',
-  'rgba(72, 72, 83, 0.2)'
+  'rgba(72, 72, 83, 0.2)',
 ];
 
 @Component({
   selector: 'ana-commits-dashboard',
   templateUrl: './commits-dashboard.component.html',
-  styleUrls: ['./commits-dashboard.component.scss']
+  styleUrls: ['./commits-dashboard.component.scss'],
 })
 export class CommitsDashboardComponent implements OnInit {
   repositories$?: Observable<RepositoryWithCommits[]>;
@@ -32,12 +32,12 @@ export class CommitsDashboardComponent implements OnInit {
     this.repositories$ = this.githubDataService
       .loadOrganizationsWithSelectedRepositories()
       .pipe(
-        map(organizations =>
-          organizations.flatMap(organization => organization.repositories)
+        map((organizations) =>
+          organizations.flatMap((organization) => organization.repositories)
         ),
-        mergeMap(repositories =>
+        mergeMap((repositories) =>
           combineLatest(
-            repositories.map(repository =>
+            repositories.map((repository) =>
               this.githubDataService.loadRepositoryCommits(
                 repository.owner.login,
                 repository.name
@@ -45,7 +45,7 @@ export class CommitsDashboardComponent implements OnInit {
             )
           )
         ),
-        tap(repositories =>
+        tap((repositories) =>
           this.createDeploymentEnvironmentCssClassMapping(repositories)
         )
       );
@@ -53,13 +53,13 @@ export class CommitsDashboardComponent implements OnInit {
 
   getCommitStyle(commit: Commit) {
     const deployments = commit.deployments.filter(
-      deployment => deployment.isLatestDeploymentForEnvironment
+      (deployment) => deployment.isLatestDeploymentForEnvironment
     );
     if (deployments.length > 0) {
       const colorsCount = deployments.length;
 
       const colors = deployments.map(
-        deployment =>
+        (deployment) =>
           LIGHT_COLORS[this.getColorIndexForEnvironment(deployment.environment)]
       );
 
@@ -77,7 +77,7 @@ export class CommitsDashboardComponent implements OnInit {
 
       gradientString += ')';
       return {
-        background: gradientString
+        background: gradientString,
       };
     }
     return {};
@@ -92,24 +92,24 @@ export class CommitsDashboardComponent implements OnInit {
     const match = /MD-[0-9]{4}/.exec(commitMessage);
     return match
       ? commitMessage.replace(
-        match[0],
-        `<span class="u-text-bold u-nowrap">${match[0]}</span>`
-      )
+          match[0],
+          `<span class="u-text-bold u-nowrap">${match[0]}</span>`
+        )
       : commitMessage;
   }
 
   private createDeploymentEnvironmentCssClassMapping(
     repositories: RepositoryWithCommits[]
   ) {
-    const environments = repositories.flatMap(repository =>
-      repository.commits.flatMap(commit =>
-        commit.deployments.flatMap(deployment => deployment.environment)
+    const environments = repositories.flatMap((repository) =>
+      repository.commits.flatMap((commit) =>
+        commit.deployments.flatMap((deployment) => deployment.environment)
       )
     );
 
     const set = new Set(environments);
     let index = 0;
-    set.forEach(environment => {
+    set.forEach((environment) => {
       this.environmentColorIndexMapping[environment] = index;
       index += 1;
     });

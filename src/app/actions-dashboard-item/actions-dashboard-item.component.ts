@@ -6,7 +6,7 @@ import { WorkflowRunStatus } from '../core/workflow-run-status';
 @Component({
   selector: 'ana-actions-dashboard-item',
   templateUrl: './actions-dashboard-item.component.html',
-  styleUrls: ['./actions-dashboard-item.component.scss']
+  styleUrls: ['./actions-dashboard-item.component.scss'],
 })
 export class ActionsDashboardItemComponent implements OnInit {
   @Input() repository?: Repository;

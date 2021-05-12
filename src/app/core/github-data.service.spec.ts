@@ -10,7 +10,7 @@ describe('GithubDataService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ApolloTestingModule, HttpClientTestingModule]
+      imports: [ApolloTestingModule, HttpClientTestingModule],
     });
     service = TestBed.inject(GithubDataService);
   });

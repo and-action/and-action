@@ -9,5 +9,5 @@ import { EnvironmentName } from './environment-name';
 export const environment: Environment = {
   name: EnvironmentName.DEV,
   isEnableProdMode: false,
-  sentryDsn: null
+  sentryDsn: null,
 };
