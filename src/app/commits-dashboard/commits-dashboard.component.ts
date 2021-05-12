@@ -87,6 +87,17 @@ export class CommitsDashboardComponent implements OnInit {
     return this.environmentColorIndexMapping[environment];
   }
 
+  getCommitMessage(commitMessage: string) {
+    // Show moneymeets Ticket IDs with bold text.
+    const match = /MD-[0-9]{4}/.exec(commitMessage);
+    return match
+      ? commitMessage.replace(
+        match[0],
+        `<span class="u-text-bold u-nowrap">${match[0]}</span>`
+      )
+      : commitMessage;
+  }
+
   private createDeploymentEnvironmentCssClassMapping(
     repositories: RepositoryWithCommits[]
   ) {
@@ -102,16 +113,5 @@ export class CommitsDashboardComponent implements OnInit {
       this.environmentColorIndexMapping[environment] = index;
       index += 1;
     });
-  }
-
-  getCommitMessage(commitMessage: string) {
-    // Show moneymeets Ticket IDs with bold text.
-    const match = /MD-[0-9]{4}/.exec(commitMessage);
-    return match
-      ? commitMessage.replace(
-          match[0],
-          `<span class="u-text-bold u-nowrap">${match[0]}</span>`
-        )
-      : commitMessage;
   }
 }

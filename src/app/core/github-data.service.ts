@@ -287,9 +287,9 @@ export class GithubDataService {
   }
 
   pollWorkflowRuns(organizations: Organization[]) {
-    const _60SecondsInMillis = 60 * 1000;
+    const sixtySecondsInMillis = 60 * 1000;
 
-    return timer(0, _60SecondsInMillis).pipe(
+    return timer(0, sixtySecondsInMillis).pipe(
       flatMap(() =>
         forkJoin(
           organizations.map(organization =>
