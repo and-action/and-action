@@ -7,7 +7,7 @@ import { WorkflowRun } from './core/workflow-run';
 import { StatusIconStatus } from './status-icon-status';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StatusIconService {
   private favicon16?: HTMLElement;
@@ -22,10 +22,10 @@ export class StatusIconService {
 
   updateStatusIcon(viewerAndOrganizations: (GithubViewer | Organization)[]) {
     const workflowRuns = viewerAndOrganizations
-      .flatMap(organization => organization.repositories)
-      .flatMap(repository => repository.workflowsWithWorkflowRuns)
-      .flatMap(workflow => workflow.workflowRuns[0])
-      .filter(workflowRun => !!workflowRun);
+      .flatMap((organization) => organization.repositories)
+      .flatMap((repository) => repository.workflowsWithWorkflowRuns)
+      .flatMap((workflow) => workflow.workflowRuns[0])
+      .filter((workflowRun) => !!workflowRun);
 
     const status = this.hasWorkflowRunsWithError(workflowRuns)
       ? StatusIconStatus.FAILURE
@@ -49,11 +49,11 @@ export class StatusIconService {
     const errorConclusions = [
       WorkflowRunConclusion.FAILURE,
       WorkflowRunConclusion.CANCELLED,
-      WorkflowRunConclusion.TIMED_OUT
+      WorkflowRunConclusion.TIMED_OUT,
     ];
 
     return workflowRuns.some(
-      workflowRun =>
+      (workflowRun) =>
         workflowRun.status === WorkflowRunStatus.COMPLETED &&
         errorConclusions.includes(workflowRun.conclusion)
     );
@@ -61,7 +61,7 @@ export class StatusIconService {
 
   private hasWorkflowRunsInProgress(workflowRuns: WorkflowRun[]) {
     return workflowRuns.some(
-      workflowRun =>
+      (workflowRun) =>
         workflowRun.status === WorkflowRunStatus.QUEUED ||
         workflowRun.status === WorkflowRunStatus.IN_PROGRESS
     );
@@ -71,10 +71,10 @@ export class StatusIconService {
     const successConclusions = [
       WorkflowRunConclusion.SUCCESS,
       WorkflowRunConclusion.NEUTRAL,
-      WorkflowRunConclusion.ACTION_REQUIRED
+      WorkflowRunConclusion.ACTION_REQUIRED,
     ];
     return workflowRuns.every(
-      workflowRun =>
+      (workflowRun) =>
         workflowRun.status === WorkflowRunStatus.COMPLETED &&
         successConclusions.includes(workflowRun.conclusion)
     );
@@ -86,10 +86,10 @@ export class StatusIconService {
       rel: 'icon',
       href: `assets/favicons/${size}x${size}.png`,
       size: `${size}x${size}`,
-      type: 'image/png'
+      type: 'image/png',
     };
 
-    Object.keys(attributes).forEach(key =>
+    Object.keys(attributes).forEach((key) =>
       element.setAttribute(key, attributes[key])
     );
 

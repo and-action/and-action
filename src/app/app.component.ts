@@ -9,7 +9,7 @@ import { StatusIconService } from './status-icon.service';
 @Component({
   selector: 'ana-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   constructor(
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe(queryParams => {
+    this.route.queryParams.subscribe((queryParams) => {
       if (queryParams.code) {
         this.loginService
           .initAccessTokenFromCode(queryParams.code)

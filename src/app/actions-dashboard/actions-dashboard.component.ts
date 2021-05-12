@@ -10,7 +10,7 @@ import { StatusIconService } from '../status-icon.service';
 @Component({
   selector: 'ana-actions-dashboard',
   templateUrl: './actions-dashboard.component.html',
-  styleUrls: ['./actions-dashboard.component.scss']
+  styleUrls: ['./actions-dashboard.component.scss'],
 })
 export class ActionsDashboardComponent implements OnInit {
   viewerAndOrganizations$: Observable<(GithubViewer | Organization)[]>;
@@ -25,11 +25,11 @@ export class ActionsDashboardComponent implements OnInit {
     this.viewerAndOrganizations$ = this.githubDataService
       .loadOrganizationsWithSelectedRepositories()
       .pipe(
-        flatMap(organizations =>
+        flatMap((organizations) =>
           this.githubDataService
             .pollWorkflowRuns(organizations)
             .pipe(
-              tap(viewerAndOrganizations =>
+              tap((viewerAndOrganizations) =>
                 this.statusIconService.updateStatusIcon(viewerAndOrganizations)
               )
             )

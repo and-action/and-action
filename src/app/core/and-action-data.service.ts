@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 
 const ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY = 'actions-dashboard-config';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AndActionDataService {
   private myActionsDashboardConfig?: ActionsDashboardConfig;

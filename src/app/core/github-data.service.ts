@@ -12,7 +12,7 @@ import { WorkflowRun } from './workflow-run';
 import {
   Commit,
   Deployment,
-  RepositoryWithCommits
+  RepositoryWithCommits,
 } from '../commits-dashboard/commits-dashboard-models';
 import { AndActionDataService } from './and-action-data.service';
 
@@ -147,7 +147,7 @@ const repositoryCommitsQuery = gql`
 `;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GithubDataService {
   constructor(
@@ -160,57 +160,59 @@ export class GithubDataService {
     return this.apollo
       .watchQuery<RepositoryQueryResult>({
         query: repositoriesQuery,
-        errorPolicy: 'ignore'
+        errorPolicy: 'ignore',
       })
       .valueChanges.pipe(
-        map(queryResult => {
+        map((queryResult) => {
           const viewer: GithubViewer = {
             login: queryResult.data.viewer.login,
             avatarUrl: queryResult.data.viewer.avatarUrl,
             url: queryResult.data.viewer.url,
-            repositories: queryResult.data.viewer.repositories.nodes
+            repositories: queryResult.data.viewer.repositories.nodes,
           };
-          const organizations: Organization[] = queryResult.data.viewer.organizations.nodes
-            .filter(organization => organization)
-            .map(organization => ({
-              login: organization.login,
-              avatarUrl: organization.avatarUrl,
-              url: organization.url,
-              repositories: organization.repositories.nodes
-            }));
+          const organizations: Organization[] =
+            queryResult.data.viewer.organizations.nodes
+              .filter((organization) => organization)
+              .map((organization) => ({
+                login: organization.login,
+                avatarUrl: organization.avatarUrl,
+                url: organization.url,
+                repositories: organization.repositories.nodes,
+              }));
           return [viewer, ...organizations];
         })
       );
   }
 
   loadOrganizationsWithSelectedRepositories() {
-    const repositoryNameWithOwnerList = this.andActionDataService
-      .actionsDashboardConfig.selectedRepositoriesNameWithOwnerForDashboard;
+    const repositoryNameWithOwnerList =
+      this.andActionDataService.actionsDashboardConfig
+        .selectedRepositoriesNameWithOwnerForDashboard;
 
     return this.loadViewerAndOrganizations().pipe(
-      map(organizations =>
+      map((organizations) =>
         organizations
-          .map(organization => ({
+          .map((organization) => ({
             ...organization,
             repositories: organization.repositories.filter(
-              repository =>
+              (repository) =>
                 repositoryNameWithOwnerList.indexOf(
                   repository.nameWithOwner
                 ) !== -1
-            )
+            ),
           }))
-          .filter(organization => organization.repositories.length > 0)
+          .filter((organization) => organization.repositories.length > 0)
       )
     );
   }
 
   loadRepositoryWorkflowsWithWorkflowRuns(organization: Organization) {
     return forkJoin(
-      organization.repositories.map(repository =>
+      organization.repositories.map((repository) =>
         this.loadDefaultBranchWorkflowRuns(repository).pipe(
-          map(workflowsWithWorkflowRuns => ({
+          map((workflowsWithWorkflowRuns) => ({
             ...repository,
-            workflowsWithWorkflowRuns
+            workflowsWithWorkflowRuns,
           }))
         )
       )
@@ -223,39 +225,40 @@ export class GithubDataService {
         query: repositoryCommitsQuery,
         variables: {
           owner,
-          name
+          name,
         },
-        errorPolicy: 'ignore'
+        errorPolicy: 'ignore',
       })
       .valueChanges.pipe(
-        map(queryResult => {
-          const commits = queryResult.data.repository.defaultBranchRef.target.history.edges
-            .map(
-              ({ node }): Commit => ({
-                oid: node.oid,
-                abbreviatedOid: node.abbreviatedOid,
-                author: {
-                  name: node.author.name,
-                  login: node.author.user.login
-                },
-                commitUrl: node.commitUrl,
-                message: node.message,
-                isMergeCommit: node.parents.edges.length > 1,
-                deployments: node.deployments.edges.map(
-                  ({ node: deployment }): Deployment => ({
-                    id: deployment.id,
-                    creator: deployment.creator.login,
-                    environment: deployment.environment,
-                    timestamp: new Date(deployment.createdAt),
-                    isLatestDeploymentForEnvironment: false
-                  })
-                )
-              })
-            )
-            .filter(commit => commit.isMergeCommit);
+        map((queryResult) => {
+          const commits =
+            queryResult.data.repository.defaultBranchRef.target.history.edges
+              .map(
+                ({ node }): Commit => ({
+                  oid: node.oid,
+                  abbreviatedOid: node.abbreviatedOid,
+                  author: {
+                    name: node.author.name,
+                    login: node.author.user.login,
+                  },
+                  commitUrl: node.commitUrl,
+                  message: node.message,
+                  isMergeCommit: node.parents.edges.length > 1,
+                  deployments: node.deployments.edges.map(
+                    ({ node: deployment }): Deployment => ({
+                      id: deployment.id,
+                      creator: deployment.creator.login,
+                      environment: deployment.environment,
+                      timestamp: new Date(deployment.createdAt),
+                      isLatestDeploymentForEnvironment: false,
+                    })
+                  ),
+                })
+              )
+              .filter((commit) => commit.isMergeCommit);
 
           const latestDeployments = commits.reduce((result, current) => {
-            current.deployments.forEach(deployment => {
+            current.deployments.forEach((deployment) => {
               if (
                 !result[deployment.environment] ||
                 result[deployment.environment] <
@@ -276,10 +279,10 @@ export class GithubDataService {
             name,
             owner,
             defaultBranchRef: {
-              name: queryResult.data.repository.defaultBranchRef.name
+              name: queryResult.data.repository.defaultBranchRef.name,
             },
             url: queryResult.data.repository.url,
-            commits
+            commits,
           };
           return repository;
         })
@@ -287,16 +290,16 @@ export class GithubDataService {
   }
 
   pollWorkflowRuns(organizations: Organization[]) {
-    const _60SecondsInMillis = 60 * 1000;
+    const sixtySecondsInMillis = 60 * 1000;
 
-    return timer(0, _60SecondsInMillis).pipe(
+    return timer(0, sixtySecondsInMillis).pipe(
       flatMap(() =>
         forkJoin(
-          organizations.map(organization =>
+          organizations.map((organization) =>
             this.loadRepositoryWorkflowsWithWorkflowRuns(organization).pipe(
-              map(repositories => ({
+              map((repositories) => ({
                 ...organization,
-                repositories
+                repositories,
               }))
             )
           )
@@ -307,21 +310,21 @@ export class GithubDataService {
 
   private loadDefaultBranchWorkflowRuns(repository: Repository) {
     return this.loadWorkflows(repository.nameWithOwner).pipe(
-      map(workflowsResult =>
+      map((workflowsResult) =>
         workflowsResult.workflows.sort((a, b) => a.name.localeCompare(b.name))
       ),
-      flatMap(workflows =>
+      flatMap((workflows) =>
         workflows.length > 0
           ? forkJoin(
-              workflows.map(workflow =>
+              workflows.map((workflow) =>
                 this.http
                   .get<{ total_count: number; workflow_runs: WorkflowRun[] }>(
                     `https://api.github.com/repos/${repository.nameWithOwner}/actions/workflows/${workflow.id}/runs?branch=${repository.defaultBranchRef.name}`
                   )
                   .pipe(
-                    map(workflowRunsResult => ({
+                    map((workflowRunsResult) => ({
                       workflow,
-                      workflowRuns: workflowRunsResult.workflow_runs
+                      workflowRuns: workflowRunsResult.workflow_runs,
                     })),
                     catchError(() => of({ workflow, workflowRuns: [] }))
                   )

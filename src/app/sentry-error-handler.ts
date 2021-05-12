@@ -5,7 +5,7 @@ import { environment } from '../environments/environment';
 if (environment.sentryDsn) {
   Sentry.init({
     dsn: environment.sentryDsn,
-    environment: environment.name
+    environment: environment.name,
   });
 }
 

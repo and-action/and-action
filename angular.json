@@ -11,6 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["zen-observable"],
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -19,7 +20,6 @@
             "optimization": false,
             "outputHashing": "all",
             "sourceMap": true,
-            "extractCss": true,
             "namedChunks": false,
             "aot": false,
             "extractLicenses": true,
@@ -107,9 +107,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": "src/eslintrc.config.json",
-            "tsConfig": ["tsconfig.app.json", "tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
@@ -119,7 +117,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "ana",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "ana"

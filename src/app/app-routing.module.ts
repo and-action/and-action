@@ -11,29 +11,29 @@ const routes: Routes = [
   {
     path: AppRouting.DASHBOARD,
     component: ActionsDashboardComponent,
-    canActivate: [ActionsDashboardGuard]
+    canActivate: [ActionsDashboardGuard],
   },
   {
     path: AppRouting.DASHBOARD_CONFIG,
-    component: ActionsDashboardConfigComponent
+    component: ActionsDashboardConfigComponent,
   },
   {
     path: AppRouting.COMMITS,
-    component: CommitsDashboardComponent
+    component: CommitsDashboardComponent,
   },
   {
     path: AppRouting.LOGIN,
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: '',
     redirectTo: AppRouting.LOGIN,
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

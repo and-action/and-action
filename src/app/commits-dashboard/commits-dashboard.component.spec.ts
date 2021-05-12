@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CommitsDashboardComponent } from './commits-dashboard.component';
 import { ApolloTestingModule } from 'apollo-angular/testing';
@@ -11,13 +11,15 @@ describe('CommitsDashboardComponent', () => {
   let component: CommitsDashboardComponent;
   let fixture: ComponentFixture<CommitsDashboardComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ApolloTestingModule, HttpClientTestingModule],
-      declarations: [CommitsDashboardComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [ApolloTestingModule, HttpClientTestingModule],
+        declarations: [CommitsDashboardComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     const andActionDataService = TestBed.inject(AndActionDataService);
