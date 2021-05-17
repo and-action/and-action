@@ -26,10 +26,7 @@
           class="repository__commit"
           *ngFor="let repositoryCommit of repository.commits"
         >
-          <div
-            class="repository__commit-content"
-            [ngStyle]="getCommitStyle(repositoryCommit)"
-          >
+          <div class="repository__commit-content">
             <div class="repository__commit-message u-margin-bottom-xs">
               <a
                 [href]="repositoryCommit.commitUrl"
@@ -57,9 +54,8 @@
             <div class="u-margin-bottom-xs">
               <span
                 *ngFor="let deployment of repositoryCommit.deployments"
-                class="repository__deployment u-tag u-tag--color-{{
-                  getColorIndexForEnvironment(deployment.environment)
-                }}"
+                class="repository__deployment"
+                [ngClass]="getDeploymentTagCssClasses(deployment)"
                 >{{ deployment.environment }}</span
               >
             </div>
