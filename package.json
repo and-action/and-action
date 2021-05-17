@@ -15,8 +15,8 @@
     "lint": "ng lint",
     "htmllint": "htmllint 'src/**/*.html'",
     "netlify": "netlify",
-    "prettier": "prettier --write \"./src/**/*.{html,ts,js,json}\" \"./*.{html,ts,js,json,htmllintrc}\"",
-    "prettier-check": "prettier --check \"./src/**/*.{html,ts,js,json}\" \"./*.{html,ts,js,json,htmllintrc}\"",
+    "prettier": "prettier --write \"./src/**/*.{html,ts,js,json,scss}\" \"./*.{html,ts,js,json,scss,htmllintrc}\"",
+    "prettier-check": "prettier --check \"./src/**/*.{html,ts,js,json,scss}\" \"./*.{html,ts,js,json,scss,htmllintrc}\"",
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "devDependencies": {

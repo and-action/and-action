@@ -1,7 +1,8 @@
-@import "colors";
-@import "variables";
+@import 'colors';
+@import 'variables';
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -91,7 +92,8 @@ p {
       background-color: $primary-color-active;
     }
     // .is-disabled is needed for a-tags
-    &:disabled,&.is-disabled {
+    &:disabled,
+    &.is-disabled {
       color: $color-disabled;
       background-color: $background-color-disabled;
       cursor: not-allowed;
@@ -114,7 +116,8 @@ p {
       color: $primary-color-active;
     }
     // .is-disabled is needed for a-tags
-    &:disabled,&.is-disabled {
+    &:disabled,
+    &.is-disabled {
       color: $color-disabled;
       cursor: not-allowed;
     }
@@ -134,12 +137,24 @@ p {
 }
 
 .u-margin-bottom {
-  &-xs { margin-bottom: $space-xs; }
-  &-s  { margin-bottom: $space-s; }
-  &-m  { margin-bottom: $space-m; }
-  &-l  { margin-bottom: $space-l; }
-  &-xl { margin-bottom: $space-xl; }
-  &-xxl { margin-bottom: $space-xxl; }
+  &-xs {
+    margin-bottom: $space-xs;
+  }
+  &-s {
+    margin-bottom: $space-s;
+  }
+  &-m {
+    margin-bottom: $space-m;
+  }
+  &-l {
+    margin-bottom: $space-l;
+  }
+  &-xl {
+    margin-bottom: $space-xl;
+  }
+  &-xxl {
+    margin-bottom: $space-xxl;
+  }
 }
 
 .u-text-placeholder {
@@ -161,26 +176,29 @@ p {
   padding: 2px 6px;
 
   &--queued {
-    background-color: #FFD600;
+    background-color: #ffd600;
   }
 
   &--in_progress {
-    background-color: #CCAB00;
+    background-color: #ccab00;
   }
 
   &--action_required {
-    background-color: #0091EA;
+    background-color: #0091ea;
   }
 
   &--success {
-    background-color: #00C853;
+    background-color: #00c853;
   }
 
-  &--failure, &--cancelled, &--timed_out {
-    background-color: #D50000;
+  &--failure,
+  &--cancelled,
+  &--timed_out {
+    background-color: #d50000;
   }
 
-  &--neutral, &--none {
+  &--neutral,
+  &--none {
     background-color: #757575;
   }
 
@@ -206,8 +224,7 @@ p {
 }
 
 .form-error {
-  color: #D50000;
-
+  color: #d50000;
 }
 
 .u-flex-center {
