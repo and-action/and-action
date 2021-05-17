@@ -1,5 +1,5 @@
-@import "../../colors";
-@import "../../variables";
+@import '../../colors';
+@import '../../variables';
 
 :host {
   display: flex;
@@ -15,7 +15,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 0px 23px -6px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 23px -6px rgba(0, 0, 0, 0.1);
 }
 
 .login-button {
