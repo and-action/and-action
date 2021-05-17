@@ -232,30 +232,28 @@ export class GithubDataService {
       .valueChanges.pipe(
         map((queryResult) => {
           const commits =
-            queryResult.data.repository.defaultBranchRef.target.history.edges
-              .map(
-                ({ node }): Commit => ({
-                  oid: node.oid,
-                  abbreviatedOid: node.abbreviatedOid,
-                  author: {
-                    name: node.author.name,
-                    login: node.author.user.login,
-                  },
-                  commitUrl: node.commitUrl,
-                  message: node.message,
-                  isMergeCommit: node.parents.edges.length > 1,
-                  deployments: node.deployments.edges.map(
-                    ({ node: deployment }): Deployment => ({
-                      id: deployment.id,
-                      creator: deployment.creator.login,
-                      environment: deployment.environment,
-                      timestamp: new Date(deployment.createdAt),
-                      isLatestDeploymentForEnvironment: false,
-                    })
-                  ),
-                })
-              )
-              .filter((commit) => commit.isMergeCommit);
+            queryResult.data.repository.defaultBranchRef.target.history.edges.map(
+              ({ node }): Commit => ({
+                oid: node.oid,
+                abbreviatedOid: node.abbreviatedOid,
+                author: {
+                  name: node.author.name,
+                  login: node.author.user.login,
+                },
+                commitUrl: node.commitUrl,
+                message: node.message,
+                isMergeCommit: node.parents.edges.length > 1,
+                deployments: node.deployments.edges.map(
+                  ({ node: deployment }): Deployment => ({
+                    id: deployment.id,
+                    creator: deployment.creator.login,
+                    environment: deployment.environment,
+                    timestamp: new Date(deployment.createdAt),
+                    isLatestDeploymentForEnvironment: false,
+                  })
+                ),
+              })
+            );
 
           const latestDeployments = commits.reduce((result, current) => {
             current.deployments.forEach((deployment) => {
