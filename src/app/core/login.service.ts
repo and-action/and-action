@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
-const loginApiUrl = 'https://andaction-login-api.herokuapp.com';
+const loginApiUrl = 'http://localhost:3000';
+// const loginApiUrl = 'https://andaction-login-api.herokuapp.com';
+
+const accessTokenApiKey = 'gh_access_token';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +17,15 @@ export class LoginService {
 
   private myAccessToken?: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.myAccessToken = localStorage.getItem(accessTokenApiKey);
+  }
 
-  login() {
+  login(isForce = false) {
+    if (isForce) {
+      this.myAccessToken = undefined;
+      localStorage.removeItem(accessTokenApiKey);
+    }
     window.location.href = `${loginApiUrl}/login`;
   }
 
@@ -25,6 +34,11 @@ export class LoginService {
       .post(`${loginApiUrl}/access_token`, {
         code,
       })
-      .pipe(tap((data: any) => (this.myAccessToken = data.access_token)));
+      .pipe(
+        tap((data: any) => {
+          this.myAccessToken = data.access_token;
+          localStorage.setItem(accessTokenApiKey, data.access_token);
+        })
+      );
   }
 }

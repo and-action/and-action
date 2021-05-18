@@ -20,6 +20,7 @@ import { ActionsDashboardItemComponent } from './actions-dashboard-item/actions-
 import { SentryErrorHandler } from './sentry-error-handler';
 import { CommitsDashboardComponent } from './commits-dashboard/commits-dashboard.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { HttpUnauthorizedInterceptor } from './http-unauthorized-interceptor';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,11 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
   ],
   providers: [
     { provide: ErrorHandler, useClass: SentryErrorHandler },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpUnauthorizedInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpGithubAuthorizationInterceptor,
