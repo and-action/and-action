@@ -4,22 +4,25 @@ import { AppRouting } from './app-routing';
 import { ActionsDashboardComponent } from './actions-dashboard/actions-dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { ActionsDashboardConfigComponent } from './actions-dashboard-config/actions-dashboard-config.component';
-import { ActionsDashboardGuard } from './actions-dashboard/actions-dashboard.guard';
+import { RepositoryConfigGuard } from './repository-config.guard';
 import { CommitsDashboardComponent } from './commits-dashboard/commits-dashboard.component';
+import { LoginGuard } from './login.guard';
 
 const routes: Routes = [
   {
     path: AppRouting.DASHBOARD,
     component: ActionsDashboardComponent,
-    canActivate: [ActionsDashboardGuard],
+    canActivate: [LoginGuard, RepositoryConfigGuard],
   },
   {
     path: AppRouting.DASHBOARD_CONFIG,
     component: ActionsDashboardConfigComponent,
+    canActivate: [LoginGuard],
   },
   {
     path: AppRouting.COMMITS,
     component: CommitsDashboardComponent,
+    canActivate: [LoginGuard, RepositoryConfigGuard],
   },
   {
     path: AppRouting.LOGIN,
@@ -27,13 +30,13 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: AppRouting.LOGIN,
+    redirectTo: `/${AppRouting.DASHBOARD}`,
     pathMatch: 'full',
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

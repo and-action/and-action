@@ -5,13 +5,13 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { AndActionDataService } from '../core/and-action-data.service';
-import { AppRouting } from '../app-routing';
+import { AndActionDataService } from './core/and-action-data.service';
+import { AppRouting } from './app-routing';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ActionsDashboardGuard implements CanActivate {
+export class RepositoryConfigGuard implements CanActivate {
   constructor(
     private router: Router,
     private andActionDataService: AndActionDataService

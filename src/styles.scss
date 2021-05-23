@@ -221,6 +221,10 @@ p {
   &--color-4 {
     background-color: $color-4;
   }
+
+  &--light {
+    opacity: 0.4;
+  }
 }
 
 .form-error {

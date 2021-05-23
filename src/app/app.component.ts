@@ -20,13 +20,15 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe((queryParams) => {
-      if (queryParams.code) {
-        this.loginService
-          .initAccessTokenFromCode(queryParams.code)
-          .subscribe(() => this.router.navigate(['/', AppRouting.DASHBOARD]));
-      }
-    });
+    const queryParams = this.getUrlParams(window.location.href);
+    if (queryParams.code) {
+      this.loginService
+        .initAccessTokenFromCode(queryParams.code)
+        .subscribe(
+          () =>
+            (window.location.href = `${window.location.protocol}//${window.location.host}/#/${AppRouting.DASHBOARD}`)
+        );
+    }
 
     if (environment.name === EnvironmentName.PRODUCTION) {
       this.initGoogleTagManager();
@@ -54,5 +56,22 @@ export class AppComponent implements OnInit {
     `;
 
     document.getElementsByTagName('head')[0].appendChild(gTagScript2);
+  }
+
+  private getUrlParams(url: string) {
+    const start = url.indexOf('?') + 1;
+    const end =
+      url.indexOf('#') !== -1 && url.indexOf('#') > start
+        ? url.indexOf('#')
+        : url.length;
+
+    const pairsArray =
+      url.indexOf('?') > -1 ? url.slice(start, end).split('&') : [];
+
+    return pairsArray.reduce((cum, pair) => {
+      const [key, val] = pair.split('=');
+      cum[key] = decodeURIComponent(val);
+      return cum;
+    }, {} as any);
   }
 }

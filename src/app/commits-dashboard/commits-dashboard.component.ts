@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { GithubDataService } from '../core/github-data.service';
 import { combineLatest, Observable } from 'rxjs';
-import { Commit, RepositoryWithCommits } from './commits-dashboard-models';
+import {
+  Commit,
+  Deployment,
+  RepositoryWithCommits,
+} from './commits-dashboard-models';
 import { map, mergeMap, tap } from 'rxjs/operators';
 
 // const COLORS = ['#00C853', '#FFD600', '#0091EA', '#AB435C', '#484853'];
@@ -51,38 +55,6 @@ export class CommitsDashboardComponent implements OnInit {
       );
   }
 
-  getCommitStyle(commit: Commit) {
-    const deployments = commit.deployments.filter(
-      (deployment) => deployment.isLatestDeploymentForEnvironment
-    );
-    if (deployments.length > 0) {
-      const colorsCount = deployments.length;
-
-      const colors = deployments.map(
-        (deployment) =>
-          LIGHT_COLORS[this.getColorIndexForEnvironment(deployment.environment)]
-      );
-
-      let gradientString = `linear-gradient(90deg, ${colors[0]} 0%`;
-
-      for (let i = 0; i < colors.length; ++i) {
-        const color = colors[i];
-        const percentage = (100 / colorsCount) * (i + 1);
-        gradientString += `, ${color} ${percentage - 1}%`;
-
-        if (i + 1 < colors.length) {
-          gradientString += `, ${colors[i + 1]} ${percentage + 1}%`;
-        }
-      }
-
-      gradientString += ')';
-      return {
-        background: gradientString,
-      };
-    }
-    return {};
-  }
-
   getColorIndexForEnvironment(environment: string) {
     return this.environmentColorIndexMapping[environment];
   }
@@ -96,6 +68,16 @@ export class CommitsDashboardComponent implements OnInit {
           `<span class="u-text-bold u-nowrap">${match[0]}</span>`
         )
       : commitMessage;
+  }
+
+  getDeploymentTagCssClasses(deployment: Deployment) {
+    return [
+      'u-tag',
+      `u-tag--color-${this.getColorIndexForEnvironment(
+        deployment.environment
+      )}`,
+      ...(deployment.isLatestDeploymentForEnvironment ? [] : ['u-tag--light']),
+    ];
   }
 
   private createDeploymentEnvironmentCssClassMapping(

@@ -45,6 +45,10 @@
         ],
         "@typescript-eslint/no-shadow": "error",
         "@typescript-eslint/quotes": "off",
+        "@typescript-eslint/no-unused-expressions": [
+          "error",
+          { "allowTernary": true }
+        ],
         "prefer-arrow/prefer-arrow-functions": "off",
         "arrow-parens": ["off", "always"],
         "import/order": "off",
