@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
-const loginApiUrl = 'http://localhost:3000';
-// const loginApiUrl = 'https://andaction-login-api.herokuapp.com';
+const loginApiUrl = 'https://andaction-login-api.herokuapp.com';
 
 const accessTokenApiKey = 'gh_access_token';
 
