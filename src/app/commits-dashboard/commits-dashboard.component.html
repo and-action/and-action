@@ -32,8 +32,13 @@
                 [href]="repositoryCommit.commitUrl"
                 target="_blank"
                 rel="noopener"
-                [innerHTML]="getCommitMessage(repositoryCommit.message)"
               >
+                <div
+                  [innerHTML]="getCommitMessage(repositoryCommit.message)"
+                ></div>
+                <span class="repository__commit-hash"
+                  >{{ repositoryCommit.abbreviatedOid }}
+                </span>
               </a>
             </div>
 
