@@ -235,3 +235,12 @@ p {
   display: flex;
   align-items: center;
 }
+
+.tooltip {
+  font-size: $font-size-s;
+  background-color: $background-color-dark;
+  color: $white;
+  padding: $space-xxs $space-xs;
+  border-radius: $default-border-radius;
+  opacity: 0.9;
+}
