@@ -61,6 +61,7 @@
                 *ngFor="let deployment of repositoryCommit.deployments"
                 class="repository__deployment"
                 [ngClass]="getDeploymentTagCssClasses(deployment)"
+                [anaTooltip]="getTooltipContent(deployment)"
                 >{{ deployment.environment }}</span
               >
             </div>

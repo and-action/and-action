@@ -7,6 +7,7 @@ import {
   RepositoryWithCommits,
 } from './commits-dashboard-models';
 import { map, mergeMap, tap } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 // const COLORS = ['#00C853', '#FFD600', '#0091EA', '#AB435C', '#484853'];
 
@@ -78,6 +79,13 @@ export class CommitsDashboardComponent implements OnInit {
       )}`,
       ...(deployment.isLatestDeploymentForEnvironment ? [] : ['u-tag--light']),
     ];
+  }
+
+  getTooltipContent(deployment: Deployment) {
+    const datePipe = new DatePipe('en-US');
+    return `${datePipe.transform(deployment.timestamp, 'short')}
+    ${deployment.creator.login} (${deployment.creator.name})
+    ${deployment.state}`;
   }
 
   private createDeploymentEnvironmentCssClassMapping(

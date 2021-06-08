@@ -131,8 +131,12 @@ const repositoryCommitsQuery = gql`
                         environment
                         createdAt
                         creator {
-                          login
+                          ... on User {
+                            login
+                            name
+                          }
                         }
+                        state
                       }
                     }
                   }
@@ -246,8 +250,12 @@ export class GithubDataService {
                 deployments: node.deployments.edges.map(
                   ({ node: deployment }): Deployment => ({
                     id: deployment.id,
-                    creator: deployment.creator.login,
+                    creator: {
+                      login: deployment.creator.login,
+                      name: deployment.creator.name,
+                    },
                     environment: deployment.environment,
+                    state: deployment.state,
                     timestamp: new Date(deployment.createdAt),
                     isLatestDeploymentForEnvironment: false,
                   })
