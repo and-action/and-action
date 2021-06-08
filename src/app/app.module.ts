@@ -21,6 +21,7 @@ import { SentryErrorHandler } from './sentry-error-handler';
 import { CommitsDashboardComponent } from './commits-dashboard/commits-dashboard.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { HttpUnauthorizedInterceptor } from './http-unauthorized-interceptor';
+import { TooltipDirective } from './tooltip.directive';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { HttpUnauthorizedInterceptor } from './http-unauthorized-interceptor';
     LoginComponent,
     CommitsDashboardComponent,
     ToolbarComponent,
+    TooltipDirective,
   ],
   imports: [
     BrowserModule,

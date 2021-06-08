@@ -115,6 +115,7 @@ const repositoryCommitsQuery = gql`
                     }
                   }
                   commitUrl
+                  committedDate
                   oid
                   abbreviatedOid
                   message
@@ -131,8 +132,12 @@ const repositoryCommitsQuery = gql`
                         environment
                         createdAt
                         creator {
-                          login
+                          ... on User {
+                            login
+                            name
+                          }
                         }
+                        state
                       }
                     }
                   }
@@ -241,13 +246,18 @@ export class GithubDataService {
                   login: node.author.user.login,
                 },
                 commitUrl: node.commitUrl,
+                committedDate: node.committedDate,
                 message: node.message,
                 isMergeCommit: node.parents.edges.length > 1,
                 deployments: node.deployments.edges.map(
                   ({ node: deployment }): Deployment => ({
                     id: deployment.id,
-                    creator: deployment.creator.login,
+                    creator: {
+                      login: deployment.creator.login,
+                      name: deployment.creator.name,
+                    },
                     environment: deployment.environment,
+                    state: deployment.state,
                     timestamp: new Date(deployment.createdAt),
                     isLatestDeploymentForEnvironment: false,
                   })

@@ -32,10 +32,19 @@
                 [href]="repositoryCommit.commitUrl"
                 target="_blank"
                 rel="noopener"
-                [innerHTML]="getCommitMessage(repositoryCommit.message)"
               >
+                <div
+                  [innerHTML]="getCommitMessage(repositoryCommit.message)"
+                ></div>
+                <span class="repository__commit-hash"
+                  >{{ repositoryCommit.abbreviatedOid }}
+                </span>
               </a>
             </div>
+
+            <p class="repository__commit-hash u-margin-bottom-xs">
+              {{ repositoryCommit.committedDate | date: 'short' }}
+            </p>
 
             <div class="repository__commit-author u-margin-bottom-xs">
               <a
@@ -47,7 +56,9 @@
                 target="_blank"
                 rel="noopener"
               >
-                {{ repositoryCommit.author.name }}
+                {{ repositoryCommit.author.login }} ({{
+                  repositoryCommit.author.name
+                }})
               </a>
             </div>
 
@@ -56,6 +67,7 @@
                 *ngFor="let deployment of repositoryCommit.deployments"
                 class="repository__deployment"
                 [ngClass]="getDeploymentTagCssClasses(deployment)"
+                [anaTooltip]="getTooltipContent(deployment)"
                 >{{ deployment.environment }}</span
               >
             </div>
