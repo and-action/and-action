@@ -12,6 +12,7 @@ export interface Commit {
   oid: string;
   abbreviatedOid: string;
   commitUrl: string;
+  committedDate: Date;
   message: string;
   author: { name: string; login: string };
   isMergeCommit: boolean;

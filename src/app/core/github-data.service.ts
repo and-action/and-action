@@ -115,6 +115,7 @@ const repositoryCommitsQuery = gql`
                     }
                   }
                   commitUrl
+                  committedDate
                   oid
                   abbreviatedOid
                   message
@@ -245,6 +246,7 @@ export class GithubDataService {
                   login: node.author.user.login,
                 },
                 commitUrl: node.commitUrl,
+                committedDate: node.committedDate,
                 message: node.message,
                 isMergeCommit: node.parents.edges.length > 1,
                 deployments: node.deployments.edges.map(

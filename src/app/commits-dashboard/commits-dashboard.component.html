@@ -42,6 +42,10 @@
               </a>
             </div>
 
+            <p class="repository__commit-hash u-margin-bottom-xs">
+              {{ repositoryCommit.committedDate | date: 'short' }}
+            </p>
+
             <div class="repository__commit-author u-margin-bottom-xs">
               <a
                 [href]="
