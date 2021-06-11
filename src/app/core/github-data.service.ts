@@ -269,8 +269,7 @@ export class GithubDataService {
             current.deployments.forEach((deployment) => {
               if (
                 !result[deployment.environment] ||
-                result[deployment.environment] <
-                  current.deployments[deployment.environment]
+                result[deployment.environment].timestamp < deployment.timestamp
               ) {
                 result[deployment.environment] = deployment;
               }
