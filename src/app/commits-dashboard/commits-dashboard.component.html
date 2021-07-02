@@ -43,10 +43,7 @@
             </div>
 
             <p class="repository__commit-hash u-margin-bottom-xs">
-              {{ repositoryCommit.committedDate | date: 'short' }}
-            </p>
-
-            <div class="repository__commit-author u-margin-bottom-xs">
+              {{ repositoryCommit.committedDate | date: 'short' }} &bullet; 
               <a
                 [href]="
                   repository.url +
@@ -54,13 +51,12 @@
                   repositoryCommit.author.login
                 "
                 target="_blank"
+                title="{{ repositoryCommit.author.name }}"
                 rel="noopener"
               >
-                {{ repositoryCommit.author.login }} ({{
-                  repositoryCommit.author.name
-                }})
+                {{ repositoryCommit.author.login }}
               </a>
-            </div>
+            </p>
 
             <div class="u-margin-bottom-xs">
               <span
