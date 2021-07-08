@@ -242,8 +242,8 @@ export class GithubDataService {
                 oid: node.oid,
                 abbreviatedOid: node.abbreviatedOid,
                 author: {
-                  name: node.author.name,
-                  login: node.author.user.login,
+                  name: node.author?.name,
+                  login: node.author?.user?.login,
                 },
                 commitUrl: node.commitUrl,
                 committedDate: node.committedDate,

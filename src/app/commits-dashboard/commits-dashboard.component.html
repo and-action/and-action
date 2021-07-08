@@ -43,11 +43,9 @@
             </div>
 
             <p class="repository__commit-hash u-margin-bottom-xs">
-              {{ repositoryCommit.committedDate | date: 'short' }}
-            </p>
-
-            <div class="repository__commit-author u-margin-bottom-xs">
+              {{ repositoryCommit.committedDate | date: 'short' }} |
               <a
+                *ngIf="repositoryCommit.author.login; else userPlaceholder"
                 [href]="
                   repository.url +
                   '/commits?author=' +
@@ -55,12 +53,14 @@
                 "
                 target="_blank"
                 rel="noopener"
+                [anaTooltip]="repositoryCommit.author.name"
               >
-                {{ repositoryCommit.author.login }} ({{
-                  repositoryCommit.author.name
-                }})
+                {{ repositoryCommit.author.login }}
               </a>
-            </div>
+              <ng-template #userPlaceholder>
+                <span class="u-text-placeholder">Kein Benutzer</span>
+              </ng-template>
+            </p>
 
             <div class="u-margin-bottom-xs">
               <span
