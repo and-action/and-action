@@ -241,6 +241,7 @@ export class GithubDataService {
           name,
         },
         errorPolicy: 'ignore',
+        pollInterval: 60000,
       })
       .valueChanges.pipe(
         map((queryResult) => {
