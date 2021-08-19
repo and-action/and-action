@@ -45,7 +45,11 @@ const repositoriesQuery = gql`
       login
       avatarUrl
       url
-      repositories(first: 100, orderBy: { direction: ASC, field: NAME }) {
+      repositories(
+        first: 100
+        orderBy: { direction: ASC, field: NAME }
+        affiliations: OWNER
+      ) {
         nodes {
           name
           owner {
@@ -69,7 +73,11 @@ const repositoriesQuery = gql`
           login
           avatarUrl
           url
-          repositories(first: 100, orderBy: { direction: ASC, field: NAME }) {
+          repositories(
+            first: 100
+            orderBy: { direction: ASC, field: NAME }
+            affiliations: OWNER
+          ) {
             nodes {
               name
               owner {
