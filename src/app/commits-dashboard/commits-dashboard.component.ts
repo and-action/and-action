@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GithubDataService } from '../core/github-data.service';
 import { combineLatest, Observable } from 'rxjs';
-import {
-  Commit,
-  Deployment,
-  RepositoryWithCommits,
-} from './commits-dashboard-models';
-import { map, mergeMap, tap } from 'rxjs/operators';
-import { DatePipe } from '@angular/common';
+import { RepositoryWithCommits } from './commits-dashboard-models';
+import { map, mergeMap } from 'rxjs/operators';
 
 // const COLORS = ['#00C853', '#FFD600', '#0091EA', '#AB435C', '#484853'];
 
@@ -27,10 +22,6 @@ const LIGHT_COLORS = [
 export class CommitsDashboardComponent implements OnInit {
   repositories$?: Observable<RepositoryWithCommits[]>;
 
-  private environmentColorIndexMapping: {
-    [environment: string]: number;
-  } = {};
-
   constructor(private githubDataService: GithubDataService) {}
 
   ngOnInit(): void {
@@ -49,59 +40,7 @@ export class CommitsDashboardComponent implements OnInit {
               )
             )
           )
-        ),
-        tap((repositories) =>
-          this.createDeploymentEnvironmentCssClassMapping(repositories)
         )
       );
-  }
-
-  getColorIndexForEnvironment(environment: string) {
-    return this.environmentColorIndexMapping[environment];
-  }
-
-  getCommitMessage(commitMessage: string) {
-    // Show moneymeets Ticket IDs with bold text.
-    const match = /MD-[0-9]{4}/.exec(commitMessage);
-    return match
-      ? commitMessage.replace(
-          match[0],
-          `<span class="u-text-bold u-nowrap">${match[0]}</span>`
-        )
-      : commitMessage;
-  }
-
-  getDeploymentTagCssClasses(deployment: Deployment) {
-    return [
-      'u-tag',
-      `u-tag--color-${this.getColorIndexForEnvironment(
-        deployment.environment
-      )}`,
-      ...(deployment.isLatestDeploymentForEnvironment ? [] : ['u-tag--light']),
-    ];
-  }
-
-  getTooltipContent(deployment: Deployment) {
-    const datePipe = new DatePipe('en-US');
-    return `${datePipe.transform(deployment.timestamp, 'short')}
-    ${deployment.creator.login} (${deployment.creator.name})
-    ${deployment.state}`;
-  }
-
-  private createDeploymentEnvironmentCssClassMapping(
-    repositories: RepositoryWithCommits[]
-  ) {
-    const environments = repositories.flatMap((repository) =>
-      repository.commits.flatMap((commit) =>
-        commit.deployments.flatMap((deployment) => deployment.environment)
-      )
-    );
-
-    const set = new Set(environments);
-    let index = 0;
-    set.forEach((environment) => {
-      this.environmentColorIndexMapping[environment] = index;
-      index += 1;
-    });
   }
 }
