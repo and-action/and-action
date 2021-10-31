@@ -137,6 +137,9 @@ p {
 }
 
 .u-margin-bottom {
+  &-xxs {
+    margin-bottom: $space-xxs;
+  }
   &-xs {
     margin-bottom: $space-xs;
   }
@@ -174,6 +177,11 @@ p {
   color: $white;
   border-radius: 2px;
   padding: 2px 6px;
+
+  &--small {
+    font-size: $font-size-xs;
+    padding: 1px 4px;
+  }
 
   &--queued {
     background-color: #ffd600;
@@ -229,6 +237,10 @@ p {
 
 .form-error {
   color: #d50000;
+}
+
+.u-flex {
+  display: flex;
 }
 
 .u-flex-center {
