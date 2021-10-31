@@ -40,6 +40,9 @@
     "@primer/octicons": "^15.0.1",
     "@sentry/browser": "^6.11.0",
     "@sentry/node": "^6.11.0",
+    "@types/d3": "^7.0.0",
+    "@types/d3-path": "^3.0.0",
+    "@types/d3-selection": "^3.0.1",
     "@types/jasmine": "~3.8.2",
     "@types/jasminewd2": "2.0.10",
     "@types/mocha": "9.0.0",
@@ -76,5 +79,9 @@
   "browserslist": [
     "defaults",
     "not IE 11"
-  ]
+  ],
+  "dependencies": {
+    "d3-path": "^3.0.1",
+    "d3-selection": "^3.0.0"
+  }
 }
