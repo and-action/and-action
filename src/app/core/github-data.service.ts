@@ -258,6 +258,9 @@ export class GithubDataService {
                 committedDate: node.committedDate,
                 message: node.message,
                 isMergeCommit: node.parents.edges.length > 1,
+                parents: node.parents.edges.map(
+                  ({ node: parentNode }) => parentNode.oid
+                ),
                 deployments: node.deployments.edges.map(
                   ({ node: deployment }): Deployment => ({
                     id: deployment.id,
