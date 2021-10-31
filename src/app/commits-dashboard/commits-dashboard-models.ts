@@ -15,8 +15,13 @@ export interface Commit {
   committedDate: Date;
   message: string;
   author: { name: string; login: string };
+  parents: string[];
   isMergeCommit: boolean;
   deployments: Deployment[];
+}
+
+export interface CommitWithIndentationLevel extends Commit {
+  indentationLevel: number;
 }
 
 export interface Deployment {
