@@ -1,0 +1,39 @@
+@import '../../colors';
+@import '../../variables';
+
+.repository {
+  &__commit {
+    height: 80px;
+    width: 320px;
+    font-size: $font-size-xs;
+    display: flex;
+    align-items: center;
+  }
+
+  &__commit-content {
+  }
+
+  &__commit-message {
+    word-break: break-all;
+  }
+
+  &__commit-hash {
+    font-size: $font-size-xs;
+  }
+
+  &__commit-date {
+    font-size: $font-size-xs;
+  }
+
+  &__commit-author {
+    font-size: $font-size-xs;
+  }
+
+  &__deployment {
+    display: inline-block;
+
+    &:not(:last-child) {
+      margin-right: $space-xs;
+    }
+  }
+}

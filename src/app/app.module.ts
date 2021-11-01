@@ -22,6 +22,8 @@ import { CommitsDashboardComponent } from './commits-dashboard/commits-dashboard
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { HttpUnauthorizedInterceptor } from './http-unauthorized-interceptor';
 import { TooltipDirective } from './tooltip.directive';
+import { CommitsGraphComponent } from './commits-graph/commits-graph.component';
+import { CommitsListComponent } from './commits-list/commits-list.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { TooltipDirective } from './tooltip.directive';
     CommitsDashboardComponent,
     ToolbarComponent,
     TooltipDirective,
+    CommitsGraphComponent,
+    CommitsListComponent,
   ],
   imports: [
     BrowserModule,
