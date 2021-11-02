@@ -133,6 +133,10 @@ const repositoryCommitsQuery = gql`
                       login
                     }
                   }
+                  committer {
+                    name
+                    email
+                  }
                   deployments(first: 10) {
                     edges {
                       node {
@@ -253,6 +257,10 @@ export class GithubDataService {
                 author: {
                   name: node.author?.name,
                   login: node.author?.user?.login,
+                },
+                committer: {
+                  name: node.committer?.name,
+                  email: node.committer?.email,
                 },
                 commitUrl: node.commitUrl,
                 committedDate: node.committedDate,
