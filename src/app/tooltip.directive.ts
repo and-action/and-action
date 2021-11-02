@@ -12,8 +12,8 @@ import { DOCUMENT } from '@angular/common';
   selector: '[anaTooltip]',
 })
 export class TooltipDirective {
-  @Input() anaTooltip: string;
-  private tooltipContainer: HTMLElement;
+  @Input() anaTooltip: string | null;
+  private tooltipContainer?: HTMLElement;
 
   constructor(
     private elementRef: ElementRef,
@@ -30,13 +30,15 @@ export class TooltipDirective {
   }
 
   private showTooltip() {
+    if (!this.anaTooltip) {
+      return;
+    }
     this.tooltipContainer = this.renderer.createElement('div');
     this.anaTooltip
       .split('\n')
       .map((line) => {
-        const text = this.renderer.createText(line);
         const paragraph = this.renderer.createElement('p');
-        this.renderer.appendChild(paragraph, text);
+        this.renderer.setProperty(paragraph, 'innerHTML', line);
         return paragraph;
       })
       .forEach((text) =>
@@ -58,6 +60,8 @@ export class TooltipDirective {
   }
 
   private hideTooltip() {
-    this.renderer.removeChild(this.document.body, this.tooltipContainer);
+    if (this.tooltipContainer) {
+      this.renderer.removeChild(this.document.body, this.tooltipContainer);
+    }
   }
 }
