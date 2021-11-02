@@ -5,6 +5,8 @@ import {
 } from '../commits-dashboard/commits-dashboard-models';
 import { DatePipe } from '@angular/common';
 
+const maxCommitMessageLength = 100;
+
 @Component({
   selector: 'ana-commits-list',
   templateUrl: './commits-list.component.html',
@@ -29,23 +31,22 @@ export class CommitsListComponent {
   } = {};
 
   getCommitMessage(commitMessage: string) {
-    // Show moneymeets Ticket IDs with bold text.
-    const match = /MD-[0-9]{4}/.exec(commitMessage);
-    return match
-      ? commitMessage.replace(
-          match[0],
-          `<span class="u-text-bold u-nowrap">${match[0]}</span>`
-        )
-      : commitMessage;
+    return this.highlightTicketNumber(this.addLineBreaks(commitMessage));
   }
 
   getAbbreviatedCommitMessage(commitMessage: string) {
-    const maxCommitMessageLength = 100;
     if (commitMessage.length > maxCommitMessageLength) {
       commitMessage = `${commitMessage.substr(0, maxCommitMessageLength)}...`;
     }
     const message = this.getCommitMessage(commitMessage);
     return message.split('\n')[0];
+  }
+
+  getCommitMessageTooltip(commitMessage: string) {
+    return commitMessage.includes('\n') ||
+      commitMessage.length > maxCommitMessageLength
+      ? this.getCommitMessage(commitMessage)
+      : null;
   }
 
   getDeploymentTagCssClasses(deployment: Deployment) {
@@ -81,5 +82,19 @@ export class CommitsListComponent {
       this.environmentColorIndexMapping[environment] = index;
       index += 1;
     });
+  }
+
+  private highlightTicketNumber(commitMessage: string) {
+    const match = /MD-[0-9]{4}/.exec(commitMessage);
+    return match
+      ? commitMessage.replace(
+          match[0],
+          `<span class="u-text-bold u-nowrap">${match[0]}</span>`
+        )
+      : commitMessage;
+  }
+
+  private addLineBreaks(commitMessage: string) {
+    return commitMessage.replace(/\//g, '/<wbr>');
   }
 }
