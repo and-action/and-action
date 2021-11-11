@@ -9,11 +9,11 @@ const ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY = 'actions-dashboard-config';
 export class AndActionDataService {
   private myActionsDashboardConfig?: ActionsDashboardConfig;
 
+  constructor() {}
+
   get actionsDashboardConfig() {
     return this.myActionsDashboardConfig;
   }
-
-  constructor() {}
 
   saveActionsDashboardConfig(actionsDashboardConfig: ActionsDashboardConfig) {
     localStorage.setItem(

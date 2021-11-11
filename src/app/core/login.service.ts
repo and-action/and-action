@@ -10,14 +10,14 @@ const accessTokenApiKey = 'gh_access_token';
   providedIn: 'root',
 })
 export class LoginService {
-  get accessToken() {
-    return this.myAccessToken;
-  }
-
   private myAccessToken?: string;
 
   constructor(private http: HttpClient) {
     this.myAccessToken = localStorage.getItem(accessTokenApiKey);
+  }
+
+  get accessToken() {
+    return this.myAccessToken;
   }
 
   login(isForce = false) {

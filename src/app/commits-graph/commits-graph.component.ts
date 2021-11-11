@@ -20,15 +20,16 @@ import { CommitsGraphService } from './commits-graph.service';
 })
 export class CommitsGraphComponent implements AfterViewInit, OnDestroy {
   @ViewChild('graphContainer') private graphContainer: ElementRef;
+
+  private commits$ = new BehaviorSubject<Commit[] | undefined>(undefined);
+
+  constructor(private commitsGraphService: CommitsGraphService) {}
+
   // TODO: Check why subject is needed. I would prefer calling drawGraph immediately.
   @Input()
   set commits(commits: Commit[]) {
     this.commits$.next(commits);
   }
-
-  private commits$ = new BehaviorSubject<Commit[] | undefined>(undefined);
-
-  constructor(private commitsGraphService: CommitsGraphService) {}
 
   ngAfterViewInit() {
     this.commits$.subscribe((commits) => this.drawGraph(commits));
