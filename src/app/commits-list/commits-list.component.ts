@@ -13,15 +13,6 @@ const maxCommitMessageLength = 100;
   styleUrls: ['./commits-list.component.scss'],
 })
 export class CommitsListComponent {
-  @Input() set commits(commits: Commit[]) {
-    this.myCommits = commits;
-    this.createDeploymentEnvironmentCssClassMapping();
-  }
-
-  get commits() {
-    return this.myCommits;
-  }
-
   @Input() repositoryUrl: string;
 
   private myCommits: Commit[];
@@ -29,6 +20,15 @@ export class CommitsListComponent {
   private environmentColorIndexMapping: {
     [environment: string]: number;
   } = {};
+
+  get commits() {
+    return this.myCommits;
+  }
+
+  @Input() set commits(commits: Commit[]) {
+    this.myCommits = commits;
+    this.createDeploymentEnvironmentCssClassMapping();
+  }
 
   getCommitMessage(commitMessage: string) {
     return this.highlightTicketNumber(this.addLineBreaks(commitMessage));
