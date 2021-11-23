@@ -62,8 +62,11 @@ export class CommitsListComponent {
 
   getTooltipContent(deployment: Deployment) {
     const datePipe = new DatePipe('en-US');
+    const creatorName = deployment.creator.name
+      ? ` (${deployment.creator.name})`
+      : '';
     return `${datePipe.transform(deployment.timestamp, 'short')}
-    ${deployment.creator.login} (${deployment.creator.name})
+    ${deployment.creator.login}${creatorName}
     ${deployment.state}`;
   }
 
