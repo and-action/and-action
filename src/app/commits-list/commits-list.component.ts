@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import {
   Commit,
   Deployment,
+  deploymentStateOutputTextMapping,
 } from '../commits-dashboard/commits-dashboard-models';
 import { DatePipe } from '@angular/common';
 
@@ -67,7 +68,7 @@ export class CommitsListComponent {
       : '';
     return `${datePipe.transform(deployment.timestamp, 'short')}
     ${deployment.creator.login}${creatorName}
-    ${deployment.state}`;
+    ${deploymentStateOutputTextMapping[deployment.state]}`;
   }
 
   private getColorIndexForEnvironment(environment: string) {
