@@ -1,0 +1,44 @@
+<a
+  *ngIf="link; else nonLink"
+  class="tag"
+  [style.background-color]="color"
+  [href]="link"
+  target="_blank"
+  rel="noopener"
+>
+  <ng-template [ngTemplateOutlet]="tagContent"></ng-template>
+</a>
+
+<ng-template #nonLink>
+  <p class="tag" [style.background-color]="color">
+    <ng-template [ngTemplateOutlet]="tagContent"></ng-template>
+  </p>
+</ng-template>
+
+<ng-template #tagContent>
+  <span class="tag__name">{{ name }}</span>
+  <span *ngIf="status !== statusTagStatus.NONE" class="tag__status">
+    <svg [class]="'tag__status-icon tag__status-icon--' + status">
+      <use
+        *ngIf="status === statusTagStatus.SUCCESS"
+        xlink:href="#check-circle-fill"
+      ></use>
+      <use
+        *ngIf="status === statusTagStatus.ERROR"
+        xlink:href="#x-circle-fill"
+      ></use>
+      <use
+        *ngIf="status === statusTagStatus.IN_PROGRESS"
+        xlink:href="#loading-circle"
+      ></use>
+      <use
+        *ngIf="status === statusTagStatus.WAITING"
+        xlink:href="#dot-fill"
+      ></use>
+      <use
+        *ngIf="status === statusTagStatus.SKIPPED"
+        xlink:href="#skip-circle"
+      ></use>
+    </svg>
+  </span>
+</ng-template>

@@ -1,0 +1,65 @@
+@import '../../colors';
+@import '../../variables';
+
+$border-radius: 12px;
+
+:host {
+  display: block;
+}
+
+.tag {
+  font-size: $font-size-xs;
+  line-height: $line-height-xs;
+  color: $white;
+  display: flex;
+  align-items: stretch;
+  border-radius: $border-radius;
+
+  &__name {
+    display: block;
+    padding: 1px 6px 1px $space-xs;
+
+    &:last-child {
+      padding-right: $space-xs;
+    }
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    background-color: $default-background-color;
+    padding: 2px;
+    border-radius: $border-radius;
+  }
+
+  &__status-icon {
+    width: $space-s;
+    height: $space-s;
+
+    &--success {
+      fill: #2da44e;
+    }
+
+    &--error {
+      fill: #cf222e;
+    }
+
+    &--in-progress {
+      animation: rotate-keyframes 1s linear infinite;
+    }
+
+    &--waiting {
+      fill: #dbab0a;
+    }
+
+    &--skipped {
+      fill: #57606a;
+    }
+
+    @keyframes rotate-keyframes {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+}
