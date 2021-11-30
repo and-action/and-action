@@ -35,5 +35,9 @@
     &:not(:last-child) {
       margin-right: $space-xs;
     }
+
+    &--light {
+      opacity: 0.2;
+    }
   }
 }
