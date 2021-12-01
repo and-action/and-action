@@ -8,6 +8,6 @@ import { EnvironmentName } from './environment-name';
 
 export const environment: Environment = {
   name: EnvironmentName.DEV,
-  isEnableProdMode: false,
+  isEnableProdMode: true,
   sentryDsn: null,
 };

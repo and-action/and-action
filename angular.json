@@ -16,12 +16,13 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "polyfills": "src/polyfills.ts",
-            "optimization": false,
+            "optimization": true,
             "outputHashing": "all",
             "sourceMap": true,
-            "aot": false,
-            "buildOptimizer": false,
+            "aot": true,
+            "buildOptimizer": true,
             "assets": [
               "src/assets",
               "src/favicon.ico",
@@ -35,7 +36,12 @@
             "scripts": []
           },
           "configurations": {
-            "local": {},
+            "local": {
+              "optimization": false,
+              "buildOptimizer": false,
+              "vendorChunk": true,
+              "outputHashing": "none"
+            },
             "dev": {
               "fileReplacements": [
                 {
@@ -52,7 +58,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
