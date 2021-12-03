@@ -25,11 +25,37 @@ export interface CommitWithIndentationLevel extends Commit {
   indentationLevel: number;
 }
 
+export enum DeploymentState {
+  ABANDONED = 'ABANDONED',
+  ACTIVE = 'ACTIVE',
+  DESTROYED = 'DESTROYED',
+  ERROR = 'ERROR',
+  FAILURE = 'FAILURE',
+  INACTIVE = 'INACTIVE',
+  IN_PROGRESS = 'IN_PROGRESS',
+  PENDING = 'PENDING',
+  QUEUED = 'QUEUED',
+  WAITING = 'WAITING',
+}
+
+export const deploymentStateOutputTextMapping = {
+  [DeploymentState.ABANDONED]: 'Abandoned',
+  [DeploymentState.ACTIVE]: 'Active',
+  [DeploymentState.DESTROYED]: 'Destroyed',
+  [DeploymentState.ERROR]: 'Error',
+  [DeploymentState.FAILURE]: 'Failure',
+  [DeploymentState.INACTIVE]: 'Inactive',
+  [DeploymentState.IN_PROGRESS]: 'In progress',
+  [DeploymentState.PENDING]: 'Pending',
+  [DeploymentState.QUEUED]: 'Queued',
+  [DeploymentState.WAITING]: 'Waiting',
+};
+
 export interface Deployment {
   id: string;
   environment: string;
   timestamp: Date;
   creator: { name: string; login: string };
-  state: string;
+  state: DeploymentState;
   isLatestDeploymentForEnvironment: boolean;
 }

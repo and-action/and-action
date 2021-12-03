@@ -38,13 +38,17 @@
       </p>
 
       <div>
-        <span
+        <ana-status-tag
           *ngFor="let deployment of commit.deployments"
+          [name]="deployment.environment"
+          [status]="getDeploymentStatusForStatusTag(deployment)"
+          [color]="getDeploymentStatusTagColor(deployment)"
           class="repository__deployment"
-          [ngClass]="getDeploymentTagCssClasses(deployment)"
+          [class.repository__deployment--light]="
+            !deployment.isLatestDeploymentForEnvironment
+          "
           [anaTooltip]="getTooltipContent(deployment)"
-          >{{ deployment.environment }}</span
-        >
+        ></ana-status-tag>
       </div>
     </div>
   </li>

@@ -5,4 +5,5 @@ export enum WorkflowRunConclusion {
   CANCELLED = 'cancelled',
   TIMED_OUT = 'timed_out',
   ACTION_REQUIRED = 'action_required',
+  SKIPPED = 'skipped',
 }

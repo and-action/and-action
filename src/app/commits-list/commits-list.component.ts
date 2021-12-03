@@ -2,8 +2,12 @@ import { Component, Input } from '@angular/core';
 import {
   Commit,
   Deployment,
+  DeploymentState,
+  deploymentStateOutputTextMapping,
 } from '../commits-dashboard/commits-dashboard-models';
 import { DatePipe } from '@angular/common';
+import { StatusTagStatus } from '../status-tag/status-tag-status';
+import { StatusTagColor } from '../status-tag/status-tag-color';
 
 const maxCommitMessageLength = 100;
 
@@ -17,8 +21,8 @@ export class CommitsListComponent {
 
   private myCommits: Commit[];
 
-  private environmentColorIndexMapping: {
-    [environment: string]: number;
+  private environmentColorMapping: {
+    [environment: string]: StatusTagColor;
   } = {};
 
   get commits() {
@@ -49,26 +53,33 @@ export class CommitsListComponent {
       : null;
   }
 
-  getDeploymentTagCssClasses(deployment: Deployment) {
-    return [
-      'u-tag',
-      'u-tag--small',
-      `u-tag--color-${this.getColorIndexForEnvironment(
-        deployment.environment
-      )}`,
-      ...(deployment.isLatestDeploymentForEnvironment ? [] : ['u-tag--light']),
-    ];
+  getDeploymentStatusForStatusTag(deployment: Deployment) {
+    return {
+      [DeploymentState.ABANDONED]: StatusTagStatus.ERROR,
+      [DeploymentState.ACTIVE]: StatusTagStatus.SUCCESS,
+      [DeploymentState.DESTROYED]: StatusTagStatus.ERROR,
+      [DeploymentState.ERROR]: StatusTagStatus.ERROR,
+      [DeploymentState.FAILURE]: StatusTagStatus.ERROR,
+      [DeploymentState.INACTIVE]: StatusTagStatus.SUCCESS,
+      [DeploymentState.IN_PROGRESS]: StatusTagStatus.IN_PROGRESS,
+      [DeploymentState.PENDING]: StatusTagStatus.WAITING,
+      [DeploymentState.QUEUED]: StatusTagStatus.WAITING,
+      [DeploymentState.WAITING]: StatusTagStatus.WAITING,
+    }[deployment.state];
+  }
+
+  getDeploymentStatusTagColor(deployment: Deployment) {
+    return this.environmentColorMapping[deployment.environment];
   }
 
   getTooltipContent(deployment: Deployment) {
     const datePipe = new DatePipe('en-US');
+    const creatorName = deployment.creator.name
+      ? ` (${deployment.creator.name})`
+      : '';
     return `${datePipe.transform(deployment.timestamp, 'short')}
-    ${deployment.creator.login} (${deployment.creator.name})
-    ${deployment.state}`;
-  }
-
-  private getColorIndexForEnvironment(environment: string) {
-    return this.environmentColorIndexMapping[environment];
+    ${deployment.creator.login}${creatorName}
+    ${deploymentStateOutputTextMapping[deployment.state]}`;
   }
 
   private createDeploymentEnvironmentCssClassMapping() {
@@ -78,8 +89,16 @@ export class CommitsListComponent {
 
     const set = new Set(environments);
     let index = 0;
+    const colors = [
+      StatusTagColor.GREEN,
+      StatusTagColor.YELLOW,
+      StatusTagColor.BLUE,
+      StatusTagColor.RED,
+      StatusTagColor.GRAY,
+    ];
+
     set.forEach((environment) => {
-      this.environmentColorIndexMapping[environment] = index;
+      this.environmentColorMapping[environment] = colors[index % colors.length];
       index += 1;
     });
   }

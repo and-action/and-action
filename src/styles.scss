@@ -172,69 +172,6 @@ p {
   font-weight: bold;
 }
 
-.u-tag {
-  font-size: $font-size-s;
-  color: $white;
-  border-radius: 2px;
-  padding: 2px 6px;
-
-  &--small {
-    font-size: $font-size-xs;
-    padding: 1px 4px;
-  }
-
-  &--queued {
-    background-color: #ffd600;
-  }
-
-  &--in_progress {
-    background-color: #ccab00;
-  }
-
-  &--action_required {
-    background-color: #0091ea;
-  }
-
-  &--success {
-    background-color: #00c853;
-  }
-
-  &--failure,
-  &--cancelled,
-  &--timed_out {
-    background-color: #d50000;
-  }
-
-  &--neutral,
-  &--none {
-    background-color: #757575;
-  }
-
-  &--color-0 {
-    background-color: $color-0;
-  }
-
-  &--color-1 {
-    background-color: $color-1;
-  }
-
-  &--color-2 {
-    background-color: $color-2;
-  }
-
-  &--color-3 {
-    background-color: $color-3;
-  }
-
-  &--color-4 {
-    background-color: $color-4;
-  }
-
-  &--light {
-    opacity: 0.2;
-  }
-}
-
 .form-error {
   color: #d50000;
 }

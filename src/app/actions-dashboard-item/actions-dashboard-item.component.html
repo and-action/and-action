@@ -24,23 +24,14 @@
         "
         class="workflow-list__item"
       >
-        <a
-          *ngIf="
-            (workflowWithWorkflowRuns?.workflowRuns)[0]?.html_url;
-            else label
+        <ana-status-tag
+          [name]="workflowWithWorkflowRuns.workflow.name"
+          [link]="(workflowWithWorkflowRuns?.workflowRuns)[0]?.html_url"
+          [status]="
+            getStatusTagStatus(workflowWithWorkflowRuns.workflowRuns[0])
           "
-          [href]="workflowWithWorkflowRuns.workflowRuns[0].html_url"
-          target="_blank"
-          rel="noopener"
-          class="workflow-list__item-link"
-          [ngClass]="getTagClasses(workflowWithWorkflowRuns.workflowRuns[0])"
-          >{{ workflowWithWorkflowRuns.workflow.name }}</a
-        >
-        <ng-template #label
-          ><span class="u-tag u-tag--none">{{
-            workflowWithWorkflowRuns.workflow.name
-          }}</span></ng-template
-        >
+          [color]="getStatusTagColor(workflowWithWorkflowRuns.workflowRuns[0])"
+        ></ana-status-tag>
       </li>
     </ul>
   </ng-container>

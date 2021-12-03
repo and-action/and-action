@@ -24,6 +24,7 @@ import { HttpUnauthorizedInterceptor } from './http-unauthorized-interceptor';
 import { TooltipDirective } from './tooltip.directive';
 import { CommitsGraphComponent } from './commits-graph/commits-graph.component';
 import { CommitsListComponent } from './commits-list/commits-list.component';
+import { StatusTagComponent } from './status-tag/status-tag.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { CommitsListComponent } from './commits-list/commits-list.component';
     TooltipDirective,
     CommitsGraphComponent,
     CommitsListComponent,
+    StatusTagComponent,
   ],
   imports: [
     BrowserModule,
