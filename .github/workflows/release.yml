@@ -40,4 +40,4 @@ jobs:
         with:
           node-version: 14
       - run: npm install -g netlify-cli
-      - run: netlify deploy -d=app-bundle --prod -m="Deploy ${{ github.ref }}"
+      - run: netlify deploy -d app-bundle --prod -m "Deploy ${{ github.ref }}"
