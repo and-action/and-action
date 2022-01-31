@@ -1,4 +1,4 @@
-$default-background-color: #e5e5e5;
+$default-background-color: #eaeaea;
 $default-text-color: #333333;
 $default-text-color-hover: lighten($default-text-color, 20%);
 $default-text-color-active: darken($default-text-color, 20%);
@@ -16,6 +16,7 @@ $color-disabled: #ababab;
 $background-color-disabled: #d2d2d2;
 $background-color-dark: #333333;
 
+$default-input-background-color: darken($default-background-color, 6%);
 $color-0: #00c853;
 $color-1: #ffd600;
 $color-2: #0091ea;

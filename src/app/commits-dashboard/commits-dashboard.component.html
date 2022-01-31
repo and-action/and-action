@@ -1,8 +1,23 @@
 <ana-toolbar class="toolbar u-margin-bottom-xxl"></ana-toolbar>
 
+<form class="filter-form">
+  <div class="form-element">
+    <label class="form-element__label" for="repository-filter"
+      >Repository Filter</label
+    >
+    <input
+      class="form-element__input"
+      id="repository-filter"
+      name="repository-filter"
+      [(ngModel)]="filter"
+      autocomplete="off"
+    />
+  </div>
+</form>
+
 <div class="repositories">
   <ng-container *ngFor="let repository of repositories$ | async">
-    <div class="repository" *ngIf="repository">
+    <div class="repository" *ngIf="isShowRepository(repository)">
       <h3 class="repository__name">
         <a [href]="repository.url" target="_blank" rel="noopener">
           {{ repository.name }}

@@ -6,6 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
+import { FormsModule } from '@angular/forms';
 
 describe('CommitsDashboardComponent', () => {
   let component: CommitsDashboardComponent;
@@ -14,7 +15,7 @@ describe('CommitsDashboardComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [ApolloTestingModule, HttpClientTestingModule],
+        imports: [ApolloTestingModule, FormsModule, HttpClientTestingModule],
         declarations: [CommitsDashboardComponent],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();

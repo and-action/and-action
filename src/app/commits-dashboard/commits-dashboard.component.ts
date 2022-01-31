@@ -3,6 +3,7 @@ import { GithubDataService } from '../core/github-data.service';
 import { combineLatest, Observable } from 'rxjs';
 import { RepositoryWithCommits } from './commits-dashboard-models';
 import { map, mergeMap } from 'rxjs/operators';
+import { Repository } from '../core/repository';
 
 // const COLORS = ['#00C853', '#FFD600', '#0091EA', '#AB435C', '#484853'];
 
@@ -21,6 +22,8 @@ const LIGHT_COLORS = [
 })
 export class CommitsDashboardComponent implements OnInit {
   repositories$?: Observable<RepositoryWithCommits[]>;
+
+  filter?: string;
 
   constructor(private githubDataService: GithubDataService) {}
 
@@ -42,5 +45,11 @@ export class CommitsDashboardComponent implements OnInit {
           )
         )
       );
+  }
+
+  isShowRepository(repository: Repository) {
+    return (
+      repository && (!this.filter || repository.name.includes(this.filter))
+    );
   }
 }
