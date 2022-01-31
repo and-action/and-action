@@ -7,7 +7,7 @@ body {
   padding: 0;
   height: 100%;
   background-color: $default-background-color;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $default-font-family;
   font-size: $default-font-size;
   color: $default-text-color;
 }
@@ -192,4 +192,23 @@ p {
   padding: $space-xxs $space-xs;
   border-radius: $default-border-radius;
   opacity: 0.9;
+}
+
+.form-element {
+  &__label {
+    display: block;
+    font-size: $font-size-xs;
+    margin-bottom: $space-xxs;
+  }
+
+  &__input {
+    display: block;
+    font-family: $default-font-family;
+    font-size: $font-size-s;
+    color: $default-text-color;
+    background-color: $default-input-background-color;
+    padding: $space-xxs;
+    border: none;
+    border-radius: $default-border-radius;
+  }
 }
