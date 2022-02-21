@@ -7,6 +7,8 @@ import { ApolloTestingModule } from 'apollo-angular/testing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { GraphQLModule } from '../graphql.module';
+import { Apollo } from 'apollo-angular';
 
 describe('ActionsDashboardComponent', () => {
   let component: ActionsDashboardComponent;
@@ -17,10 +19,12 @@ describe('ActionsDashboardComponent', () => {
       TestBed.configureTestingModule({
         imports: [
           ApolloTestingModule,
+          GraphQLModule,
           HttpClientTestingModule,
           RouterTestingModule,
         ],
         declarations: [ActionsDashboardComponent],
+        providers: [Apollo],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
