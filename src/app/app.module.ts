@@ -25,6 +25,7 @@ import { TooltipDirective } from './tooltip.directive';
 import { CommitsGraphComponent } from './commits-graph/commits-graph.component';
 import { CommitsListComponent } from './commits-list/commits-list.component';
 import { StatusTagComponent } from './status-tag/status-tag.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { StatusTagComponent } from './status-tag/status-tag.component';
     CoreModule,
     AppRoutingModule,
     GraphQLModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: SentryErrorHandler },
