@@ -25,7 +25,7 @@ describe('LoginComponent', () => {
     const loginService = TestBed.inject(LoginService);
     const loginSpy = spyOn(loginService, 'login');
 
-    const loginButton = fixture.debugElement.query(By.css('.button'));
+    const loginButton = fixture.debugElement.query(By.css('button'));
     loginButton.nativeElement.click();
 
     expect(loginSpy).toHaveBeenCalled();

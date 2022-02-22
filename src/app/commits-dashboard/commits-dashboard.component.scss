@@ -3,46 +3,35 @@
 
 :host {
   display: block;
-  padding: $space-s 0;
-}
-
-.toolbar {
-  padding: 0 $space-s;
 }
 
 .filter-form {
-  padding: 0 $space-s $space-xl $space-s;
+  padding: $space-s;
 }
 
 .repositories {
   display: flex;
   align-items: flex-start;
   overflow-x: auto;
-  padding: 0 $space-s;
+  padding: $space-s;
 }
 
 .repository {
-  display: block;
   box-sizing: border-box;
   background-color: $white;
   padding: $space-m;
   border-radius: $default-border-radius;
-  box-shadow: 0px 0px 23px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
   flex: 1 1 10px;
 
   &:not(:last-child) {
     margin-right: $space-m;
   }
 
-  &__name {
-    font-size: $font-size-l;
-    margin-bottom: $space-s;
-  }
-
   &__branch-name {
     display: flex;
-    font-size: $font-size-s;
-    margin-bottom: $space-xl;
+    align-items: center;
+    margin-bottom: $space-l;
   }
 
   &__branch-icon {

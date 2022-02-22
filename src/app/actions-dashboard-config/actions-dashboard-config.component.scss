@@ -36,20 +36,24 @@
   border-bottom: 1px solid $default-border-color;
 
   &__label {
-    cursor: pointer;
-    margin-left: $space-m;
+    margin-left: $space-xs;
     display: flex;
+    align-items: center;
   }
 
   &__icon {
     width: $space-m;
     height: $space-m;
-    margin-right: $space-s;
+    margin-right: $space-xs;
+  }
+
+  &__name {
+    margin-bottom: 0;
   }
 
   &__fork-info {
-    margin-top: $space-xxs;
     font-size: $font-size-s;
     color: $secondary-text-color;
+    margin-bottom: 0;
   }
 }

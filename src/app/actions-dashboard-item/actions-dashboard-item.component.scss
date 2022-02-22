@@ -5,19 +5,19 @@
   display: block;
   box-sizing: border-box;
   background-color: $white;
-  padding: $space-m;
+  padding: $space-s;
   border-radius: $default-border-radius;
 }
 
 .title {
-  font-size: $font-size-l;
   text-wrap: normal;
-  margin-bottom: $space-s;
+  margin-bottom: $space-xs;
 }
 
 .branch-title {
-  display: flex;
-  font-size: $font-size-s;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: $space-xs;
 
   &__icon {
     fill: $default-text-color;

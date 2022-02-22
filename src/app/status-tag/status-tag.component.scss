@@ -9,11 +9,20 @@ $border-radius: 12px;
 
 .tag {
   font-size: $font-size-xs;
-  line-height: $line-height-xs;
   color: $white;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   border-radius: $border-radius;
+  margin: 0;
+  height: 20px;
+
+  &:hover {
+    color: $white;
+  }
+
+  &:active {
+    color: $white;
+  }
 
   &__name {
     display: block;

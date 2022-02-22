@@ -1,1 +1,26 @@
+<mat-toolbar class="toolbar mat-elevation-z3" color="primary">
+  <span class="toolbar__icon">🎬</span>
+  <span class="toolbar__title">And Action</span>
+  <a
+    mat-button
+    [routerLink]="['/', appRouting.DASHBOARD]"
+    routerLinkActive="toolbar__button--active"
+    >Actions</a
+  >
+  <a
+    mat-button
+    [routerLink]="['/', appRouting.COMMITS]"
+    routerLinkActive="toolbar__button--active"
+    >Commits & Deployments</a
+  >
+  <span class="toolbar__gap"></span>
+  <a
+    mat-button
+    class="toolbar__config-button"
+    [routerLink]="['/', appRouting.DASHBOARD_CONFIG]"
+  >
+    <mat-icon>settings</mat-icon>
+  </a></mat-toolbar
+>
+
 <router-outlet></router-outlet>
