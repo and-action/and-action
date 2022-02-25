@@ -1,28 +1,33 @@
-<ana-toolbar class="toolbar u-margin-bottom-xxl"></ana-toolbar>
-
 <form class="filter-form">
-  <div class="form-element">
-    <label class="form-element__label" for="repository-filter"
-      >Repository Filter</label
-    >
+  <mat-form-field>
+    <mat-label>Repository Filter</mat-label>
     <input
-      class="form-element__input"
+      matInput
       id="repository-filter"
       name="repository-filter"
       [(ngModel)]="filter"
       autocomplete="off"
     />
-  </div>
+    <button
+      *ngIf="filter"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="filter = ''"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
 </form>
 
 <div class="repositories">
   <ng-container *ngFor="let repository of repositories$ | async">
     <div class="repository" *ngIf="isShowRepository(repository)">
-      <h3 class="repository__name">
+      <h2>
         <a [href]="repository.url" target="_blank" rel="noopener">
           {{ repository.name }}
         </a>
-      </h3>
+      </h2>
       <a
         [href]="repository.url"
         target="_blank"

@@ -19,12 +19,17 @@ import { HttpGithubAuthorizationInterceptor } from './http-github-authorization-
 import { ActionsDashboardItemComponent } from './actions-dashboard-item/actions-dashboard-item.component';
 import { SentryErrorHandler } from './sentry-error-handler';
 import { CommitsDashboardComponent } from './commits-dashboard/commits-dashboard.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
 import { HttpUnauthorizedInterceptor } from './http-unauthorized-interceptor';
 import { TooltipDirective } from './tooltip.directive';
 import { CommitsGraphComponent } from './commits-graph/commits-graph.component';
 import { CommitsListComponent } from './commits-list/commits-list.component';
 import { StatusTagComponent } from './status-tag/status-tag.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -34,7 +39,6 @@ import { StatusTagComponent } from './status-tag/status-tag.component';
     ActionsDashboardItemComponent,
     LoginComponent,
     CommitsDashboardComponent,
-    ToolbarComponent,
     TooltipDirective,
     CommitsGraphComponent,
     CommitsListComponent,
@@ -48,6 +52,12 @@ import { StatusTagComponent } from './status-tag/status-tag.component';
     CoreModule,
     AppRoutingModule,
     GraphQLModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatInputModule,
+    MatToolbarModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: SentryErrorHandler },

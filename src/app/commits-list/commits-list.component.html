@@ -13,10 +13,10 @@
         </a>
       </div>
 
-      <p class="repository__commit-hash u-margin-bottom-xxs">
-        <a [href]="commit.commitUrl" target="_blank" rel="noopener">
-          {{ commit.abbreviatedOid }}
-        </a>
+      <div class="repository__commit-hash u-margin-bottom-xxs">
+        <a [href]="commit.commitUrl" target="_blank" rel="noopener">{{
+          commit.abbreviatedOid
+        }}</a>
         ● {{ commit.committedDate | date: 'yyyy-MM-dd' }} ●
         <a
           *ngIf="
@@ -29,13 +29,12 @@
           [anaTooltip]="
             commit.author.login ? commit.author.name : commit.committer.email
           "
+          >{{ commit.author.login ?? commit.committer.name }}</a
         >
-          {{ commit.author.login ?? commit.committer.name }}
-        </a>
         <ng-template #userPlaceholder>
           <span class="u-text-placeholder">Kein Benutzer</span>
         </ng-template>
-      </p>
+      </div>
 
       <div>
         <ana-status-tag

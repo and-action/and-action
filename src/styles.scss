@@ -1,65 +1,65 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$and-action-primary: mat.define-palette(mat.$green-palette, 800, 700, 900);
+$and-action-accent: mat.define-palette(mat.$brown-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$and-action-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$and-action-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $and-action-primary,
+      accent: $and-action-accent,
+      warn: $and-action-warn,
+    ),
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($and-action-theme);
+
 @import 'colors';
 @import 'variables';
 
 html,
 body {
-  margin: 0;
-  padding: 0;
   height: 100%;
-  background-color: $default-background-color;
-  font-family: $default-font-family;
-  font-size: $default-font-size;
-  color: $default-text-color;
 }
-
-button {
-  color: inherit; // Safari fix: Prevent white colored text on :active
-  font-size: inherit;
-  line-height: inherit;
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  padding: 0;
+body {
   margin: 0;
-
-  &[disabled] {
-    cursor: default;
-  }
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  color: $default-text-color;
+  background-color: $default-background-color;
 }
 
-a {
-  cursor: pointer;
+a:not([class^='mat-']) {
   text-decoration: none;
   color: $default-text-color;
-  fill: $default-text-color;
 
   &:hover {
     text-decoration: underline;
-    color: lighten($default-text-color, 10%);
-    fill: lighten($default-text-color, 10%);
+    color: $default-text-color-hover;
   }
 
   &:active {
-    color: darken($default-text-color, 5%);
-    fill: darken($default-text-color, 5%);
+    color: $default-text-color-active;
   }
-}
-
-h1 {
-  margin-top: 0;
-  margin-bottom: $space-xxl;
-}
-
-h2 {
-  margin-top: 0;
-  margin-bottom: $space-m;
-}
-
-h3 {
-  margin-top: 0;
-  margin-bottom: $space-s;
 }
 
 ul {
@@ -68,70 +68,12 @@ ul {
   padding: 0;
 }
 
-p {
-  margin: 0;
-}
-
-.button {
-  text-align: center;
-  box-sizing: border-box;
-  transition: background-color 0.1s;
-
-  &--primary {
-    display: inline-block;
-    font-size: $default-font-size;
-    min-height: 40px;
-    padding: 10px $space-s;
-    border-radius: $default-border-radius;
-    color: $white;
-    background-color: $primary-color;
-    &:hover {
-      background-color: $primary-color-hover;
-    }
-    &:active {
-      background-color: $primary-color-active;
-    }
-    // .is-disabled is needed for a-tags
-    &:disabled,
-    &.is-disabled {
-      color: $color-disabled;
-      background-color: $background-color-disabled;
-      cursor: not-allowed;
-    }
-    &.is-disabled {
-      pointer-events: none;
-    }
-  }
-
-  &--secondary {
-    display: inline-block;
-    font-size: $default-font-size;
-    min-height: 40px;
-    padding: 10px $space-s;
-    color: $primary-color;
-    &:hover {
-      color: $primary-color-hover;
-    }
-    &:active {
-      color: $primary-color-active;
-    }
-    // .is-disabled is needed for a-tags
-    &:disabled,
-    &.is-disabled {
-      color: $color-disabled;
-      cursor: not-allowed;
-    }
-    &.is-disabled {
-      pointer-events: none;
-    }
-  }
-}
-
 .button-list {
   display: flex;
   justify-content: flex-end;
 
-  .button {
+  a,
+  button {
     margin-left: $space-s;
   }
 }
@@ -180,11 +122,6 @@ p {
   display: flex;
 }
 
-.u-flex-center {
-  display: flex;
-  align-items: center;
-}
-
 .tooltip {
   font-size: $font-size-s;
   background-color: $background-color-dark;
@@ -192,23 +129,8 @@ p {
   padding: $space-xxs $space-xs;
   border-radius: $default-border-radius;
   opacity: 0.9;
-}
 
-.form-element {
-  &__label {
-    display: block;
-    font-size: $font-size-xs;
-    margin-bottom: $space-xxs;
-  }
-
-  &__input {
-    display: block;
-    font-family: $default-font-family;
-    font-size: $font-size-s;
-    color: $default-text-color;
-    background-color: $default-input-background-color;
-    padding: $space-xxs;
-    border: none;
-    border-radius: $default-border-radius;
+  p:last-child {
+    margin: 0;
   }
 }

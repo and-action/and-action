@@ -12,6 +12,8 @@ import { StatusIconService } from './status-icon.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  appRouting = AppRouting;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,

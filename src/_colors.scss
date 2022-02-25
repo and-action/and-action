@@ -1,30 +1,17 @@
 $default-background-color: #eaeaea;
 $default-text-color: #333333;
-$default-text-color-hover: lighten($default-text-color, 20%);
-$default-text-color-active: darken($default-text-color, 20%);
+$default-text-color-hover: lighten($default-text-color, 10%);
+$default-text-color-active: darken($default-text-color, 5%);
 $secondary-text-color: lighten(#333333, 50%);
 
 $default-border-color: #d2d2d2;
 
-$primary-color: #4a7856;
-$primary-color-hover: lighten($primary-color, 5%);
-$primary-color-active: darken($primary-color, 5%);
-
 $white: #ffffff;
 
-$color-disabled: #ababab;
-$background-color-disabled: #d2d2d2;
 $background-color-dark: #333333;
 
-$default-input-background-color: darken($default-background-color, 6%);
 $color-0: #00c853;
 $color-1: #ffd600;
 $color-2: #0091ea;
 $color-3: #ab435c;
 $color-4: #484853;
-
-$color-0-light: lighten(#00c853, 40%);
-$color-1-light: lighten(#ffd600, 40%);
-$color-2-light: lighten(#0091ea, 40%);
-$color-3-light: lighten(#ab435c, 40%);
-$color-4-light: lighten(#484853, 40%);
