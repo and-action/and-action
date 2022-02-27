@@ -5,6 +5,7 @@ import { AppRouting } from './app-routing';
 import { environment } from '../environments/environment';
 import { EnvironmentName } from '../environments/environment-name';
 import { StatusIconService } from './status-icon.service';
+import { RepositoryFilterService } from './repository-filter.service';
 
 @Component({
   selector: 'ana-root',
@@ -14,11 +15,14 @@ import { StatusIconService } from './status-icon.service';
 export class AppComponent implements OnInit {
   appRouting = AppRouting;
 
+  repositoryFilterValue?: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private loginService: LoginService,
-    private statusIconService: StatusIconService
+    private statusIconService: StatusIconService,
+    private repositoryFilterService: RepositoryFilterService
   ) {}
 
   ngOnInit() {
@@ -37,6 +41,10 @@ export class AppComponent implements OnInit {
     }
 
     this.statusIconService.initFavicons();
+  }
+
+  onRepositoryFilterChange(value: string) {
+    this.repositoryFilterService.setValue(value);
   }
 
   private initGoogleTagManager() {
