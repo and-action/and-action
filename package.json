@@ -19,17 +19,12 @@
     "prettier-check": "prettier --check \"./src/**/*.{html,ts,js,json,scss}\" \"./*.{html,ts,js,json,scss,htmllintrc}\"",
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
-  "devDependencies": {
-    "@angular-builders/custom-webpack": "13.1.0",
-    "@angular-devkit/build-angular": "^13.2.4",
-    "@angular-eslint/builder": "13.1.0",
-    "@angular-eslint/eslint-plugin": "13.1.0",
-    "@angular-eslint/eslint-plugin-template": "13.1.0",
-    "@angular-eslint/template-parser": "13.1.0",
-    "@angular/cli": "13.2.4",
+  "dependencies": {
+    "@angular/animations": "^13.0.0 || ^14.0.0-0",
+    "@angular/cdk": "^13.2.3",
     "@angular/common": "13.2.3",
     "@angular/compiler": "13.2.3",
-    "@angular/compiler-cli": "13.2.3",
+    "@angular/material": "^13.2.3",
     "@angular/core": "13.2.3",
     "@angular/forms": "13.2.3",
     "@angular/language-service": "13.2.3",
@@ -40,6 +35,25 @@
     "@primer/octicons": "^16.3.1",
     "@sentry/browser": "^6.17.9",
     "@sentry/node": "^6.17.9",
+    "apollo-angular": "^3.0.0",
+    "core-js": "3.21.1",
+    "d3-path": "^3.0.1",
+    "d3-selection": "^3.0.0",
+    "graphql": "^16.3.0",
+    "graphql-tag": "^2.12.6",
+    "rxjs": "7.5.4",
+    "tslib": "^2.3.1",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-builders/custom-webpack": "13.1.0",
+    "@angular-devkit/build-angular": "^13.2.4",
+    "@angular-eslint/builder": "13.1.0",
+    "@angular-eslint/eslint-plugin": "13.1.0",
+    "@angular-eslint/eslint-plugin-template": "13.1.0",
+    "@angular-eslint/template-parser": "13.1.0",
+    "@angular/cli": "13.2.4",
+    "@angular/compiler-cli": "13.2.3",
     "@types/d3": "^7.1.0",
     "@types/d3-path": "^3.0.0",
     "@types/d3-selection": "^3.0.2",
@@ -48,15 +62,11 @@
     "@types/mocha": "9.1.0",
     "@typescript-eslint/eslint-plugin": "5.12.1",
     "@typescript-eslint/parser": "5.12.1",
-    "apollo-angular": "^3.0.0",
     "chai": "4.3.6",
-    "core-js": "3.21.1",
     "eslint": "8.9.0",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-jsdoc": "^37.9.4",
     "eslint-plugin-prefer-arrow": "^1.2.3",
-    "graphql": "^16.3.0",
-    "graphql-tag": "^2.12.6",
     "jasmine-core": "~4.0.0",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "~6.3.16",
@@ -67,11 +77,8 @@
     "karma-jasmine-html-reporter": "^1.7.0",
     "mocha": "9.2.1",
     "prettier": "^2.5.1",
-    "rxjs": "7.5.4",
     "ts-node": "10.5.0",
-    "tslib": "^2.3.1",
-    "typescript": "4.5.5",
-    "zone.js": "~0.11.4"
+    "typescript": "4.5.5"
   },
   "engines": {
     "node": ">=10.13.0"
@@ -79,13 +86,5 @@
   "browserslist": [
     "defaults",
     "not IE 11"
-  ],
-  "dependencies": {
-    "@angular/animations": "^13.0.0 || ^14.0.0-0",
-    "@angular/cdk": "^13.2.3",
-    "@angular/forms": "^13.0.0 || ^14.0.0-0",
-    "@angular/material": "^13.2.3",
-    "d3-path": "^3.0.1",
-    "d3-selection": "^3.0.0"
-  }
+  ]
 }
