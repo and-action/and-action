@@ -20,7 +20,7 @@
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "dependencies": {
-    "@angular/animations": "^13.0.0 || ^14.0.0-0",
+    "@angular/animations": "^13.2.3",
     "@angular/cdk": "^13.2.3",
     "@angular/common": "13.2.3",
     "@angular/compiler": "13.2.3",
