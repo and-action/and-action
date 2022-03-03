@@ -14,6 +14,28 @@
     >Commits & Deployments</a
   >
   <span class="toolbar__gap"></span>
+  <form>
+    <div class="toolbar__filter">
+      <mat-icon class="toolbar__filter-icon">filter_alt</mat-icon>
+      <input
+        class="toolbar__filter-input"
+        placeholder="Repository Filter"
+        id="repository-filter"
+        name="repository-filter"
+        [(ngModel)]="repositoryFilterValue"
+        autocomplete="off"
+        (input)="onRepositoryFilterChange(repositoryFilterValue)"
+      />
+      <button
+        class="toolbar__filter-button"
+        aria-label="Clear"
+        (click)="repositoryFilterValue = ''; onRepositoryFilterChange('')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </form>
+  <span class="toolbar__gap"></span>
   <a
     mat-button
     class="toolbar__config-button"

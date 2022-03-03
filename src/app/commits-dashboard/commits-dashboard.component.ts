@@ -4,6 +4,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { RepositoryWithCommits } from './commits-dashboard-models';
 import { map, mergeMap } from 'rxjs/operators';
 import { Repository } from '../core/repository';
+import { RepositoryFilterService } from '../repository-filter.service';
 
 // const COLORS = ['#00C853', '#FFD600', '#0091EA', '#AB435C', '#484853'];
 
@@ -23,9 +24,10 @@ const LIGHT_COLORS = [
 export class CommitsDashboardComponent implements OnInit {
   repositories$?: Observable<RepositoryWithCommits[]>;
 
-  filter?: string;
-
-  constructor(private githubDataService: GithubDataService) {}
+  constructor(
+    private githubDataService: GithubDataService,
+    private repositoryFilterService: RepositoryFilterService
+  ) {}
 
   ngOnInit(): void {
     this.repositories$ = this.githubDataService
@@ -43,13 +45,17 @@ export class CommitsDashboardComponent implements OnInit {
               )
             )
           )
+        ),
+        mergeMap((repositories) =>
+          this.repositoryFilterService.filterValue$.pipe(
+            map((filterValue) =>
+              repositories.filter(
+                (repository) =>
+                  !filterValue || repository.name.includes(filterValue)
+              )
+            )
+          )
         )
       );
-  }
-
-  isShowRepository(repository: Repository) {
-    return (
-      repository && (!this.filter || repository.name.includes(this.filter))
-    );
   }
 }
