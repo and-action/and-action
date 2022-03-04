@@ -1,5 +1,8 @@
-<div class="repositories">
-  <ng-container *ngFor="let repository of repositories$ | async">
+<div
+  *ngIf="repositories$ | async as repositories; else loading"
+  class="repositories"
+>
+  <ng-container *ngFor="let repository of repositories">
     <div class="repository">
       <h2>
         <a [href]="repository.url" target="_blank" rel="noopener">
@@ -29,3 +32,8 @@
     </div>
   </ng-container>
 </div>
+
+<ng-template #loading>
+  <mat-progress-spinner class="progress-spinner" mode="indeterminate">
+  </mat-progress-spinner>
+</ng-template>

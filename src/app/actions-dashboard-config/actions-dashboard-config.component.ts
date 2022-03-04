@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./actions-dashboard-config.component.scss'],
 })
 export class ActionsDashboardConfigComponent implements OnInit {
-  viewerAndOrganizations: (GithubViewer | Organization)[];
+  viewerAndOrganizations?: (GithubViewer | Organization)[];
   model: { [key: string]: boolean };
   appRouting = AppRouting;
 

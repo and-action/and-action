@@ -1,7 +1,9 @@
-<ul>
+<ul
+  *ngIf="viewerAndOrganizations$ | async as viewerOrOrganizations; else loading"
+>
   <li
     class="organization-list__item"
-    *ngFor="let viewerOrOrganization of viewerAndOrganizations$ | async"
+    *ngFor="let viewerOrOrganization of viewerOrOrganizations"
   >
     <ng-container *ngIf="viewerOrOrganization.repositories as repositories">
       <ng-container *ngIf="repositories.length > 0">
@@ -34,3 +36,8 @@
     </ng-container>
   </li>
 </ul>
+
+<ng-template #loading>
+  <mat-progress-spinner class="progress-spinner" mode="indeterminate">
+  </mat-progress-spinner>
+</ng-template>
