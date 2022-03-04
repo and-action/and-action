@@ -9,6 +9,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { GraphQLModule } from '../graphql.module';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ActionsDashboardConfigComponent', () => {
   let component: ActionsDashboardConfigComponent;
@@ -26,6 +27,7 @@ describe('ActionsDashboardConfigComponent', () => {
         ],
         providers: [Apollo],
         declarations: [ActionsDashboardConfigComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );

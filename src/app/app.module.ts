@@ -30,6 +30,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatCheckboxModule,
     MatIconModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     MatToolbarModule,
   ],
   providers: [

@@ -1,6 +1,10 @@
 <h1>Dashboard Settings</h1>
 
-<form class="repositories-form" #form="ngForm">
+<form
+  *ngIf="viewerAndOrganizations; else loading"
+  class="repositories-form"
+  #form="ngForm"
+>
   <ul class="u-margin-bottom-l">
     <li *ngFor="let viewerOrOrganization of viewerAndOrganizations">
       <h2 class="viewer-or-organization">
@@ -93,3 +97,8 @@
     </button>
   </div>
 </form>
+
+<ng-template #loading>
+  <mat-progress-spinner class="progress-spinner" mode="indeterminate">
+  </mat-progress-spinner>
+</ng-template>
