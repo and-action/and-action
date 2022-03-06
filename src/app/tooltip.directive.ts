@@ -34,6 +34,7 @@ export class TooltipDirective {
       return;
     }
     this.tooltipContainer = this.renderer.createElement('div');
+    this.renderer.setStyle(this.tooltipContainer, 'visibility', 'hidden');
     this.anaTooltip
       .split('\n')
       .map((line) => {
@@ -53,6 +54,7 @@ export class TooltipDirective {
       const top = elementClientRect.y + elementClientRect.height + 8;
       const left = elementClientRect.x;
 
+      this.renderer.setStyle(this.tooltipContainer, 'visibility', 'visible');
       this.renderer.setStyle(this.tooltipContainer, 'position', 'fixed');
       this.renderer.setStyle(this.tooltipContainer, 'top', `${top}px`);
       this.renderer.setStyle(this.tooltipContainer, 'left', `${left}px`);
