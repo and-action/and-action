@@ -15,7 +15,7 @@ import { RepositoryFilterService } from './repository-filter.service';
 export class AppComponent implements OnInit {
   appRouting = AppRouting;
 
-  repositoryFilterValue?: string;
+  repositoryFilterValue = '';
 
   constructor(
     private route: ActivatedRoute,

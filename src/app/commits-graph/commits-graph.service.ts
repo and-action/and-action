@@ -25,14 +25,23 @@ export class CommitsGraphService {
     const getCommitByOid = (oid: string) =>
       commits.find((commit) => commit.oid === oid);
 
-    const getCommitIndexByOid = (oid: string) =>
-      commits.indexOf(getCommitByOid(oid));
+    const getCommitIndexByOid = (oid: string) => {
+      const commit = getCommitByOid(oid);
+      if (commit === undefined) {
+        throw new Error('Creating commits graph failed.');
+      }
+      return commits.indexOf(commit);
+    };
 
-    const occupiedIndentationLevelsForCommitIndex = commits.map(() => []);
+    const occupiedIndentationLevelsForCommitIndex: number[][] = commits.map(
+      () => []
+    );
 
-    const commitQueue = [{ oid: commits[0].oid, childOid: undefined }];
-    while (commitQueue.length > 0) {
-      const current = commitQueue.shift();
+    const commitQueue: { oid: string; childOid?: string }[] = [
+      { oid: commits[0].oid, childOid: undefined },
+    ];
+    let current = commitQueue.shift();
+    while (current) {
       const commit = getCommitByOid(current.oid);
       if (commit) {
         processCommit(
@@ -41,6 +50,7 @@ export class CommitsGraphService {
         );
         pushBranchCommitsToQueue(commit);
       }
+      current = commitQueue.shift();
     }
 
     return commits.map((commit) => ({
@@ -68,26 +78,32 @@ export class CommitsGraphService {
         const lastCommitIndexRelevantForLevel = childCommit
           ? getCommitIndexByOid(childCommit.oid) + 1
           : lastCommitIndex;
-        while (commit) {
-          commitIndentationLevel[commit.oid] = level;
+        let currentCommit: Commit | undefined = commit;
+        while (currentCommit) {
+          commitIndentationLevel[currentCommit.oid] = level;
 
-          if (commitIndentationLevel[commit.parents[0]] < level) {
-            commit = commits[getCommitIndexByOid(commit.parents[0]) - 1];
+          if (commitIndentationLevel[currentCommit.parents[0]] < level) {
+            currentCommit =
+              commits[getCommitIndexByOid(currentCommit.parents[0]) - 1];
             break;
           }
 
-          if (!getCommitByOid(commit.parents[0])) {
-            commit = commits[commits.length - 1];
+          if (!getCommitByOid(currentCommit.parents[0])) {
+            currentCommit = commits[commits.length - 1];
             break;
           }
 
-          if (commit.parents.length <= 0) {
+          if (currentCommit.parents.length <= 0) {
             break;
           }
-          commit = getCommitByOid(commit.parents[0]);
+          currentCommit = getCommitByOid(currentCommit.parents[0]);
         }
 
-        const firstCommitIndex = getCommitIndexByOid(commit.oid);
+        if (!currentCommit) {
+          return;
+        }
+
+        const firstCommitIndex = getCommitIndexByOid(currentCommit.oid);
 
         for (
           let i = lastCommitIndexRelevantForLevel;
@@ -100,26 +116,28 @@ export class CommitsGraphService {
     }
 
     function pushBranchCommitsToQueue(commit: Commit) {
-      while (commit) {
-        if (commit.parents.length > 1) {
-          const [, ...rest] = commit.parents;
+      let currentCommit: Commit | undefined = commit;
+
+      while (currentCommit) {
+        if (currentCommit.parents.length > 1) {
+          const [, ...rest] = currentCommit.parents;
           for (const c of rest) {
             if (commitIndentationLevel[c] === undefined) {
-              commitQueue.push({ oid: c, childOid: commit.oid });
+              commitQueue.push({ oid: c, childOid: currentCommit.oid });
             }
           }
         }
 
         if (
-          commit.parents.length <= 0 ||
-          commitIndentationLevel[commit.parents[0]] <
-            commitIndentationLevel[commit.oid] ||
-          !getCommitByOid(commit.parents[0])
+          currentCommit.parents.length <= 0 ||
+          commitIndentationLevel[currentCommit.parents[0]] <
+            commitIndentationLevel[currentCommit.oid] ||
+          !getCommitByOid(currentCommit.parents[0])
         ) {
           break;
         }
 
-        commit = getCommitByOid(commit.parents[0]);
+        currentCommit = getCommitByOid(currentCommit.parents[0]);
       }
     }
   }
@@ -165,14 +183,20 @@ export class CommitsGraphService {
     const getCommitByOid = (oid: string) =>
       commits.find((commit) => commit.oid === oid);
 
-    const getCommitIndexByOid = (oid: string) =>
-      commits.indexOf(getCommitByOid(oid));
+    const getCommitIndexByOid = (oid: string) => {
+      const commit = getCommitByOid(oid);
+      if (commit === undefined) {
+        throw new Error('Creating commits graph failed.');
+      }
+      return commits.indexOf(commit);
+    };
 
     const branchLevel = latestBranchCommit.indentationLevel;
 
-    let firstBranchCommit = latestBranchCommit;
+    let firstBranchCommit: CommitWithIndentationLevel | undefined =
+      latestBranchCommit;
 
-    while (firstBranchCommit.parents[0]) {
+    while (firstBranchCommit?.parents[0]) {
       if (firstBranchCommit.parents.length > 1) {
         for (let i = 1; i < firstBranchCommit.parents.length; ++i) {
           const parentCommit = getCommitByOid(firstBranchCommit.parents[i]);
@@ -192,6 +216,10 @@ export class CommitsGraphService {
       }
 
       firstBranchCommit = getCommitByOid(firstBranchCommit.parents[0]);
+    }
+
+    if (!firstBranchCommit) {
+      return;
     }
 
     const latestBranchCommitPoint = {
@@ -231,9 +259,8 @@ export class CommitsGraphService {
     }
 
     if (firstBranchCommit.parents[0]) {
-      if (getCommitByOid(firstBranchCommit.parents[0])) {
-        const parentCommit = getCommitByOid(firstBranchCommit.parents[0]);
-
+      const parentCommit = getCommitByOid(firstBranchCommit.parents[0]);
+      if (parentCommit) {
         const parentCommitPoint = {
           x: parentCommit.indentationLevel * BRANCH_WIDTH + BRANCH_WIDTH / 2,
           y:

@@ -17,9 +17,9 @@ const maxCommitMessageLength = 100;
   styleUrls: ['./commits-list.component.scss'],
 })
 export class CommitsListComponent {
-  @Input() repositoryUrl: string;
+  @Input() repositoryUrl?: string;
 
-  private myCommits: Commit[];
+  private myCommits: Commit[] = [];
 
   private environmentColorMapping: {
     [environment: string]: StatusTagColor;

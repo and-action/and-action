@@ -25,17 +25,17 @@ interface RepositoryQueryResult {
       nodes: Repository[];
     };
     organizations: {
-      nodes: [
-        {
-          login: string;
-          avatarUrl: string;
-          url: string;
-          repositories: {
-            nodes: Repository[];
-          };
-        } | null
-      ];
+      nodes: (OrganizationNode | null)[];
     };
+  };
+}
+
+interface OrganizationNode {
+  login: string;
+  avatarUrl: string;
+  url: string;
+  repositories: {
+    nodes: Repository[];
   };
 }
 
@@ -191,10 +191,10 @@ export class GithubDataService {
             queryResult.data.viewer.organizations.nodes
               .filter((organization) => organization)
               .map((organization) => ({
-                login: organization.login,
-                avatarUrl: organization.avatarUrl,
-                url: organization.url,
-                repositories: organization.repositories.nodes,
+                login: organization?.login ?? '',
+                avatarUrl: organization?.avatarUrl ?? '',
+                url: organization?.url ?? '',
+                repositories: organization?.repositories.nodes ?? [],
               }));
           return [viewer, ...organizations];
         })
@@ -204,7 +204,7 @@ export class GithubDataService {
   loadOrganizationsWithSelectedRepositories() {
     const repositoryNameWithOwnerList =
       this.andActionDataService.actionsDashboardConfig
-        .selectedRepositoriesNameWithOwnerForDashboard;
+        ?.selectedRepositoriesNameWithOwnerForDashboard ?? [];
 
     return this.loadViewerAndOrganizations().pipe(
       map((organizations) =>
@@ -251,7 +251,7 @@ export class GithubDataService {
         map((queryResult) => {
           const commits =
             queryResult.data.repository.defaultBranchRef.target.history.edges.map(
-              ({ node }): Commit => ({
+              ({ node }: any): Commit => ({
                 oid: node.oid,
                 abbreviatedOid: node.abbreviatedOid,
                 author: {
@@ -267,10 +267,10 @@ export class GithubDataService {
                 message: node.message,
                 isMergeCommit: node.parents.edges.length > 1,
                 parents: node.parents.edges.map(
-                  ({ node: parentNode }) => parentNode.oid
+                  ({ node: parentNode }: any) => parentNode.oid
                 ),
                 deployments: node.deployments.edges.map(
-                  ({ node: deployment }): Deployment => ({
+                  ({ node: deployment }: any): Deployment => ({
                     id: deployment.id,
                     creator: {
                       login: deployment.creator.login,
@@ -285,20 +285,24 @@ export class GithubDataService {
               })
             );
 
-          const latestDeployments = commits.reduce((result, current) => {
-            current.deployments.forEach((deployment) => {
-              if (
-                !result[deployment.environment] ||
-                result[deployment.environment].timestamp < deployment.timestamp
-              ) {
-                result[deployment.environment] = deployment;
-              }
-            });
-            return result;
-          }, {});
+          const latestDeployments = commits.reduce(
+            (result: any, current: any) => {
+              current.deployments.forEach((deployment: Deployment) => {
+                if (
+                  !result[deployment.environment] ||
+                  result[deployment.environment].timestamp <
+                    deployment.timestamp
+                ) {
+                  result[deployment.environment] = deployment;
+                }
+              });
+              return result;
+            },
+            {}
+          );
 
           Object.values(latestDeployments).forEach(
-            (deployment: Deployment) =>
+            (deployment: any) =>
               (deployment.isLatestDeploymentForEnvironment = true)
           );
 

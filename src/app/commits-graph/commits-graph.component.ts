@@ -19,9 +19,9 @@ import { CommitsGraphService } from './commits-graph.service';
   styleUrls: ['./commits-graph.component.scss'],
 })
 export class CommitsGraphComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('graphContainer') private graphContainer: ElementRef;
+  @ViewChild('graphContainer') private graphContainer?: ElementRef;
 
-  private commits$ = new BehaviorSubject<Commit[] | undefined>(undefined);
+  private commits$ = new BehaviorSubject<Commit[]>([]);
 
   constructor(private commitsGraphService: CommitsGraphService) {}
 
@@ -41,6 +41,6 @@ export class CommitsGraphComponent implements AfterViewInit, OnDestroy {
 
   private drawGraph(commits: Commit[]) {
     const svg = this.commitsGraphService.createCommitsGraphSvg(commits);
-    this.graphContainer.nativeElement.appendChild(svg.node());
+    this.graphContainer?.nativeElement.appendChild(svg.node());
   }
 }

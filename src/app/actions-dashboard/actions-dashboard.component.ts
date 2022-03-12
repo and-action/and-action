@@ -14,7 +14,7 @@ import { RepositoryFilterService } from '../repository-filter.service';
   styleUrls: ['./actions-dashboard.component.scss'],
 })
 export class ActionsDashboardComponent implements OnInit {
-  viewerAndOrganizations$: Observable<(GithubViewer | Organization)[]>;
+  viewerAndOrganizations$?: Observable<(GithubViewer | Organization)[]>;
 
   constructor(
     private githubDataService: GithubDataService,

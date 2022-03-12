@@ -13,7 +13,7 @@ if (environment.sentryDsn) {
 export class SentryErrorHandler implements ErrorHandler {
   constructor() {}
 
-  handleError(error) {
+  handleError(error: any) {
     Sentry.captureException(error.originalError || error);
     console.error(error);
   }

@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class ActionsDashboardConfigComponent implements OnInit {
   viewerAndOrganizations?: (GithubViewer | Organization)[];
-  model: { [key: string]: boolean };
+  model: { [key: string]: boolean } = {};
   appRouting = AppRouting;
 
   constructor(
@@ -26,7 +26,7 @@ export class ActionsDashboardConfigComponent implements OnInit {
   ngOnInit() {
     const selectedRepositories =
       this.andActionDataService.actionsDashboardConfig
-        .selectedRepositoriesNameWithOwnerForDashboard;
+        ?.selectedRepositoriesNameWithOwnerForDashboard;
 
     this.githubDataService
       .loadViewerAndOrganizations()
@@ -36,7 +36,7 @@ export class ActionsDashboardConfigComponent implements OnInit {
           .flatMap((organization) => organization.repositories)
           .reduce(
             (acc, current) => ({
-              [current.nameWithOwner]: selectedRepositories.includes(
+              [current.nameWithOwner]: !!selectedRepositories?.includes(
                 current.nameWithOwner
               ),
               ...acc,

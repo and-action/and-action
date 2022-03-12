@@ -19,8 +19,8 @@ export class RepositoryConfigGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const canShowDashboard =
-      this.andActionDataService.actionsDashboardConfig
-        .selectedRepositoriesNameWithOwnerForDashboard.length > 0;
+      (this.andActionDataService.actionsDashboardConfig
+        ?.selectedRepositoriesNameWithOwnerForDashboard.length ?? 0) > 0;
 
     if (!canShowDashboard) {
       this.router.navigate([AppRouting.DASHBOARD_CONFIG]);
