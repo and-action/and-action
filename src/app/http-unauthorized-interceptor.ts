@@ -8,7 +8,6 @@ import {
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { LoginService } from './core/login.service';
 import { Router } from '@angular/router';
 import { AppRouting } from './app-routing';
 
@@ -27,7 +26,7 @@ const httpStatus401Unauthorized = 401;
 export class HttpUnauthorizedInterceptor implements HttpInterceptor {
   private static readonly maxRetryCountOn401 = 3;
 
-  constructor(private loginService: LoginService, private router: Router) {}
+  constructor(private router: Router) {}
 
   private static checkAndUpdateRetryCountOn401() {
     const retryCount = parseInt(

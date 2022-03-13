@@ -14,7 +14,7 @@ export interface Commit {
   commitUrl: string;
   committedDate: Date;
   message: string;
-  author: { name: string; login: string };
+  author?: { name: string; login: string };
   committer: { name: string; email: string };
   parents: string[];
   isMergeCommit: boolean;

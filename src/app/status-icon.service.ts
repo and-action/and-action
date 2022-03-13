@@ -97,6 +97,7 @@ export class StatusIconService {
       document.head.appendChild(element);
       return element;
     }
+    return undefined;
   }
 
   private getFaviconFileNameForStatus(size: number, status: StatusIconStatus) {

@@ -50,7 +50,7 @@ export class CommitsListComponent {
     return commitMessage.includes('\n') ||
       commitMessage.length > maxCommitMessageLength
       ? this.getCommitMessage(commitMessage)
-      : null;
+      : undefined;
   }
 
   getDeploymentStatusForStatusTag(deployment: Deployment) {

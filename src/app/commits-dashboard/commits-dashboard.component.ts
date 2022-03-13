@@ -3,18 +3,7 @@ import { GithubDataService } from '../core/github-data.service';
 import { combineLatest, Observable } from 'rxjs';
 import { RepositoryWithCommits } from './commits-dashboard-models';
 import { map, mergeMap } from 'rxjs/operators';
-import { Repository } from '../core/repository';
 import { RepositoryFilterService } from '../repository-filter.service';
-
-// const COLORS = ['#00C853', '#FFD600', '#0091EA', '#AB435C', '#484853'];
-
-const LIGHT_COLORS = [
-  'rgba(0, 200, 83, 0.2)',
-  'rgba(255, 214, 0, 0.2)',
-  'rgba(0, 145, 234, 0.2)',
-  'rgba(171, 67, 92, 0.2)',
-  'rgba(72, 72, 83, 0.2)',
-];
 
 @Component({
   selector: 'ana-commits-dashboard',

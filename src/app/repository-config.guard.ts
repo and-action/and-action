@@ -1,9 +1,4 @@
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AndActionDataService } from './core/and-action-data.service';
 import { AppRouting } from './app-routing';
@@ -17,7 +12,7 @@ export class RepositoryConfigGuard implements CanActivate {
     private andActionDataService: AndActionDataService
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate() {
     const canShowDashboard =
       (this.andActionDataService.actionsDashboardConfig
         ?.selectedRepositoriesNameWithOwnerForDashboard.length ?? 0) > 0;

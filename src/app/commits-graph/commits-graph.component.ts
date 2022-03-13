@@ -6,10 +6,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import {
-  Commit,
-  CommitWithIndentationLevel,
-} from '../commits-dashboard/commits-dashboard-models';
+import { Commit } from '../commits-dashboard/commits-dashboard-models';
 import { BehaviorSubject } from 'rxjs';
 import { CommitsGraphService } from './commits-graph.service';
 

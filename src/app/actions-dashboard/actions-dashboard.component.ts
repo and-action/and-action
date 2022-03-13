@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AndActionDataService } from '../core/and-action-data.service';
 import { GithubDataService } from '../core/github-data.service';
 import { flatMap, map, mergeMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -18,7 +17,6 @@ export class ActionsDashboardComponent implements OnInit {
 
   constructor(
     private githubDataService: GithubDataService,
-    private andActionDataService: AndActionDataService,
     private statusIconService: StatusIconService,
     private repositoryFilterService: RepositoryFilterService
   ) {}

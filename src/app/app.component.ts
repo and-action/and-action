@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from './core/login.service';
 import { AppRouting } from './app-routing';
 import { environment } from '../environments/environment';
@@ -18,8 +17,6 @@ export class AppComponent implements OnInit {
   repositoryFilterValue = '';
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private loginService: LoginService,
     private statusIconService: StatusIconService,
     private repositoryFilterService: RepositoryFilterService

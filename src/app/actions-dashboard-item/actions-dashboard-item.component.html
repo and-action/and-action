@@ -3,7 +3,7 @@
     repository?.name
   }}</a>
 </h3>
-<ng-container *ngIf="repository?.workflowsWithWorkflowRuns">
+<ng-container *ngIf="repository && repository.workflowsWithWorkflowRuns">
   <ng-container *ngIf="repository.workflowsWithWorkflowRuns.length > 0">
     <a
       [href]="repository.url"
@@ -26,7 +26,7 @@
       >
         <ana-status-tag
           [name]="workflowWithWorkflowRuns.workflow.name"
-          [link]="(workflowWithWorkflowRuns?.workflowRuns)[0]?.html_url"
+          [link]="workflowWithWorkflowRuns.workflowRuns?.[0]?.html_url"
           [status]="
             getStatusTagStatus(workflowWithWorkflowRuns.workflowRuns[0])
           "

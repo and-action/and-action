@@ -20,16 +20,20 @@
         ● {{ commit.committedDate | date: 'yyyy-MM-dd' }} ●
         <a
           *ngIf="
-            commit.author.login || commit.committer.email;
+            commit.author?.login || commit.committer.email;
             else userPlaceholder
           "
-          [href]="repositoryUrl + '/commits?author=' + commit.author.login"
+          [href]="
+            commit.author
+              ? repositoryUrl + '/commits?author=' + commit.author?.login
+              : ''
+          "
           target="_blank"
           rel="noopener"
           [anaTooltip]="
-            commit.author.login ? commit.author.name : commit.committer.email
+            commit.author ? commit.author.name : commit.committer.email
           "
-          >{{ commit.author.login ?? commit.committer.name }}</a
+          >{{ commit.author?.login ?? commit.committer.name }}</a
         >
         <ng-template #userPlaceholder>
           <span class="u-text-placeholder">Kein Benutzer</span>
