@@ -7,8 +7,6 @@ import { BehaviorSubject } from 'rxjs';
 export class RepositoryFilterService implements OnDestroy {
   private filterValueSubject = new BehaviorSubject<string>('');
 
-  constructor() {}
-
   get filterValue$() {
     return this.filterValueSubject.asObservable();
   }

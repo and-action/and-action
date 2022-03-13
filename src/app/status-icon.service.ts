@@ -13,8 +13,6 @@ export class StatusIconService {
   private favicon16?: HTMLElement;
   private favicon32?: HTMLElement;
 
-  constructor() {}
-
   initFavicons() {
     this.favicon16 = this.appendIconToHead(16);
     this.favicon32 = this.appendIconToHead(32);

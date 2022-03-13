@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Commit } from '../commits-dashboard/commits-dashboard-models';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CommitsGraphService } from './commits-graph.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class CommitsGraphComponent implements AfterViewInit, OnDestroy {
   @ViewChild('graphContainer') private graphContainer?: ElementRef;
 
   private commits$ = new BehaviorSubject<Commit[]>([]);
+  private commitsSubscription?: Subscription;
 
   constructor(private commitsGraphService: CommitsGraphService) {}
 
@@ -29,11 +30,13 @@ export class CommitsGraphComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.commits$.subscribe((commits) => this.drawGraph(commits));
+    this.commitsSubscription = this.commits$.subscribe((commits) =>
+      this.drawGraph(commits)
+    );
   }
 
   ngOnDestroy() {
-    this.commits$.unsubscribe();
+    this.commitsSubscription?.unsubscribe();
   }
 
   private drawGraph(commits: Commit[]) {

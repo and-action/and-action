@@ -288,6 +288,7 @@ export class CommitsGraphService {
 
     svg
       .append('path')
+      /* eslint @typescript-eslint/ban-ts-comment: off */
       // @ts-ignore
       .attr('d', p)
       .style('stroke', 'gray')
