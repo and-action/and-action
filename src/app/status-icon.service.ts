@@ -13,8 +13,6 @@ export class StatusIconService {
   private favicon16?: HTMLElement;
   private favicon32?: HTMLElement;
 
-  constructor() {}
-
   initFavicons() {
     this.favicon16 = this.appendIconToHead(16);
     this.favicon32 = this.appendIconToHead(32);
@@ -35,11 +33,11 @@ export class StatusIconService {
       ? StatusIconStatus.SUCCESS
       : StatusIconStatus.NONE;
 
-    this.favicon16.setAttribute(
+    this.favicon16?.setAttribute(
       'href',
       this.getFaviconFileNameForStatus(16, status)
     );
-    this.favicon32.setAttribute(
+    this.favicon32?.setAttribute(
       'href',
       this.getFaviconFileNameForStatus(32, status)
     );
@@ -82,7 +80,7 @@ export class StatusIconService {
 
   private appendIconToHead(size: number) {
     const element = document.createElement('link');
-    const attributes = {
+    const attributes: { [key: string]: string } = {
       rel: 'icon',
       href: `assets/favicons/${size}x${size}.png`,
       size: `${size}x${size}`,
@@ -97,6 +95,7 @@ export class StatusIconService {
       document.head.appendChild(element);
       return element;
     }
+    return undefined;
   }
 
   private getFaviconFileNameForStatus(size: number, status: StatusIconStatus) {

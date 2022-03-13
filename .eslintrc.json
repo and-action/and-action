@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
+  "ignorePatterns": [],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -11,7 +11,10 @@
       "extends": [
         "plugin:@angular-eslint/ng-cli-compat",
         "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:rxjs/recommended",
+        "prettier"
       ],
       "rules": {
         "@angular-eslint/component-selector": [
@@ -49,6 +52,7 @@
           "error",
           { "allowTernary": true }
         ],
+        "@typescript-eslint/no-explicit-any": "off",
         "prefer-arrow/prefer-arrow-functions": "off",
         "arrow-parens": ["off", "always"],
         "import/order": "off",

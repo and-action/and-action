@@ -17,9 +17,9 @@ const maxCommitMessageLength = 100;
   styleUrls: ['./commits-list.component.scss'],
 })
 export class CommitsListComponent {
-  @Input() repositoryUrl: string;
+  @Input() repositoryUrl?: string;
 
-  private myCommits: Commit[];
+  private myCommits: Commit[] = [];
 
   private environmentColorMapping: {
     [environment: string]: StatusTagColor;
@@ -50,7 +50,7 @@ export class CommitsListComponent {
     return commitMessage.includes('\n') ||
       commitMessage.length > maxCommitMessageLength
       ? this.getCommitMessage(commitMessage)
-      : null;
+      : undefined;
   }
 
   getDeploymentStatusForStatusTag(deployment: Deployment) {

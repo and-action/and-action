@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AndActionDataService } from '../core/and-action-data.service';
 import { GithubDataService } from '../core/github-data.service';
 import { flatMap, map, mergeMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -14,11 +13,10 @@ import { RepositoryFilterService } from '../repository-filter.service';
   styleUrls: ['./actions-dashboard.component.scss'],
 })
 export class ActionsDashboardComponent implements OnInit {
-  viewerAndOrganizations$: Observable<(GithubViewer | Organization)[]>;
+  viewerAndOrganizations$?: Observable<(GithubViewer | Organization)[]>;
 
   constructor(
     private githubDataService: GithubDataService,
-    private andActionDataService: AndActionDataService,
     private statusIconService: StatusIconService,
     private repositoryFilterService: RepositoryFilterService
   ) {}

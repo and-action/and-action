@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Repository } from '../core/repository';
 import { WorkflowRun } from '../core/workflow-run';
 import { WorkflowRunStatus } from '../core/workflow-run-status';
@@ -11,12 +11,8 @@ import { StatusTagStatus } from '../status-tag/status-tag-status';
   templateUrl: './actions-dashboard-item.component.html',
   styleUrls: ['./actions-dashboard-item.component.scss'],
 })
-export class ActionsDashboardItemComponent implements OnInit {
+export class ActionsDashboardItemComponent {
   @Input() repository?: Repository;
-
-  constructor() {}
-
-  ngOnInit() {}
 
   getStatusTagStatus(workflowRun?: WorkflowRun) {
     return workflowRun

@@ -10,7 +10,7 @@ const accessTokenApiKey = 'gh_access_token';
   providedIn: 'root',
 })
 export class LoginService {
-  private myAccessToken?: string;
+  private myAccessToken?: string | null;
 
   constructor(private http: HttpClient) {
     this.myAccessToken = localStorage.getItem(accessTokenApiKey);

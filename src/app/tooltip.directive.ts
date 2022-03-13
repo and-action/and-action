@@ -12,13 +12,13 @@ import { DOCUMENT } from '@angular/common';
   selector: '[anaTooltip]',
 })
 export class TooltipDirective {
-  @Input() anaTooltip: string | null;
+  @Input() anaTooltip?: string;
   private tooltipContainer?: HTMLElement;
 
   constructor(
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private document
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
   @HostListener('mouseenter') onMouseEnter() {
