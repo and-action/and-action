@@ -1,9 +1,9 @@
 <ul class="repository__list">
-  <li class="repository__commit" *ngFor="let commit of commits">
+  <li class="repository__commit" *ngFor="let commit of repository?.commits">
     <div class="repository__commit-content">
       <ana-commit-info
         [commit]="commit"
-        [repositoryUrl]="repositoryUrl"
+        [repositoryUrl]="repository?.url"
       ></ana-commit-info>
       <div>
         <ana-status-tag
@@ -19,5 +19,13 @@
         ></ana-status-tag>
       </div>
     </div>
+    <button
+      class="repository__commit-deploy"
+      mat-icon-button
+      color="accent"
+      (click)="openDeployDialog(commit, repository?.commits ?? [])"
+    >
+      <mat-icon>rocket_launch</mat-icon>
+    </button>
   </li>
 </ul>

@@ -24,10 +24,7 @@
 
       <div class="u-flex">
         <ana-commits-graph [commits]="repository.commits"></ana-commits-graph>
-        <ana-commits-list
-          [commits]="repository.commits"
-          [repositoryUrl]="repository.url"
-        ></ana-commits-list>
+        <ana-commits-list [repository]="repository"></ana-commits-list>
       </div>
     </div>
   </ng-container>
