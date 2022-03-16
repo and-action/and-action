@@ -14,22 +14,6 @@
   &__commit-content {
   }
 
-  &__commit-message {
-    word-break: break-word;
-  }
-
-  &__commit-hash {
-    font-size: $font-size-xs;
-  }
-
-  &__commit-date {
-    font-size: $font-size-xs;
-  }
-
-  &__commit-author {
-    font-size: $font-size-xs;
-  }
-
   &__deployment {
     display: inline-block;
 

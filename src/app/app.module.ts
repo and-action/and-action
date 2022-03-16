@@ -31,6 +31,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommitInfoComponent } from './commit-info/commit-info.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CommitsGraphComponent,
     CommitsListComponent,
     StatusTagComponent,
+    CommitInfoComponent,
   ],
   imports: [
     BrowserModule,
