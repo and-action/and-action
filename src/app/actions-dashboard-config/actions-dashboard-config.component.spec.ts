@@ -13,20 +13,18 @@ describe('ActionsDashboardConfigComponent', () => {
   let component: ActionsDashboardConfigComponent;
   let fixture: ComponentFixture<ActionsDashboardConfigComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          GraphQLModule,
-          FormsModule,
-          HttpClientTestingModule,
-          RouterTestingModule,
-        ],
-        declarations: [ActionsDashboardConfigComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        GraphQLModule,
+        FormsModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+      ],
+      declarations: [ActionsDashboardConfigComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     const andActionDataService = TestBed.inject(AndActionDataService);

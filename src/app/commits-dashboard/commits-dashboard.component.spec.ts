@@ -12,15 +12,13 @@ describe('CommitsDashboardComponent', () => {
   let component: CommitsDashboardComponent;
   let fixture: ComponentFixture<CommitsDashboardComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [GraphQLModule, FormsModule, HttpClientTestingModule],
-        declarations: [CommitsDashboardComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [GraphQLModule, FormsModule, HttpClientTestingModule],
+      declarations: [CommitsDashboardComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     const andActionDataService = TestBed.inject(AndActionDataService);
