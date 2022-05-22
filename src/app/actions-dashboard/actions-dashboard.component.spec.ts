@@ -3,32 +3,22 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActionsDashboardComponent } from './actions-dashboard.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ApolloTestingModule } from 'apollo-angular/testing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { GraphQLModule } from '../graphql.module';
-import { Apollo } from 'apollo-angular';
 
 describe('ActionsDashboardComponent', () => {
   let component: ActionsDashboardComponent;
   let fixture: ComponentFixture<ActionsDashboardComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          ApolloTestingModule,
-          GraphQLModule,
-          HttpClientTestingModule,
-          RouterTestingModule,
-        ],
-        declarations: [ActionsDashboardComponent],
-        providers: [Apollo],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [GraphQLModule, HttpClientTestingModule, RouterTestingModule],
+      declarations: [ActionsDashboardComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     const andActionDataService = TestBed.inject(AndActionDataService);

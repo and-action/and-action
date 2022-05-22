@@ -21,14 +21,12 @@ describe('ActionsDashboardItemComponent', () => {
     workflowsWithWorkflowRuns: [],
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [ApolloTestingModule, HttpClientTestingModule],
-        declarations: [ActionsDashboardItemComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [ApolloTestingModule, HttpClientTestingModule],
+      declarations: [ActionsDashboardItemComponent],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ActionsDashboardItemComponent);
