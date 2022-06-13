@@ -70,6 +70,7 @@ const repositoriesQuery = gql`
         affiliations: OWNER
       ) {
         nodes {
+          id
           name
           owner {
             login
@@ -98,6 +99,7 @@ const repositoriesQuery = gql`
             affiliations: OWNER
           ) {
             nodes {
+              id
               name
               owner {
                 login
