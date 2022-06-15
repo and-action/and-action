@@ -13,7 +13,7 @@
           [color]="getDeploymentStatusTagColor(deployment)"
           class="repository__deployment"
           [class.repository__deployment--light]="
-            !deployment.isLatestDeploymentForEnvironment
+            !isDeploymentActive(deployment)
           "
           [anaTooltip]="getTooltipContent(deployment)"
         ></ana-status-tag>

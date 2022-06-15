@@ -31,7 +31,6 @@ export const getCommitMock = (): Commit => ({
         name: '',
       },
       state: DeploymentState.INACTIVE,
-      isLatestDeploymentForEnvironment: false,
     },
   ],
   isMergeCommit: true,

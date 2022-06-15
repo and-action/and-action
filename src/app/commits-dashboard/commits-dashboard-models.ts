@@ -57,5 +57,4 @@ export interface Deployment {
   timestamp: Date;
   creator: { name: string; login: string };
   state: DeploymentState;
-  isLatestDeploymentForEnvironment: boolean;
 }

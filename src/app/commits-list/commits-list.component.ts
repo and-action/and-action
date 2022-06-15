@@ -61,6 +61,10 @@ export class CommitsListComponent {
     ${deploymentStateOutputTextMapping[deployment.state]}`;
   }
 
+  isDeploymentActive(deployment: Deployment) {
+    return deployment.state === DeploymentState.ACTIVE;
+  }
+
   private createDeploymentEnvironmentCssClassMapping() {
     const environments = this.commits.flatMap((commit) =>
       commit.deployments.flatMap((deployment) => deployment.environment)

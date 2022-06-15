@@ -279,32 +279,10 @@ export class GithubDataService {
                     environment: deployment.environment,
                     state: deployment.state,
                     timestamp: new Date(deployment.createdAt),
-                    isLatestDeploymentForEnvironment: false,
                   })
                 ),
               })
             );
-
-          const latestDeployments = commits.reduce(
-            (result: any, current: any) => {
-              current.deployments.forEach((deployment: Deployment) => {
-                if (
-                  !result[deployment.environment] ||
-                  result[deployment.environment].timestamp <
-                    deployment.timestamp
-                ) {
-                  result[deployment.environment] = deployment;
-                }
-              });
-              return result;
-            },
-            {}
-          );
-
-          Object.values(latestDeployments).forEach(
-            (deployment: any) =>
-              (deployment.isLatestDeploymentForEnvironment = true)
-          );
 
           const repository: RepositoryWithCommits = {
             name,
