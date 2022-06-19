@@ -1,45 +1,10 @@
 <ul class="repository__list">
-  <li class="repository__commit" *ngFor="let commit of commits">
+  <li class="repository__commit" *ngFor="let commit of repository?.commits">
     <div class="repository__commit-content">
-      <div class="repository__commit-message u-margin-bottom-xxs">
-        <a
-          [anaTooltip]="getCommitMessageTooltip(commit.message)"
-          [href]="commit.commitUrl"
-          target="_blank"
-          rel="noopener"
-        >
-          <span [innerHTML]="getAbbreviatedCommitMessage(commit.message)">
-          </span>
-        </a>
-      </div>
-
-      <div class="repository__commit-hash u-margin-bottom-xxs">
-        <a [href]="commit.commitUrl" target="_blank" rel="noopener">{{
-          commit.abbreviatedOid
-        }}</a>
-        ● {{ commit.committedDate | date: 'yyyy-MM-dd' }} ●
-        <a
-          *ngIf="
-            commit.author?.login || commit.committer.email;
-            else userPlaceholder
-          "
-          [href]="
-            commit.author
-              ? repositoryUrl + '/commits?author=' + commit.author?.login
-              : ''
-          "
-          target="_blank"
-          rel="noopener"
-          [anaTooltip]="
-            commit.author ? commit.author.name : commit.committer.email
-          "
-          >{{ commit.author?.login ?? commit.committer.name }}</a
-        >
-        <ng-template #userPlaceholder>
-          <span class="u-text-placeholder">Kein Benutzer</span>
-        </ng-template>
-      </div>
-
+      <ana-commit-info
+        [commit]="commit"
+        [repositoryUrl]="repository?.url"
+      ></ana-commit-info>
       <div>
         <ana-status-tag
           *ngFor="let deployment of commit.deployments"
@@ -48,11 +13,19 @@
           [color]="getDeploymentStatusTagColor(deployment)"
           class="repository__deployment"
           [class.repository__deployment--light]="
-            !deployment.isLatestDeploymentForEnvironment
+            !isDeploymentActive(deployment)
           "
           [anaTooltip]="getTooltipContent(deployment)"
         ></ana-status-tag>
       </div>
     </div>
+    <button
+      class="repository__commit-deploy"
+      mat-icon-button
+      color="accent"
+      (click)="openDeployDialog(commit, repository?.commits ?? [])"
+    >
+      <mat-icon>rocket_launch</mat-icon>
+    </button>
   </li>
 </ul>

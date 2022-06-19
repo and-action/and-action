@@ -31,6 +31,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommitInfoComponent } from './commit-info/commit-info.component';
+import { SnackBarComponent } from './snack-bar/snack-bar.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DeployCommitDialogComponent } from './deploy-commit-dialog/deploy-commit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +49,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CommitsGraphComponent,
     CommitsListComponent,
     StatusTagComponent,
+    CommitInfoComponent,
+    SnackBarComponent,
+    DeployCommitDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,9 +64,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     BrowserAnimationsModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatDialogModule,
     MatIconModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
     MatToolbarModule,
   ],
   providers: [

@@ -1,0 +1,100 @@
+<h2 mat-dialog-title><mat-icon>rocket_launch</mat-icon>Deploy</h2>
+<mat-dialog-content>
+  <ana-commit-info
+    class="u-margin-bottom-xl"
+    [commit]="dialogData.commitToDeploy"
+    [repositoryUrl]="dialogData.repository.url"
+  >
+  </ana-commit-info>
+
+  <ng-container *ngIf="environments$ | async as environments">
+    <ng-container *ngIf="environments.length === 0">
+      <p class="u-text-placeholder">No environment configuration found.</p>
+      <p class="u-text-placeholder">
+        Please make sure that you have a .github/andaction.yml file either in
+        your repository or in your organisation's .github repository containing
+        the key "environments".
+      </p>
+    </ng-container>
+    <div class="environment-list">
+      <ng-container
+        class="environment"
+        *ngFor="let environment of environments; let index = index"
+      >
+        <p
+          [style]="{
+            'background-color': environmentColorMapping[environment.name]
+          }"
+          class="environment__tag"
+        >
+          {{ environment.name }}
+        </p>
+
+        <button
+          *ngIf="
+            environment.deploymentType !== deploymentType.REDEPLOY;
+            else redeployButton
+          "
+          mat-flat-button
+          color="primary"
+          type="button"
+          class="environment__action"
+          (click)="deployToEnvironment(environment, environments)"
+          [disabled]="!environment.canBeDeployed.value || isLoading"
+        >
+          {{ getDeployButtonLabel(environment.deploymentType) }}
+        </button>
+        <ng-template #redeployButton>
+          <button
+            mat-stroked-button
+            color="primary"
+            type="button"
+            class="environment__action"
+            (click)="deployToEnvironment(environment, environments)"
+            [disabled]="!environment.canBeDeployed.value || isLoading"
+          >
+            {{ getDeployButtonLabel(environment.deploymentType) }}
+          </button>
+        </ng-template>
+
+        <div class="environment__text">
+          <p *ngIf="environment.deploymentDate">
+            Deploy triggered on
+            {{ environment.deploymentDate | date: 'yyyy-MM-dd' }} at
+            {{ environment.deploymentDate | date: 'H:mm:ss' }}
+          </p>
+          <p
+            *ngIf="!environment.canBeDeployed.value"
+            class="u-text-placeholder"
+            [innerHTML]="environment.canBeDeployed.reason"
+          ></p>
+        </div>
+        <div class="environemt__state">
+          <p
+            *ngIf="environment.deploymentState"
+            class="environment__state-tag"
+            [ngClass]="getStateTagCssClass(environment.deploymentState)"
+          >
+            {{ getDeploymentStateOutputText(environment.deploymentState) }}
+          </p>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</mat-dialog-content>
+
+<div mat-dialog-actions align="end">
+  <button
+    type="button"
+    mat-button
+    mat-dialog-close
+    color="primary"
+    [disabled]="isLoading"
+  >
+    Schließen
+  </button>
+</div>
+
+<div *ngIf="isLoading" class="dialog-progress">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>

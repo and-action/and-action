@@ -1,0 +1,9 @@
+@import '../../variables';
+
+:host {
+  display: block;
+}
+
+.commit-message {
+  word-break: break-word;
+}

@@ -1,6 +1,7 @@
 import { Ref } from '../core/repository';
 
 export interface RepositoryWithCommits {
+  id: string;
   name: string;
   owner: string;
   defaultBranchRef: Ref;
@@ -9,6 +10,7 @@ export interface RepositoryWithCommits {
 }
 
 export interface Commit {
+  id: string;
   oid: string;
   abbreviatedOid: string;
   commitUrl: string;
@@ -57,5 +59,4 @@ export interface Deployment {
   timestamp: Date;
   creator: { name: string; login: string };
   state: DeploymentState;
-  isLatestDeploymentForEnvironment: boolean;
 }

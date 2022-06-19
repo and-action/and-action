@@ -18,7 +18,8 @@
   padding: $space-m;
   border-radius: $default-border-radius;
   box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
-  flex: 1 1 10px;
+  width: 420px;
+  flex: 0 0 auto;
 
   &:not(:last-child) {
     margin-right: $space-m;

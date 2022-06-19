@@ -4,12 +4,14 @@ import {
   Deployment,
   DeploymentState,
   deploymentStateOutputTextMapping,
+  RepositoryWithCommits,
 } from '../commits-dashboard/commits-dashboard-models';
 import { DatePipe } from '@angular/common';
 import { StatusTagStatus } from '../status-tag/status-tag-status';
 import { StatusTagColor } from '../status-tag/status-tag-color';
-
-const maxCommitMessageLength = 100;
+import { MatDialog } from '@angular/material/dialog';
+import { DeployCommitDialogComponent } from '../deploy-commit-dialog/deploy-commit-dialog.component';
+import { getDeploymentEnvironmentColors } from '../status-tag/status-tag-utils';
 
 @Component({
   selector: 'ana-commits-list',
@@ -17,40 +19,21 @@ const maxCommitMessageLength = 100;
   styleUrls: ['./commits-list.component.scss'],
 })
 export class CommitsListComponent {
-  @Input() repositoryUrl?: string;
-
-  private myCommits: Commit[] = [];
+  private myRepository?: RepositoryWithCommits;
 
   private environmentColorMapping: {
     [environment: string]: StatusTagColor;
   } = {};
 
-  get commits() {
-    return this.myCommits;
+  constructor(private dialog: MatDialog) {}
+
+  get repository() {
+    return this.myRepository;
   }
 
-  @Input() set commits(commits: Commit[]) {
-    this.myCommits = commits;
-    this.createDeploymentEnvironmentCssClassMapping();
-  }
-
-  getCommitMessage(commitMessage: string) {
-    return this.highlightTicketNumber(this.addLineBreaks(commitMessage));
-  }
-
-  getAbbreviatedCommitMessage(commitMessage: string) {
-    if (commitMessage.length > maxCommitMessageLength) {
-      commitMessage = `${commitMessage.substr(0, maxCommitMessageLength)}...`;
-    }
-    const message = this.getCommitMessage(commitMessage);
-    return message.split('\n')[0];
-  }
-
-  getCommitMessageTooltip(commitMessage: string) {
-    return commitMessage.includes('\n') ||
-      commitMessage.length > maxCommitMessageLength
-      ? this.getCommitMessage(commitMessage)
-      : undefined;
+  @Input() set repository(repository: RepositoryWithCommits | undefined) {
+    this.myRepository = repository;
+    this.environmentColorMapping = this.getDeploymentEnvironmentColors();
   }
 
   getDeploymentStatusForStatusTag(deployment: Deployment) {
@@ -82,38 +65,22 @@ export class CommitsListComponent {
     ${deploymentStateOutputTextMapping[deployment.state]}`;
   }
 
-  private createDeploymentEnvironmentCssClassMapping() {
-    const environments = this.commits.flatMap((commit) =>
-      commit.deployments.flatMap((deployment) => deployment.environment)
-    );
+  isDeploymentActive(deployment: Deployment) {
+    return deployment.state === DeploymentState.ACTIVE;
+  }
 
-    const set = new Set(environments);
-    let index = 0;
-    const colors = [
-      StatusTagColor.GREEN,
-      StatusTagColor.YELLOW,
-      StatusTagColor.BLUE,
-      StatusTagColor.RED,
-      StatusTagColor.GRAY,
-    ];
-
-    set.forEach((environment) => {
-      this.environmentColorMapping[environment] = colors[index % colors.length];
-      index += 1;
+  openDeployDialog(commitToDeploy: Commit, commits: Commit[]) {
+    this.dialog.open(DeployCommitDialogComponent, {
+      data: { repository: this.repository, commitToDeploy, commits },
+      width: '600px',
     });
   }
 
-  private highlightTicketNumber(commitMessage: string) {
-    const match = /MD-[0-9]{4}/.exec(commitMessage);
-    return match
-      ? commitMessage.replace(
-          match[0],
-          `<span class="u-text-bold u-nowrap">${match[0]}</span>`
-        )
-      : commitMessage;
-  }
-
-  private addLineBreaks(commitMessage: string) {
-    return commitMessage.replace(/\//g, '/<wbr>');
+  private getDeploymentEnvironmentColors() {
+    const environments =
+      this.myRepository?.commits.flatMap((commit) =>
+        commit.deployments.flatMap((deployment) => deployment.environment)
+      ) ?? [];
+    return getDeploymentEnvironmentColors(environments);
   }
 }

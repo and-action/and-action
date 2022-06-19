@@ -10,6 +10,7 @@ describe('ActionsDashboardItemComponent', () => {
   let fixture: ComponentFixture<ActionsDashboardItemComponent>;
 
   const repositoryMock: Repository = {
+    id: 'R_123',
     name: 'repo',
     owner: { login: 'owner' },
     nameWithOwner: 'owner/repo',

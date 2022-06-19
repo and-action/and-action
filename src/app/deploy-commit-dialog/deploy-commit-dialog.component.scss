@@ -1,0 +1,89 @@
+@import '../../colors';
+@import '../../variables';
+
+:host {
+  position: relative;
+}
+
+.environment-list {
+  display: grid;
+  grid: auto / auto auto auto auto;
+  align-items: center;
+  justify-items: start;
+  gap: $space-m $space-s;
+}
+
+.dialog-progress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.environment {
+  &__tag {
+    border-radius: 18px;
+    font-size: $font-size-l;
+    color: $white;
+    padding: $space-xs $space-s;
+    margin: 0;
+    justify-self: stretch;
+    text-align: center;
+  }
+
+  &__action {
+    justify-self: stretch;
+  }
+
+  &__text {
+    p {
+      // TODO: margin bottom for p tags should be set globally to 0.
+      margin: 0;
+    }
+  }
+
+  &__state {
+    align-self: center;
+  }
+
+  &__state-tag {
+    font-size: $font-size-xs;
+    padding: 0 $space-xs;
+    color: $color-neutral;
+    border: 1px solid $color-neutral;
+    border-radius: 12px;
+    // TODO: margin bottom for p tags should be set globally to 0.
+    margin: 0;
+
+    &--active {
+      color: $color-success;
+      border-color: $color-success;
+    }
+
+    &--error,
+    &--failure {
+      color: $color-error;
+      border-color: $color-error;
+    }
+
+    &--in_progress,
+    &--pending,
+    &--queued,
+    &--waiting {
+      color: $color-in-progress;
+      border-color: $color-in-progress;
+    }
+
+    &--inactive,
+    &--abandoned,
+    &--destroyed {
+      color: $color-neutral;
+      border-color: $color-neutral;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { WorkflowWithWorkflowRuns } from './workflow';
 
 export interface Repository {
+  id: string;
   name: string;
   owner: { login: string };
   nameWithOwner: string;
