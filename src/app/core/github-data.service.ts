@@ -368,7 +368,10 @@ export class GithubDataService {
         map((queryResult) =>
           queryResult.data.node.checkSuites.nodes.every(
             (node) =>
-              node.status === 'COMPLETED' && node.conclusion === 'SUCCESS'
+              // TODO: Create enum for status and conclusion
+              node.status === 'COMPLETED' &&
+              // TODO: Don't allow skipped, but instead add excluded-workflows to andaction.yml.
+              ['SUCCESS', 'SKIPPED'].includes(node.conclusion)
           )
         )
       );
