@@ -36,8 +36,16 @@ interface RepositoryQueryResult {
 }
 
 interface CheckSuiteNode {
+  app: {
+    name: string;
+  };
+  workflowRun?: {
+    workflow: {
+      name: string;
+    };
+  };
   status: string;
-  conclusion: string;
+  conclusion?: string;
 }
 
 interface CommitStateQueryResult {
@@ -194,6 +202,14 @@ const commitStateQuery = gql`
         checkSuites(last: 100) {
           totalCount
           nodes {
+            app {
+              name
+            }
+            workflowRun {
+              workflow {
+                name
+              }
+            }
             status
             conclusion
           }
@@ -355,7 +371,7 @@ export class GithubDataService {
     );
   }
 
-  loadCommitState(id: string) {
+  loadCommitState(id: string, andActionConfig: AndActionConfig) {
     return this.apollo
       .watchQuery<CommitStateQueryResult>({
         query: commitStateQuery,
@@ -366,13 +382,18 @@ export class GithubDataService {
       })
       .valueChanges.pipe(
         map((queryResult) =>
-          queryResult.data.node.checkSuites.nodes.every(
-            (node) =>
-              // TODO: Create enum for status and conclusion
-              node.status === 'COMPLETED' &&
-              // TODO: Don't allow skipped, but instead add excluded-workflows to andaction.yml.
-              ['SUCCESS', 'SKIPPED'].includes(node.conclusion)
-          )
+          queryResult.data.node.checkSuites.nodes
+            .filter(
+              (checkSuite) =>
+                !andActionConfig.deployment?.['excluded-workflows']?.includes(
+                  checkSuite.workflowRun?.workflow.name ?? checkSuite.app.name
+                )
+            )
+            .every(
+              (node) =>
+                // TODO: Create enum for status and conclusion
+                node.status === 'COMPLETED' && node.conclusion === 'SUCCESS'
+            )
         )
       );
   }
@@ -401,7 +422,16 @@ export class GithubDataService {
           const repositoryConfig = getConfig(
             queryResult.data.repositoryConfig?.object?.text
           );
-          return { ...organisationConfig, ...repositoryConfig };
+          return {
+            actions: {
+              ...organisationConfig?.actions,
+              ...repositoryConfig?.actions,
+            },
+            deployment: {
+              ...organisationConfig?.deployment,
+              ...repositoryConfig?.deployment,
+            },
+          };
         })
       );
   }
