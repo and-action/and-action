@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GithubDataService } from '../core/github-data.service';
-import { flatMap, map, mergeMap, tap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Organization } from '../core/organization';
 import { GithubViewer } from '../core/github-viewer';
@@ -25,7 +25,7 @@ export class ActionsDashboardComponent implements OnInit {
     this.viewerAndOrganizations$ = this.githubDataService
       .loadOrganizationsWithSelectedRepositories()
       .pipe(
-        flatMap((organizations) =>
+        mergeMap((organizations) =>
           this.githubDataService
             .pollWorkflowRuns(organizations)
             .pipe(

@@ -5,7 +5,7 @@ import { Repository } from './repository';
 import { Organization } from './organization';
 import { GithubViewer } from './github-viewer';
 import { forkJoin, from, Observable, of, timer } from 'rxjs';
-import { catchError, flatMap, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Workflow } from './workflow';
 import { WorkflowRun } from './workflow-run';
@@ -17,7 +17,6 @@ import {
 import { AndActionDataService } from './and-action-data.service';
 import YAML from 'yaml';
 import { AndActionConfig } from './and-action-config';
-import { EmptyObject } from 'apollo-angular/types';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { DeploymentType } from '../deploy-commit-dialog/deployment-type';
 
@@ -244,10 +243,7 @@ const andActionConfigsQuery = gql`
   providedIn: 'root',
 })
 export class GithubDataService {
-  private repositoryCommitsQueryRef = new Map<
-    string,
-    QueryRef<any, EmptyObject>
-  >();
+  private repositoryCommitsQueryRef = new Map<string, QueryRef<any>>();
 
   constructor(
     private apollo: Apollo,
@@ -475,7 +471,7 @@ export class GithubDataService {
     const sixtySecondsInMillis = 60 * 1000;
 
     return timer(0, sixtySecondsInMillis).pipe(
-      flatMap(() =>
+      mergeMap(() =>
         forkJoin(
           organizations.map((organization) =>
             this.loadRepositoryWorkflowsWithWorkflowRuns(organization).pipe(
@@ -505,7 +501,7 @@ export class GithubDataService {
           )
           .sort((a, b) => a.name.localeCompare(b.name))
       ),
-      flatMap((workflows) =>
+      mergeMap((workflows) =>
         workflows.length > 0
           ? forkJoin(
               workflows.map((workflow) =>

@@ -7,11 +7,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 14
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
       - run: npm ci
       - run: npm audit || true
       - run: npm test
@@ -22,15 +22,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 14
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
       - run: npm ci
       - run: npm run build -- --configuration=dev
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: app-bundle
           path: dist
@@ -49,9 +49,9 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: app-bundle
-      - name: Use Node.js 14
-        uses: actions/setup-node@v1
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
       - run: npm install -g netlify-cli
       - run: netlify deploy -d app-bundle --prod -m "Deploy ${{ github.ref }} Commit ${{ github.sha }}"
