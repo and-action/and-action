@@ -51,7 +51,9 @@ describe('DeployCommitDialogService', () => {
     const githubDataService = TestBed.inject(GithubDataService);
     spyOn(githubDataService, 'loadAndActionConfigs').and.returnValue(
       of({
-        environments: ['dev', 'test', 'live'],
+        deployment: {
+          environments: ['dev', 'test', 'live'],
+        },
       })
     );
   });

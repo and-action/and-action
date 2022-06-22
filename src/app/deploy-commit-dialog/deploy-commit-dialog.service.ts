@@ -41,10 +41,10 @@ export class DeployCommitDialogService {
       .loadAndActionConfigs(repositoryOwner, repositoryName)
       .pipe(
         map((config) => {
-          if (!config.environments) {
+          if (!config.deployment?.environments) {
             throw new NoEnvironmentConfigFoundError();
           }
-          return config.environments;
+          return config.deployment.environments;
         }),
         map((environments) =>
           environments.map(
@@ -107,7 +107,14 @@ export class DeployCommitDialogService {
       );
 
     return combineLatest([
-      this.githubDataService.loadCommitState(commitId),
+      this.githubDataService
+        .loadAndActionConfigs(repositoryOwner, repositoryName)
+        .pipe(
+          mergeMap((andActionConfig) =>
+            this.githubDataService.loadCommitState(commitId, andActionConfig)
+          )
+        ),
+
       isCurrentEnvironments$,
     ]).pipe(
       mergeMap(([isCommitStatusSuccess, isCurrentEnvironments]) => {

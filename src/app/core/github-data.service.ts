@@ -5,7 +5,7 @@ import { Repository } from './repository';
 import { Organization } from './organization';
 import { GithubViewer } from './github-viewer';
 import { forkJoin, from, Observable, of, timer } from 'rxjs';
-import { catchError, flatMap, map } from 'rxjs/operators';
+import { catchError, flatMap, map, mergeMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Workflow } from './workflow';
 import { WorkflowRun } from './workflow-run';
@@ -36,8 +36,16 @@ interface RepositoryQueryResult {
 }
 
 interface CheckSuiteNode {
+  app: {
+    name: string;
+  };
+  workflowRun?: {
+    workflow: {
+      name: string;
+    };
+  };
   status: string;
-  conclusion: string;
+  conclusion?: string;
 }
 
 interface CommitStateQueryResult {
@@ -194,6 +202,14 @@ const commitStateQuery = gql`
         checkSuites(last: 100) {
           totalCount
           nodes {
+            app {
+              name
+            }
+            workflowRun {
+              workflow {
+                name
+              }
+            }
             status
             conclusion
           }
@@ -292,11 +308,18 @@ export class GithubDataService {
   loadRepositoryWorkflowsWithWorkflowRuns(organization: Organization) {
     return forkJoin(
       organization.repositories.map((repository) =>
-        this.loadDefaultBranchWorkflowRuns(repository).pipe(
-          map((workflowsWithWorkflowRuns) => ({
-            ...repository,
-            workflowsWithWorkflowRuns,
-          }))
+        this.loadAndActionConfigs(repository.owner.login, repository.name).pipe(
+          mergeMap((andActionConfig) =>
+            this.loadDefaultBranchWorkflowRuns(
+              repository,
+              andActionConfig
+            ).pipe(
+              map((workflowsWithWorkflowRuns) => ({
+                ...repository,
+                workflowsWithWorkflowRuns,
+              }))
+            )
+          )
         )
       )
     );
@@ -355,7 +378,7 @@ export class GithubDataService {
     );
   }
 
-  loadCommitState(id: string) {
+  loadCommitState(id: string, andActionConfig: AndActionConfig) {
     return this.apollo
       .watchQuery<CommitStateQueryResult>({
         query: commitStateQuery,
@@ -366,13 +389,18 @@ export class GithubDataService {
       })
       .valueChanges.pipe(
         map((queryResult) =>
-          queryResult.data.node.checkSuites.nodes.every(
-            (node) =>
-              // TODO: Create enum for status and conclusion
-              node.status === 'COMPLETED' &&
-              // TODO: Don't allow skipped, but instead add excluded-workflows to andaction.yml.
-              ['SUCCESS', 'SKIPPED'].includes(node.conclusion)
-          )
+          queryResult.data.node.checkSuites.nodes
+            .filter(
+              (checkSuite) =>
+                !andActionConfig.deployment?.['excluded-workflows']?.includes(
+                  checkSuite.workflowRun?.workflow.name ?? checkSuite.app.name
+                )
+            )
+            .every(
+              (node) =>
+                // TODO: Create enum for status and conclusion
+                node.status === 'COMPLETED' && node.conclusion === 'SUCCESS'
+            )
         )
       );
   }
@@ -382,7 +410,7 @@ export class GithubDataService {
     name: string
   ): Observable<AndActionConfig> {
     return this.apollo
-      .watchQuery<any>({
+      .query<any>({
         query: andActionConfigsQuery,
         variables: {
           owner,
@@ -390,7 +418,7 @@ export class GithubDataService {
         },
         errorPolicy: 'ignore',
       })
-      .valueChanges.pipe(
+      .pipe(
         map((queryResult) => {
           const getConfig = (yamlText?: string) =>
             yamlText ? YAML.parse(yamlText) : {};
@@ -401,7 +429,16 @@ export class GithubDataService {
           const repositoryConfig = getConfig(
             queryResult.data.repositoryConfig?.object?.text
           );
-          return { ...organisationConfig, ...repositoryConfig };
+          return {
+            actions: {
+              ...organisationConfig?.actions,
+              ...repositoryConfig?.actions,
+            },
+            deployment: {
+              ...organisationConfig?.deployment,
+              ...repositoryConfig?.deployment,
+            },
+          };
         })
       );
   }
@@ -453,10 +490,20 @@ export class GithubDataService {
     );
   }
 
-  private loadDefaultBranchWorkflowRuns(repository: Repository) {
+  private loadDefaultBranchWorkflowRuns(
+    repository: Repository,
+    andActionConfig: AndActionConfig
+  ) {
     return this.loadWorkflows(repository.nameWithOwner).pipe(
       map((workflowsResult) =>
-        workflowsResult.workflows.sort((a, b) => a.name.localeCompare(b.name))
+        workflowsResult.workflows
+          .filter(
+            (workflow) =>
+              !andActionConfig.actions?.['excluded-workflows']?.includes(
+                workflow.name
+              )
+          )
+          .sort((a, b) => a.name.localeCompare(b.name))
       ),
       flatMap((workflows) =>
         workflows.length > 0
