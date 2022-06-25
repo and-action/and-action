@@ -88,6 +88,11 @@
   "engines": {
     "node": ">=10.13.0"
   },
+  "overrides": {
+    "apollo-angular": {
+      "@angular/core": "$@angular/core"
+    }
+  },
   "browserslist": [
     "defaults",
     "not IE 11"
