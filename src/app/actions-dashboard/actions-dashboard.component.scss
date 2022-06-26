@@ -46,19 +46,19 @@
   }
 }
 
-@media (max-width: 2048px) {
+@media (max-width: $max-width-desktop) {
   .repository-list {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: $max-width-tablet) {
   .repository-list {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: $max-width-mobile) {
   .repository-list {
     grid-template-columns: 1fr;
   }

@@ -36,6 +36,8 @@ import { SnackBarComponent } from './snack-bar/snack-bar.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DeployCommitDialogComponent } from './deploy-commit-dialog/deploy-commit-dialog.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -65,9 +67,11 @@ import { DeployCommitDialogComponent } from './deploy-commit-dialog/deploy-commi
     MatButtonModule,
     MatCheckboxModule,
     MatDialogModule,
+    MatDividerModule,
     MatIconModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatSidenavModule,
     MatSnackBarModule,
     MatToolbarModule,
   ],

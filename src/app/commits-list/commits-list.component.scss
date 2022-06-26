@@ -36,3 +36,11 @@
     }
   }
 }
+
+@media (pointer: coarse) {
+  .repository {
+    &__commit-deploy {
+      visibility: visible;
+    }
+  }
+}

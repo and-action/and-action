@@ -16,6 +16,7 @@
         the key "environments".
       </p>
     </ng-container>
+
     <div class="environment-list">
       <ng-container
         class="environment"
@@ -69,7 +70,8 @@
             [innerHTML]="environment.canBeDeployed.reason"
           ></p>
         </div>
-        <div class="environemt__state">
+
+        <div class="environment__state">
           <p
             *ngIf="environment.deploymentState"
             class="environment__state-tag"
@@ -78,6 +80,7 @@
             {{ getDeploymentStateOutputText(environment.deploymentState) }}
           </p>
         </div>
+        <mat-divider></mat-divider>
       </ng-container>
     </div>
   </ng-container>

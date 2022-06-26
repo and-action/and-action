@@ -78,6 +78,30 @@ ul {
   }
 }
 
+.u-margin-right {
+  &-xxs {
+    margin-right: $space-xxs;
+  }
+  &-xs {
+    margin-right: $space-xs;
+  }
+  &-s {
+    margin-right: $space-s;
+  }
+  &-m {
+    margin-right: $space-m;
+  }
+  &-l {
+    margin-right: $space-l;
+  }
+  &-xl {
+    margin-right: $space-xl;
+  }
+  &-xxl {
+    margin-right: $space-xxl;
+  }
+}
+
 .u-margin-bottom {
   &-xxs {
     margin-bottom: $space-xxs;

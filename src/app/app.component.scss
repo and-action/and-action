@@ -1,9 +1,15 @@
+@import '../colors';
 @import '../variables';
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+}
+
+.main-content {
+  background-color: $default-background-color;
 }
 
 .toolbar {
@@ -29,6 +35,7 @@
     background-color: transparent;
     border: none;
     color: white;
+    width: 108px;
 
     &::placeholder {
       color: white;
@@ -54,23 +61,73 @@
     margin-right: $space-xxl;
   }
 
-  &__button {
-    &--active {
-      background: rgba(0, 0, 0, 0.2);
-    }
-  }
-
   &__gap {
     flex: 1;
   }
 
   &__config-button {
-    display: inline-block;
-    transition: background-color 0.1s;
   }
 
-  &__config-button-icon {
-    width: $space-l;
-    height: $space-l;
+  &__filter-toggle-button {
+    display: none;
+
+    &--active {
+      background: rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &__menu-button {
+    display: none;
+  }
+
+  &__second-row {
+    display: none;
+
+    &--visible {
+      display: flex;
+    }
+  }
+}
+
+.nav-button {
+  &--active {
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+.mat-sidenav-container {
+  flex: 1;
+}
+
+.mat-sidenav {
+  padding: $space-xs;
+  .nav-button {
+    display: block;
+
+    &--active {
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .mat-divider {
+    margin: $space-s 0;
+  }
+}
+
+@media (max-width: $max-width-mobile-landscape) {
+  .toolbar {
+    &__config-button {
+      display: none;
+    }
+
+    &__filter-toggle-button,
+    &__menu-button {
+      display: inline-block;
+    }
+
+    .toolbar__first-row .toolbar__filter,
+    .nav-button {
+      display: none;
+    }
   }
 }
