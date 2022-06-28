@@ -2,10 +2,13 @@
 @import '../../variables';
 
 :host {
+  height: 100%;
   display: block;
 }
 
 .repositories {
+  height: 100%;
+  box-sizing: border-box;
   display: flex;
   align-items: flex-start;
   overflow-x: auto;
@@ -16,16 +19,25 @@
 .repository {
   box-sizing: border-box;
   background-color: $white;
-  padding: $space-m;
+  padding: 0 $space-m $space-m $space-m;
   border-radius: $default-border-radius;
   box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
   width: 420px;
   flex: 0 0 auto;
 
+  &__head {
+    position: sticky;
+    top: -$space-s;
+    padding-top: $space-m;
+    margin-bottom: $space-s;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 100;
+  }
+
   &__branch-name {
     display: flex;
     align-items: center;
-    margin-bottom: $space-l;
+    padding-bottom: $space-m;
   }
 
   &__branch-icon {
