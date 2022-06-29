@@ -1,19 +1,21 @@
-<mat-toolbar class="toolbar mat-elevation-z3" color="primary">
-  <span class="toolbar__icon">🎬</span>
-  <span class="toolbar__title">And Action</span>
+<ng-template #navButtons>
   <a
+    class="nav-button"
     mat-button
     [routerLink]="['/', appRouting.DASHBOARD]"
-    routerLinkActive="toolbar__button--active"
+    routerLinkActive="nav-button--active"
     >Actions</a
   >
   <a
+    class="nav-button"
     mat-button
     [routerLink]="['/', appRouting.COMMITS]"
-    routerLinkActive="toolbar__button--active"
+    routerLinkActive="nav-button--active"
     >Commits & Deployments</a
   >
-  <span class="toolbar__gap"></span>
+</ng-template>
+
+<ng-template #filterForm>
   <form>
     <div class="toolbar__filter">
       <mat-icon class="toolbar__filter-icon">filter_alt</mat-icon>
@@ -35,14 +37,63 @@
       </button>
     </div>
   </form>
-  <span class="toolbar__gap"></span>
-  <a
-    mat-button
-    class="toolbar__config-button"
-    [routerLink]="['/', appRouting.DASHBOARD_CONFIG]"
-  >
-    <mat-icon>settings</mat-icon>
-  </a></mat-toolbar
->
+</ng-template>
 
-<router-outlet></router-outlet>
+<mat-toolbar class="toolbar mat-elevation-z3" color="primary">
+  <mat-toolbar-row class="toolbar__first-row">
+    <span class="toolbar__icon">🎬</span>
+    <span class="toolbar__title">And Action</span>
+
+    <ng-container *ngTemplateOutlet="navButtons"></ng-container>
+
+    <span class="toolbar__gap"></span>
+
+    <ng-container *ngTemplateOutlet="filterForm"></ng-container>
+
+    <span class="toolbar__gap"></span>
+
+    <button
+      mat-button
+      aria-pressed="true"
+      class="toolbar__filter-toggle-button"
+      [ngClass]="{
+        'toolbar__filter-toggle-button--active': isFilterToggleButtonActive
+      }"
+      (click)="toggleMobileRepositoryFilterForm()"
+    >
+      <mat-icon>filter_alt</mat-icon>
+    </button>
+    <a
+      mat-button
+      class="toolbar__config-button"
+      [routerLink]="['/', appRouting.DASHBOARD_CONFIG]"
+    >
+      <mat-icon>settings</mat-icon>
+    </a>
+    <button mat-button class="toolbar__menu-button" (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar-row>
+  <mat-toolbar-row
+    class="toolbar__second-row"
+    [ngClass]="{ 'toolbar__second-row--visible': isFilterToggleButtonActive }"
+  >
+    <span class="toolbar__gap"></span>
+    <ng-container *ngTemplateOutlet="filterForm"></ng-container>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav position="end" [autoFocus]="false">
+    <ng-container *ngTemplateOutlet="navButtons"></ng-container>
+    <mat-divider></mat-divider>
+    <a mat-button [routerLink]="['/', appRouting.DASHBOARD_CONFIG]">
+      <mat-icon class="u-margin-right-xs">settings</mat-icon>
+      <span>Dashboard Settings</span>
+    </a>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

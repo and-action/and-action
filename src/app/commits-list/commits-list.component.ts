@@ -73,6 +73,7 @@ export class CommitsListComponent {
     this.dialog.open(DeployCommitDialogComponent, {
       data: { repository: this.repository, commitToDeploy, commits },
       width: '600px',
+      autoFocus: false,
     });
   }
 

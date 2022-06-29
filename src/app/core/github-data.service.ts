@@ -381,6 +381,7 @@ export class GithubDataService {
         variables: {
           id,
         },
+        fetchPolicy: 'network-only',
         errorPolicy: 'ignore',
       })
       .valueChanges.pipe(

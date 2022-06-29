@@ -18,21 +18,27 @@
       <span>{{ repository.defaultBranchRef.name }}</span>
     </a>
     <ul class="workflow-list">
-      <li
+      <ng-container
         *ngFor="
           let workflowWithWorkflowRuns of repository.workflowsWithWorkflowRuns
         "
-        class="workflow-list__item"
       >
-        <ana-status-tag
-          [name]="workflowWithWorkflowRuns.workflow.name"
-          [link]="workflowWithWorkflowRuns.workflowRuns?.[0]?.html_url"
-          [status]="
-            getStatusTagStatus(workflowWithWorkflowRuns.workflowRuns[0])
-          "
-          [color]="getStatusTagColor(workflowWithWorkflowRuns.workflowRuns[0])"
-        ></ana-status-tag>
-      </li>
+        <li
+          *ngIf="workflowWithWorkflowRuns.workflowRuns?.[0]"
+          class="workflow-list__item"
+        >
+          <ana-status-tag
+            [name]="workflowWithWorkflowRuns.workflow.name"
+            [link]="workflowWithWorkflowRuns.workflowRuns[0].html_url"
+            [status]="
+              getStatusTagStatus(workflowWithWorkflowRuns.workflowRuns[0])
+            "
+            [color]="
+              getStatusTagColor(workflowWithWorkflowRuns.workflowRuns[0])
+            "
+          ></ana-status-tag>
+        </li>
+      </ng-container>
     </ul>
   </ng-container>
 

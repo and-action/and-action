@@ -4,23 +4,25 @@
 >
   <ng-container *ngFor="let repository of repositories">
     <div class="repository">
-      <h2>
-        <a [href]="repository.url" target="_blank" rel="noopener">
-          {{ repository.name }}
-        </a>
-      </h2>
-      <a
-        [href]="repository.url"
-        target="_blank"
-        rel="noopener"
-        class="repository__branch-name"
-      >
-        <svg class="repository__branch-icon">
-          <use xlink:href="#icon-git-branch"></use>
-        </svg>
+      <div class="repository__head">
+        <h2>
+          <a [href]="repository.url" target="_blank" rel="noopener">
+            {{ repository.name }}
+          </a>
+        </h2>
+        <a
+          [href]="repository.url"
+          target="_blank"
+          rel="noopener"
+          class="repository__branch-name"
+        >
+          <svg class="repository__branch-icon">
+            <use xlink:href="#icon-git-branch"></use>
+          </svg>
 
-        <span>{{ repository.defaultBranchRef.name }}</span>
-      </a>
+          <span>{{ repository.defaultBranchRef.name }}</span>
+        </a>
+      </div>
 
       <div class="u-flex">
         <ana-commits-graph [commits]="repository.commits"></ana-commits-graph>

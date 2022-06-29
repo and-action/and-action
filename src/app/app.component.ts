@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { LoginService } from './core/login.service';
 import { AppRouting } from './app-routing';
 import { environment } from '../environments/environment';
 import { EnvironmentName } from '../environments/environment-name';
 import { StatusIconService } from './status-icon.service';
 import { RepositoryFilterService } from './repository-filter.service';
+import { NavigationStart, Router } from '@angular/router';
+import { filter } from 'rxjs';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'ana-root',
@@ -12,15 +15,22 @@ import { RepositoryFilterService } from './repository-filter.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  @ViewChild(MatSidenav) sideNav?: MatSidenav;
   appRouting = AppRouting;
 
+  isFilterToggleButtonActive = false;
   repositoryFilterValue = '';
 
   constructor(
     private loginService: LoginService,
     private statusIconService: StatusIconService,
-    private repositoryFilterService: RepositoryFilterService
-  ) {}
+    private repositoryFilterService: RepositoryFilterService,
+    router: Router
+  ) {
+    router.events
+      .pipe(filter((event) => event instanceof NavigationStart))
+      .subscribe(() => this.sideNav?.close());
+  }
 
   ngOnInit() {
     const queryParams = this.getUrlParams(window.location.href);
@@ -42,6 +52,14 @@ export class AppComponent implements OnInit {
 
   onRepositoryFilterChange(value: string) {
     this.repositoryFilterService.setValue(value);
+  }
+
+  toggleMobileRepositoryFilterForm() {
+    this.isFilterToggleButtonActive = !this.isFilterToggleButtonActive;
+    if (!this.isFilterToggleButtonActive) {
+      this.repositoryFilterValue = '';
+      this.onRepositoryFilterChange(this.repositoryFilterValue);
+    }
   }
 
   private initGoogleTagManager() {

@@ -2,15 +2,21 @@
 @import '../../variables';
 
 :host {
+  display: block;
   position: relative;
 }
 
 .environment-list {
   display: grid;
-  grid: auto / auto auto auto auto;
+  grid-template-columns: repeat(4, auto);
   align-items: center;
   justify-items: start;
   gap: $space-m $space-s;
+
+  .mat-divider {
+    grid-column: 1 / span 4;
+    width: 100%;
+  }
 }
 
 .dialog-progress {
@@ -48,7 +54,7 @@
   }
 
   &__state {
-    align-self: center;
+    justify-self: center;
   }
 
   &__state-tag {
@@ -84,6 +90,29 @@
     &--destroyed {
       color: $color-neutral;
       border-color: $color-neutral;
+    }
+  }
+}
+
+@media (max-width: $max-width-mobile) {
+  .environment-list {
+    grid-template-rows: auto;
+    grid-template-columns: auto auto auto;
+    grid-auto-flow: dense;
+    align-items: flex-start;
+
+    .mat-divider {
+      grid-column: 1 / span 3;
+    }
+  }
+
+  .environment {
+    &__action {
+      grid-column: 2 / span 2;
+    }
+
+    &__text {
+      grid-column: 2 / span 2;
     }
   }
 }
