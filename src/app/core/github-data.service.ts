@@ -457,13 +457,9 @@ export class GithubDataService {
         description: 'Deployed via AndAction',
         auto_merge: false,
         production_environment: ['live', 'production'].includes(environment),
-        // TODO: Remove JSON.stringify and key `ghd` as soon as this is compatible with mm repositories.
-        payload: JSON.stringify({
+        payload: {
           deployment_type: deploymentType,
-          ghd: {
-            type: deploymentType,
-          },
-        }),
+        },
       }
     );
   }
