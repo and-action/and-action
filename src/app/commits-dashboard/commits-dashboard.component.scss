@@ -29,15 +29,15 @@
     position: sticky;
     top: -$space-s;
     padding-top: $space-m;
+    padding-bottom: $space-m;
     margin-bottom: $space-s;
     background-color: rgba(255, 255, 255, 0.95);
     z-index: 100;
   }
 
   &__branch-name {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    padding-bottom: $space-m;
   }
 
   &__branch-icon {
