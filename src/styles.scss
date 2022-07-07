@@ -153,6 +153,7 @@ ul {
   padding: $space-xxs $space-xs;
   border-radius: $default-border-radius;
   opacity: 0.9;
+  z-index: 200;
 
   p:last-child {
     margin: 0;
