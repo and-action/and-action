@@ -40,7 +40,10 @@ export class CommitsDashboardComponent implements OnInit {
             map((filterValue) =>
               repositories.filter(
                 (repository) =>
-                  !filterValue || repository.name.includes(filterValue)
+                  !filterValue ||
+                  repository.name
+                    .toLowerCase()
+                    .includes(filterValue.toLowerCase())
               )
             )
           )
