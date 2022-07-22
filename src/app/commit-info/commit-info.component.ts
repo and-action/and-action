@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Commit } from '../commits-dashboard/commits-dashboard-models';
+import { DEFAULT_DATE_FORMAT } from '../constants';
 
 export const maxCommitMessageLength = 100;
 
@@ -11,6 +12,8 @@ export const maxCommitMessageLength = 100;
 export class CommitInfoComponent {
   @Input() commit?: Commit;
   @Input() repositoryUrl?: string;
+
+  dateFormat = DEFAULT_DATE_FORMAT;
 
   private static highlightTicketNumber(commitMessage: string) {
     const match = /MD-[0-9]{4}/.exec(commitMessage);

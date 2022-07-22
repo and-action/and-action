@@ -61,7 +61,7 @@
         <div class="environment__text">
           <p *ngIf="environment.deploymentDate">
             Deploy triggered on
-            {{ environment.deploymentDate | date: 'yyyy-MM-dd' }} at
+            {{ environment.deploymentDate | date: dateFormat }} at
             {{ environment.deploymentDate | date: 'H:mm:ss' }}
           </p>
           <p

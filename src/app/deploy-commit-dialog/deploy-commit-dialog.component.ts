@@ -20,6 +20,7 @@ import {
   NoEnvironmentConfigFoundError,
 } from './deploy-commit-errors';
 import { DeploymentType } from './deployment-type';
+import { DEFAULT_DATE_FORMAT } from '../constants';
 
 export interface DialogData {
   repository: RepositoryWithCommits;
@@ -42,6 +43,7 @@ export class DeployCommitDialogComponent implements OnInit {
   } = {};
 
   deploymentType = DeploymentType;
+  dateFormat = DEFAULT_DATE_FORMAT;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: DialogData,
