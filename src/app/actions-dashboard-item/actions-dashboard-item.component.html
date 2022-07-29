@@ -1,7 +1,5 @@
 <h3 class="title">
-  <a [routerLink]="['/', appRouting.COMMITS]">{{
-    repository?.name
-  }}</a>
+  <a [routerLink]="['/', appRouting.COMMITS]">{{ repository?.name }}</a>
 </h3>
 <ng-container *ngIf="repository && repository.workflowsWithWorkflowRuns">
   <ng-container *ngIf="repository.workflowsWithWorkflowRuns.length > 0">
