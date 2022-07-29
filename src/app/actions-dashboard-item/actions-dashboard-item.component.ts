@@ -5,6 +5,7 @@ import { WorkflowRunStatus } from '../core/workflow-run-status';
 import { StatusTagColor } from '../status-tag/status-tag-color';
 import { WorkflowRunConclusion } from '../core/workflow-run-conclusion';
 import { StatusTagStatus } from '../status-tag/status-tag-status';
+import { AppRouting } from '../app-routing';
 
 @Component({
   selector: 'ana-actions-dashboard-item',
@@ -13,6 +14,8 @@ import { StatusTagStatus } from '../status-tag/status-tag-status';
 })
 export class ActionsDashboardItemComponent {
   @Input() repository?: Repository;
+
+  appRouting = AppRouting;
 
   getStatusTagStatus(workflowRun?: WorkflowRun) {
     return workflowRun
