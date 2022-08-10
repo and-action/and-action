@@ -62,7 +62,7 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
       this.route.queryParams,
     ])
       .pipe(
-        tap(([_, queryParams]) => {
+        tap(([, queryParams]) => {
           if (queryParams.repository) {
             setTimeout(() => {
               this.document
