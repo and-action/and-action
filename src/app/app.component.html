@@ -16,27 +16,30 @@
 </ng-template>
 
 <ng-template #filterForm>
-  <form>
-    <div class="toolbar__filter">
-      <mat-icon class="toolbar__filter-icon">filter_alt</mat-icon>
-      <input
-        class="toolbar__filter-input"
-        placeholder="Repository Filter"
-        id="repository-filter"
-        name="repository-filter"
-        [(ngModel)]="repositoryFilterValue"
-        autocomplete="off"
-        (input)="onRepositoryFilterChange(repositoryFilterValue)"
-      />
-      <button
-        class="toolbar__filter-button"
-        aria-label="Clear"
-        (click)="repositoryFilterValue = ''; onRepositoryFilterChange('')"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-  </form>
+  <div class="toolbar__filter">
+    <mat-icon class="toolbar__filter-icon">filter_alt</mat-icon>
+    <input
+      #filterInput
+      class="toolbar__filter-input"
+      placeholder="Repository Filter"
+      id="repository-filter"
+      name="repository-filter"
+      [(ngModel)]="repositoryFilterValue"
+      autocomplete="off"
+      (input)="onRepositoryFilterChange(repositoryFilterValue)"
+    />
+    <button
+      class="toolbar__filter-button"
+      aria-label="Clear"
+      (click)="
+        repositoryFilterValue = '';
+        onRepositoryFilterChange('');
+        filterInput.focus()
+      "
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
 </ng-template>
 
 <mat-toolbar class="toolbar mat-elevation-z3" color="primary">

@@ -12,6 +12,7 @@ import { StatusTagColor } from '../status-tag/status-tag-color';
 import { MatDialog } from '@angular/material/dialog';
 import { DeployCommitDialogComponent } from '../deploy-commit-dialog/deploy-commit-dialog.component';
 import { getDeploymentEnvironmentColors } from '../status-tag/status-tag-utils';
+import { DEFAULT_DATE_TIME_FORMAT } from '../constants';
 
 @Component({
   selector: 'ana-commits-list',
@@ -60,7 +61,10 @@ export class CommitsListComponent {
     const creatorName = deployment.creator.name
       ? ` (${deployment.creator.name})`
       : '';
-    return `${datePipe.transform(deployment.timestamp, 'short')}
+    return `${datePipe.transform(
+      deployment.timestamp,
+      DEFAULT_DATE_TIME_FORMAT
+    )}
     ${deployment.creator.login}${creatorName}
     ${deploymentStateOutputTextMapping[deployment.state]}`;
   }

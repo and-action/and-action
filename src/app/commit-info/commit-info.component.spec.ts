@@ -40,7 +40,7 @@ describe('CommitInfoComponent', () => {
       'Merge pull request #1 from organisation/feature/MD-1234 commit for testing everything'
     );
     expect(commitInfosElement.nativeElement.textContent).toContain(
-      'd819c2b ● 2022-05-11 ● testuser'
+      'd819c2b • 2022-05-11 • testuser'
     );
   });
 

@@ -42,7 +42,10 @@ export class ActionsDashboardComponent implements OnInit {
                   ...viewerAndOrganization,
                   repositories: viewerAndOrganization.repositories.filter(
                     (repository) =>
-                      !filterValue || repository.name.includes(filterValue)
+                      !filterValue ||
+                      repository.name
+                        .toLowerCase()
+                        .includes(filterValue.toLowerCase())
                   ),
                 }))
                 .filter(

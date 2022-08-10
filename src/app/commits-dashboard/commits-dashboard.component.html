@@ -3,7 +3,7 @@
   class="repositories"
 >
   <ng-container *ngFor="let repository of repositories">
-    <div class="repository">
+    <div [id]="repository.name" class="repository">
       <div class="repository__head">
         <h2>
           <a [href]="repository.url" target="_blank" rel="noopener">
