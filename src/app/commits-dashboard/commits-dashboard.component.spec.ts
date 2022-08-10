@@ -7,6 +7,7 @@ import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { FormsModule } from '@angular/forms';
 import { GraphQLModule } from '../graphql.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CommitsDashboardComponent', () => {
   let component: CommitsDashboardComponent;
@@ -14,7 +15,12 @@ describe('CommitsDashboardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [GraphQLModule, FormsModule, HttpClientTestingModule],
+      imports: [
+        GraphQLModule,
+        FormsModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+      ],
       declarations: [CommitsDashboardComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

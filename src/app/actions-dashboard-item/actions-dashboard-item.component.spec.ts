@@ -4,6 +4,8 @@ import { ActionsDashboardItemComponent } from './actions-dashboard-item.componen
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Repository } from '../core/repository';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ActionsDashboardItemComponent', () => {
   let component: ActionsDashboardItemComponent;
@@ -24,8 +26,13 @@ describe('ActionsDashboardItemComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ApolloTestingModule, HttpClientTestingModule],
+      imports: [
+        ApolloTestingModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+      ],
       declarations: [ActionsDashboardItemComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
