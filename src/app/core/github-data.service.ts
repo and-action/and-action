@@ -456,6 +456,9 @@ export class GithubDataService {
         environment,
         description: 'Deployed via AndAction',
         auto_merge: false,
+        // Workflow runs are checked above. So deployments should not check contexts since it ignores
+        // excluded-workflows configured in AndAction config.
+        required_contexts: [],
         production_environment: ['live', 'production'].includes(environment),
         payload: {
           deployment_type: deploymentType,
