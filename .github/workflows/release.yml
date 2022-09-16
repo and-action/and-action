@@ -23,21 +23,31 @@ jobs:
           path: dist
 
   deploy-production:
-    name: Deploy to Netlify Production
+    name: Deploy to AWS S3 Production
     runs-on: ubuntu-latest
     needs: [build]
-    env:
-      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PROD }}
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: app-bundle
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
+          path: app-bundle
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          node-version: 16
-      - run: npm install -g netlify-cli
-      - run: netlify deploy -d app-bundle --prod -m "Deploy ${{ github.ref }}"
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
+      - name: Sync files with S3
+        env:
+          BUCKET_NAME: andaction-prod
+          METADATA_DIRECTIVE: --metadata-directive REPLACE
+        run: |
+          aws s3 sync app-bundle s3://$BUCKET_NAME --delete --no-progress
+          aws s3 cp s3://$BUCKET_NAME/index.html s3://$BUCKET_NAME/index.html --cache-control 'max-age=60, must-revalidate' --content-type 'text/html'
+          aws s3 cp s3://$BUCKET_NAME s3://$BUCKET_NAME $METADATA_DIRECTIVE --cache-control 'max-age=31536000' --recursive --exclude '*' --include '*.js' --content-type 'application/javascript'
+          aws s3 cp s3://$BUCKET_NAME s3://$BUCKET_NAME $METADATA_DIRECTIVE --cache-control 'max-age=31536000' --recursive --exclude '*' --include '*.css' --content-type 'text/css'
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_PROD }} --paths '/*'
