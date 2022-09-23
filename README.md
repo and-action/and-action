@@ -1,4 +1,277 @@
-# 🎬 AndAction
+# 🎬 And Action - Monitoring your GitHub Actions Workflows and Deployments
 
-Monitoring your GitHub Actions workflows and deployments.
-WebApp build with Angular and hosted on Netlify.
+And Action is a webapp to monitor your GitHub Actions available on [https://andaction.dev](https://andaction.dev).
+It allows you to keep track of the state of all repositories relevant to you in one single place.
+
+It shows the current state of GitHub Actions workflows for your repositories' main branches.
+Furthermore, it shows the commit history of your repositories along with information of deployments.
+Additionally, you can trigger GitHub deployments right from the UI.
+
+Please read the [documentation](#documentation) to learn more.
+
+
+## Documentation
+
+This documentation explains how to use And Action.
+
+
+### Prerequisites
+
+To run And Action you need a GitHub account to login.
+And Action needs the following permissions:
+
+* Organizations and teams: Read-only access
+* Repositories: Public and private
+
+
+### Getting Started
+
+Open your browser and navigate to [https://andaction.dev](https://andaction.dev).
+
+When logging in to And Action for the first time, you will be asked to select repositories that you want to monitor. The list shows all your personal repositories as well as organizations' repositories that you are member of. Use the checkboxes next to the repositories that you want to monitor and click save.
+
+Next, you will be taken to the Actions view containing all selected repositories.
+To change the repositories selection, click on the settings button on the right of the toolbar at the top.
+On mobile, open the menu via the hamburger button on the right of the toolbar at the top and click on "Settings".
+
+> **Note**  
+> Settings are saved in your browser. So they are not synchronized among your devices or different browsers.
+
+Now you are ready to start using the two views of And Action, namely [Actions](#actions) and [Commits & Deployments](#commits--deployments).
+
+
+### Actions
+
+The Actions view shows one card for every repository. Repositories are grouped by organization and are ordered by repository name. Each card contains the name of its main branch.
+
+A click on the repository name opens the [Commits & Deployments](#commits--deployments) view scrolled to the clicked repository.
+A click on the branch name opens a new browser tab navigating to GitHub.
+
+At the bottom of the card you see workflow tags. Each tag is a  workflow configured for the repository's main branch.
+A workflow tag is shown if at least one workflow run exists.
+
+The color of the tag and the icon on the right of the tag represent the status of the last workflow run. A click on the tag opens a new browser tab navigating to this workflow run on GitHub.
+
+A tag can have one of the following states:
+
+* Success
+* Error
+* In progress
+* Waiting
+* Skipped
+
+To find repositories even quicker, one can use the repository filter in the toolbar. It filters all repositories containing the entered text somewhere in the repository name. The filter is case-insensitive.
+
+#### Configuration options
+
+> **Note**  
+> For an in-depth explanation of And Action's configuration, please see [Configuration](#configuration).
+
+Options regarding the Actions view are set below the `actions` property in your `andaction.yml`.
+
+Currently, there is only one option for the Actions view: `excluded-workflows`
+
+##### excluded-workflows
+
+Maybe there are some workflows that you don't want to appear in the Actions view, e.g. workflows that run to do checks on feature branches or workflows that are scheduled and thus always run in the context of the main branch.
+
+To exclude them from the view, you can add a configuration section into your And Action config files.
+
+```yaml
+actions:
+  excluded-workflows:
+    - Manually deploy app
+```
+
+The items in the list are the names that you define within that workflow, it is **not** the filename.
+
+So the example above would exclude the following workflow:
+
+```yaml
+# manual-deployment.yml
+name: Manually deploy app
+
+on: [workflow_dispatch]
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+  # ...
+```
+
+
+### Commits & Deployments
+
+The Commits & Deployments view shows one column for every repository. Repositories are grouped by organization and are ordered by repository name. Each repository column contains the name of its main branch.
+
+A click on the repository or the branch name opens a new browser tab navigating to GitHub.
+
+Below the main branch's name you see the commit history of the latest commit in the main branch, i.e. you only see commits that were merged into the main branch at some point. Other open branches are **not** visible here.
+
+To find repositories even quicker, one can use the repository filter in the same way as in the Actions view.
+
+
+#### Deployments
+
+If a commit was deployed via GitHub's Deployment API, a tag is shown at the commit containing the name of the environment to which it was deployed along with the state of that deployment. The active deployments are shown as well as inactive deployments. Tags for inactive deployments are shown lighter then the active ones. Each environment has its own color. Those have no meaning. They are different so one can distinguish them easily. The icon on the right of the tag represents the status of the deployment.
+
+A tag can have one of the following states:
+
+* Success
+* Error
+* In progress
+* Waiting
+* Skipped
+
+
+#### Trigger a Deployment
+
+To trigger a deployment for a commit, you have to click on the deploy button (the rocket on the right of the commit info in the tree view). Using the deploy dialog is only possible if deploy environments are configured.
+
+Let's assume for now that you have configured three environments for deployments, namely `dev`, `test` and `live`.
+
+The deployment dialog shows all three environments together with their state. Deployments can only be triggered for one environment after the other. So in this example, you can deploy a commit to the dev environment first.
+
+If the deployment was successful, you can deploy to `test`. It is also possible to redeploy `dev`.
+
+A deployment to an environment is possible, when:
+
+* Deployments to previous environments are finished successfully.
+* There is no deployment in progress for the selected environment, even not for other commits.
+* The commit that should be deployed is in a successful state.
+* The commit history is the current state. Otherwise, you need to reload the view first.
+
+When triggering a deployment, And Action calls GitHub's REST API to create a deployment. Thus, a new deployment for the selected environment is created having the state pending. This in turn starts the GitHub Actions workflow having the trigger `deployment`. This workflow should do the actual deployment and additionally should take care of setting the correct state for the deployment, i.e. at the beginning it should set it to "in progress" and at the end it should set it to "success" or "failure".
+
+Example for a deployment workflow:
+```yaml
+# <repository_root>/.github/workflows/deploy.yaml
+name: Deploy
+on: [deployment]
+jobs:
+  deploy-heroku:
+    runs-on: ubuntu-22.04
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Set deployment state in progress
+        run: |
+          gh api \
+          --method POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/deployments/${{ github.event.deployment.id }}/statuses \
+          -f environment="${{ github.event.deployment.environment }}" \
+          -f state="in_progress" \
+
+      - uses: actions/checkout@v3
+
+      - name: Deploy
+        # Do the actual deployment to your server, e.g. AWS, Heroku, Netlify, Vercel etc.
+
+      - name: Set deployment state
+        if: always()
+        run: |
+          gh api \
+          --method POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/deployments/${{ github.event.deployment.id }}/statuses \
+          -f environment="${{ github.event.deployment.environment }}" \
+          -f state="${{ job.status == 'success' && 'success' || 'failure' }}" \
+```
+
+
+#### Configuration options
+
+> **Note**  
+> For an in-depth explanation of And Action's configuration, please see [Configuration](#configuration).
+
+Options regarding the Commits & Deployments view are set below the `deployment` property in your `andaction.yml`.
+
+Currently, there are two options regarding deployments: `environments` and `excluded-workflows`
+
+Example configuration for `deployment`:
+
+```yaml
+deployment:
+  environments:
+    - dev
+    - test
+    - live
+  excluded-workflows:
+    - Deploy
+    - Manually deploy app
+```
+
+
+##### environments
+
+This property contains a list of available environments in the order of deployment. So in the example above, there are three environments and deployments can only be triggered in the order `dev`, `test` and `live`.
+
+
+##### excluded-workflows
+
+To trigger a deployment for a commit, the commit must be in a successful state, i.e. all of its checks and workflow runs must be successful. It might happen that there are workflows configured that should not considered for that check, e.g. a workflow that manually deploys the app to some demo server.
+
+To exclude them from the view, list them as `excluded-workflows`.
+
+The items in the list are the names that you define within that workflow, it is **not** the filename.
+
+> **Note**  
+> The deploy workflow **must** be included in this list. Otherwise, you can never redeploy a commit that has a failed deployment.
+
+
+### Configuration
+
+The chapters above already explained the available properties for the configuration files.
+This chapter explains where And Action searches the configuration files and how they are combined.
+
+In general, you can set the configuration at organization level or at repository level.
+To set a configuration for the whole organization you need to create a repository `.github` within that organization. In that repository you must create the file `andaction.yml` in the `.github` directory.
+
+Example: Assuming that your organization has the name `my-org` you create the repository `my-org/.github`. Within that repository, you create the file `.github/andaction.yml`.
+
+Additionally, it is possible to set a configuration for a specific repository. To do so, you create the file `.github/andaction.yml` in the particular repository.
+
+If there is both, a configuration at organization level and a configuration at repository level, these files are combined and the repository's configuration takes precedence over the organization's configuration.
+
+The top level properties are merged. Their child properties are **not** merged. Properties from the organization's configuration are set and overwritten by the repository's property.
+
+#### Example Files
+
+```yaml
+# Organization configuration
+actions:
+  excluded-workflows:
+    - Manually deploy app
+
+deployment:
+  environments:
+    - dev
+    - test
+    - live
+  excluded-workflows:
+    - Manually deploy app
+```
+```yaml
+# Repository configuration
+deployment:
+  excluded-workflows:
+    - Deploy
+    - Test checks
+```
+```yaml
+# Resulting configuration
+actions:
+  excluded-workflows:
+    - Manually deploy app
+
+deployment:
+  environments:
+    - dev
+    - test
+    - live
+  excluded-workflows:
+    - Deploy
+    - Test checks
+```
