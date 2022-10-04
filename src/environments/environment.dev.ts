@@ -9,5 +9,7 @@ import { EnvironmentName } from './environment-name';
 export const environment: Environment = {
   name: EnvironmentName.DEV,
   isEnableProdMode: true,
+  loginApiUrl:
+    'https://uitbfeimjideciyc27ahwjjlca0xmixw.lambda-url.eu-central-1.on.aws',
   sentryDsn: null,
 };
