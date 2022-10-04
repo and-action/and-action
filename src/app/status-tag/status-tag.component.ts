@@ -14,7 +14,7 @@ export class StatusTagComponent {
   @Input() name?: string;
   @Input() color?: StatusTagColor;
   @Input() status?: StatusTagStatus;
-  @Input() link?: string;
+  @Input() link?: string | null;
 
   statusTagStatus = StatusTagStatus;
 }

@@ -181,6 +181,9 @@ const repositoryCommitsQuery = gql`
                           }
                         }
                         state
+                        latestStatus {
+                          logUrl
+                        }
                       }
                     }
                   }
@@ -564,6 +567,7 @@ export class GithubDataService {
               },
               environment: deployment.environment,
               state: deployment.state,
+              logUrl: deployment.latestStatus?.logUrl,
               timestamp: new Date(deployment.createdAt),
             })
           ),
