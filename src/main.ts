@@ -10,12 +10,8 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AppRouting } from './app/app-routing';
-import { ActionsDashboardComponent } from './app/actions-dashboard/actions-dashboard.component';
 import { LoginGuard } from './app/login.guard';
 import { RepositoryConfigGuard } from './app/repository-config.guard';
-import { ActionsDashboardConfigComponent } from './app/actions-dashboard-config/actions-dashboard-config.component';
-import { CommitsDashboardComponent } from './app/commits-dashboard/commits-dashboard.component';
-import { LoginComponent } from './app/login/login.component';
 import { SentryErrorHandler } from './app/sentry-error-handler';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpUnauthorizedInterceptor } from './app/http-unauthorized-interceptor';
@@ -32,22 +28,32 @@ if (environment.isEnableProdMode) {
 const routes: Routes = [
   {
     path: AppRouting.DASHBOARD,
-    component: ActionsDashboardComponent,
+    loadComponent: () =>
+      import('./app/actions-dashboard/actions-dashboard.component').then(
+        (mod) => mod.ActionsDashboardComponent
+      ),
     canActivate: [LoginGuard, RepositoryConfigGuard],
   },
   {
     path: AppRouting.DASHBOARD_CONFIG,
-    component: ActionsDashboardConfigComponent,
+    loadComponent: () =>
+      import(
+        './app/actions-dashboard-config/actions-dashboard-config.component'
+      ).then((mod) => mod.ActionsDashboardConfigComponent),
     canActivate: [LoginGuard],
   },
   {
     path: AppRouting.COMMITS,
-    component: CommitsDashboardComponent,
+    loadComponent: () =>
+      import('./app/commits-dashboard/commits-dashboard.component').then(
+        (mod) => mod.CommitsDashboardComponent
+      ),
     canActivate: [LoginGuard, RepositoryConfigGuard],
   },
   {
     path: AppRouting.LOGIN,
-    component: LoginComponent,
+    loadComponent: () =>
+      import('./app/login/login.component').then((mod) => mod.LoginComponent),
   },
   {
     path: '',
