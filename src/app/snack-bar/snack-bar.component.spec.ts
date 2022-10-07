@@ -7,7 +7,6 @@ import {
 } from '@angular/material/snack-bar';
 import { SnackBarType } from './snack-bar-type';
 import { SnackBarData } from './snack-bar-data';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('SnackBarComponent', () => {
   let component: SnackBarComponent;
@@ -20,13 +19,11 @@ describe('SnackBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SnackBarComponent],
       providers: [
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         { provide: MatSnackBarRef, useValue: { dismiss() {} } },
         { provide: MAT_SNACK_BAR_DATA, useValue: snackBarData },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 

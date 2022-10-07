@@ -4,19 +4,12 @@ import {
   DeployCommitDialogComponent,
   DialogData,
 } from './deploy-commit-dialog.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommitInfoComponent } from '../commit-info/commit-info.component';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   Commit,
   DeploymentState,
   RepositoryWithCommits,
 } from '../commits-dashboard/commits-dashboard-models';
-import { TooltipDirective } from '../tooltip.directive';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { GraphQLModule } from '../graphql.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -79,17 +72,7 @@ describe('DeployCommitDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        GraphQLModule,
-        HttpClientTestingModule,
-        MatDialogModule,
-        MatSnackBarModule,
-      ],
-      declarations: [
-        CommitInfoComponent,
-        DeployCommitDialogComponent,
-        TooltipDirective,
-      ],
+      imports: [GraphQLModule, HttpClientTestingModule, MatSnackBarModule],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         {
@@ -97,7 +80,6 @@ describe('DeployCommitDialogComponent', () => {
           useValue: getDialogData(),
         },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 

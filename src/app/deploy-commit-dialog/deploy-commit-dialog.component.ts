@@ -5,7 +5,11 @@ import {
   deploymentStateOutputTextMapping,
   RepositoryWithCommits,
 } from '../commits-dashboard/commits-dashboard-models';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { EMPTY, Observable, of, tap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { getDeploymentEnvironmentColors } from '../status-tag/status-tag-utils';
@@ -21,6 +25,12 @@ import {
 } from './deploy-commit-errors';
 import { DeploymentType } from './deployment-type';
 import { DEFAULT_DATE_FORMAT } from '../constants';
+import { CommitInfoComponent } from '../commit-info/commit-info.component';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 export interface DialogData {
   repository: RepositoryWithCommits;
@@ -29,6 +39,16 @@ export interface DialogData {
 }
 
 @Component({
+  standalone: true,
+  imports: [
+    CommonModule,
+    CommitInfoComponent,
+    MatButtonModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+  ],
   selector: 'ana-deploy-commit-dialog',
   templateUrl: './deploy-commit-dialog.component.html',
   styleUrls: ['./deploy-commit-dialog.component.scss'],

@@ -11,6 +11,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { CommitsGraphService } from './commits-graph.service';
 
 @Component({
+  standalone: true,
   selector: 'ana-commits-graph',
   templateUrl: './commits-graph.component.html',
   styleUrls: ['./commits-graph.component.scss'],

@@ -4,21 +4,12 @@ import {
   CommitInfoComponent,
   maxCommitMessageLength,
 } from './commit-info.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { getCommitMock } from '../../test-utils/data-mocks';
 import { By } from '@angular/platform-browser';
-import { TooltipDirective } from '../tooltip.directive';
 
 describe('CommitInfoComponent', () => {
   let component: CommitInfoComponent;
   let fixture: ComponentFixture<CommitInfoComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [CommitInfoComponent, TooltipDirective],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  });
 
   beforeEach(async () => {
     fixture = TestBed.createComponent(CommitInfoComponent);

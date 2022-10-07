@@ -1,10 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { Commit } from '../commits-dashboard/commits-dashboard-models';
 import { DEFAULT_DATE_FORMAT } from '../constants';
+import { CommonModule } from '@angular/common';
+import { TooltipDirective } from '../tooltip.directive';
 
 export const maxCommitMessageLength = 100;
 
 @Component({
+  standalone: true,
+  imports: [CommonModule, TooltipDirective],
   selector: 'ana-commit-info[repositoryUrl][commit]',
   templateUrl: './commit-info.component.html',
   styleUrls: ['./commit-info.component.scss'],

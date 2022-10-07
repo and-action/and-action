@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CommitsDashboardComponent } from './commits-dashboard.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { FormsModule } from '@angular/forms';
@@ -21,8 +20,6 @@ describe('CommitsDashboardComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
       ],
-      declarations: [CommitsDashboardComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

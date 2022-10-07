@@ -5,11 +5,28 @@ import { environment } from '../environments/environment';
 import { EnvironmentName } from '../environments/environment-name';
 import { StatusIconService } from './status-icon.service';
 import { RepositoryFilterService } from './repository-filter.service';
-import { NavigationStart, Router } from '@angular/router';
+import { NavigationStart, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
-import { MatSidenav } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { CommonModule } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    RouterModule,
+  ],
   selector: 'ana-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

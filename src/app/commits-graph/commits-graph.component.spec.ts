@@ -8,12 +8,6 @@ describe('CommitsGraphComponent', () => {
   let component: CommitsGraphComponent;
   let fixture: ComponentFixture<CommitsGraphComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [CommitsGraphComponent],
-    }).compileComponents();
-  });
-
   beforeEach(() => {
     const commitGraphService = TestBed.inject(CommitsGraphService);
 
