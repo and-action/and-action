@@ -5,6 +5,7 @@ import { GraphQLModule } from '../graphql.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   Commit,
+  Deployment,
   DeploymentState,
 } from '../commits-dashboard/commits-dashboard-models';
 import { DeployCommitEnvironment } from './deploy-commit-environment';
@@ -366,13 +367,14 @@ describe('DeployCommitDialogService', () => {
       environmentName: string,
       deploymentDate: Date,
       state: DeploymentState
-    ) {
+    ): Deployment {
       return {
         id: 'deploy-id',
         environment: environmentName,
         timestamp: deploymentDate,
         creator: { name: 'testuser', login: 'testuser' },
         state,
+        logUrl: null,
       };
     }
 

@@ -21,6 +21,14 @@ describe('StatusTagComponent', () => {
     await checkStatusIcon(StatusTagStatus.ERROR);
   });
 
+  it('should contain a link if set', async () => {
+    component.link = 'https://example.com';
+    await checkTagElementType('A');
+  });
+
+  it('should not contain a link if no link url is set', async () =>
+    checkTagElementType('P'));
+
   async function checkStatusIcon(status: StatusTagStatus) {
     component.status = status;
     fixture.detectChanges();
@@ -30,5 +38,13 @@ describe('StatusTagComponent', () => {
     expect(svgElement.nativeElement.classList).toContain(
       `tag__status-icon--${status}`
     );
+  }
+
+  async function checkTagElementType(expectedElementType: 'A' | 'P') {
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const tagElement = fixture.debugElement.query(By.css('.tag'));
+    expect(tagElement.nativeElement.tagName).toEqual(expectedElementType);
   }
 });
