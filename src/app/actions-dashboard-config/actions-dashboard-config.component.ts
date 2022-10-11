@@ -5,9 +5,23 @@ import { GithubViewer } from '../core/github-viewer';
 import { Organization } from '../core/organization';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { AndActionDataService } from '../core/and-action-data.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    RouterModule,
+  ],
   selector: 'ana-actions-dashboard-config',
   templateUrl: './actions-dashboard-config.component.html',
   styleUrls: ['./actions-dashboard-config.component.scss'],

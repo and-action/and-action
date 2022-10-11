@@ -6,15 +6,29 @@ import {
   deploymentStateOutputTextMapping,
   RepositoryWithCommits,
 } from '../commits-dashboard/commits-dashboard-models';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { StatusTagStatus } from '../status-tag/status-tag-status';
 import { StatusTagColor } from '../status-tag/status-tag-color';
 import { MatDialog } from '@angular/material/dialog';
 import { DeployCommitDialogComponent } from '../deploy-commit-dialog/deploy-commit-dialog.component';
 import { getDeploymentEnvironmentColors } from '../status-tag/status-tag-utils';
 import { DEFAULT_DATE_TIME_FORMAT } from '../constants';
+import { CommitInfoComponent } from '../commit-info/commit-info.component';
+import { StatusTagComponent } from '../status-tag/status-tag.component';
+import { TooltipDirective } from '../tooltip.directive';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
+  standalone: true,
+  imports: [
+    CommitInfoComponent,
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    StatusTagComponent,
+    TooltipDirective,
+  ],
   selector: 'ana-commits-list',
   templateUrl: './commits-list.component.html',
   styleUrls: ['./commits-list.component.scss'],

@@ -9,6 +9,7 @@ import {
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
+  standalone: true,
   selector: '[anaTooltip]',
 })
 export class TooltipDirective {

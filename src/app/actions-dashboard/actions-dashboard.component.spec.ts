@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { GraphQLModule } from '../graphql.module';
 
 describe('ActionsDashboardComponent', () => {
@@ -15,8 +14,6 @@ describe('ActionsDashboardComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [GraphQLModule, HttpClientTestingModule, RouterTestingModule],
-      declarations: [ActionsDashboardComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

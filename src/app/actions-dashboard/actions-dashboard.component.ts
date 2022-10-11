@@ -6,8 +6,17 @@ import { Organization } from '../core/organization';
 import { GithubViewer } from '../core/github-viewer';
 import { StatusIconService } from '../status-icon.service';
 import { RepositoryFilterService } from '../repository-filter.service';
+import { CommonModule } from '@angular/common';
+import { ActionsDashboardItemComponent } from '../actions-dashboard-item/actions-dashboard-item.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
+  standalone: true,
+  imports: [
+    ActionsDashboardItemComponent,
+    CommonModule,
+    MatProgressSpinnerModule,
+  ],
   selector: 'ana-actions-dashboard',
   templateUrl: './actions-dashboard.component.html',
   styleUrls: ['./actions-dashboard.component.scss'],
