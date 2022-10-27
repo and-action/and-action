@@ -113,7 +113,7 @@ To find repositories even quicker, one can use the repository filter in the same
 
 #### Deployments
 
-If a commit was deployed via GitHub's Deployment API, a tag is shown at the commit containing the name of the environment to which it was deployed along with the state of that deployment. The active deployments are shown as well as inactive deployments. Tags for inactive deployments are shown lighter then the active ones. Each environment has its own color. Those have no meaning. They are different so one can distinguish them easily. The icon on the right of the tag represents the status of the deployment.
+If a commit was deployed via GitHub's Deployment API, a tag is shown at the commit containing the name of the environment to which it was deployed along with the state of that deployment. The active deployments are shown as well as inactive deployments. Tags for inactive deployments are shown lighter than the active ones. Each environment has its own color. Those have no meaning. They are different so one can distinguish them easily. The icon on the right of the tag represents the status of the deployment.
 
 A tag can have one of the following states:
 
