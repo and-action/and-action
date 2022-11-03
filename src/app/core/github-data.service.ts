@@ -142,7 +142,7 @@ const repositoryCommitsQuery = gql`
             id
             oid
             abbreviatedOid
-            history(first: 100) {
+            history(first: 50) {
               edges {
                 node {
                   parents(first: 10) {
