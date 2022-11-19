@@ -278,3 +278,45 @@ deployment:
     - Deploy
     - Test checks
 ```
+
+
+## Development
+
+
+### Development Setup
+
+To create an environment for local development on your machine, install [Node.js](https://nodejs.org), clone the repository and run `npm install`.
+
+
+#### Configure GitHub OAuth App
+
+In production, And Action leverages the GitHub OAuth App "And Action" to handle logins. When developing And Action locally on your machine, you need to have a GitHub OAuth App in place that handles the login and redirects you back to `http://localhost:4200` after successful login.
+
+Please follow these steps to create the GitHub OAuth App:
+
+1. Open your GitHub profile or the GitHub organization in your browser that you want the GitHub OAuth App to live in.
+2. Open Settings -> Developer settings -> OAuth Apps.
+3. Click "New OAuth App".
+4. Give your app some meaningful name like "And Action local development". Homepage URL can be set to some random value. Authorization callback URL must be `http://localhost:4200`. Submit the form.
+5. Generate a new client secret. Copy the client ID and the generated client secret. The secret cannot be made visible later on.
+6. Create a `.env` file in the root folder of the cloned repository on your machine and add the following two environment variables with the values that you just generated:
+    ```
+    GITHUB_CLIENT_ID=<GitHub client ID>
+    GITHUB_CLIENT_SECRET=<GitHub client secret>
+    ```
+
+Now your local login api should be able to handle your login requests correctly.
+
+
+#### Run And Action locally
+
+Run `npm start` to start And Action. Open your browser and navigate to `http://localhost:4200`. The app starts. `npm start` also starts the local login api.
+
+The local login api serves a simple implementation of the login api for And Action for local development. When clicking "Login with GitHub" in And Action the login api redirects to the login form on GitHub using the client id and client secret configured in your `.env` file. After successful login, you will be redirected to `http://localhost:4200`. Now you are logged in and can use the locally running app as known from production.
+
+
+### Releases
+
+New features are developed in separate feature branches. Pushing them to GitHub runs the CI workflow in GitHub actions. Merging a feature branch to master also runs the CI workflow. Additionally, the app is deployed on `https://staging.andaction.dev`.
+
+Creating a GitHub release deploys the app to production on `https://andaction.dev`. 
