@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
-
-const loginApiUrl = 'https://andaction-login-api.herokuapp.com';
+import { environment } from '../../environments/environment';
 
 const accessTokenApiKey = 'gh_access_token';
 
@@ -25,13 +24,17 @@ export class LoginService {
       this.myAccessToken = undefined;
       localStorage.removeItem(accessTokenApiKey);
     }
-    window.location.href = `${loginApiUrl}/login`;
+
+    window.location.href = `${environment.loginApiUrl}/auth`;
   }
 
-  initAccessTokenFromCode(code: string) {
+  initAccessTokenFromCode(code: string, state: string = '') {
     return this.http
-      .post(`${loginApiUrl}/access_token`, {
-        code,
+      .get(`${environment.loginApiUrl}/access_token`, {
+        params: {
+          code,
+          state,
+        },
       })
       .pipe(
         tap((data: any) => {

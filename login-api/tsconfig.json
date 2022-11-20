@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "commonjs"
+  },
+  "extends": "../tsconfig.json",
+  "files": ["./index.ts"]
+}

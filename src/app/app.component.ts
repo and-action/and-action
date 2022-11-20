@@ -50,10 +50,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    const queryParams = this.getUrlParams(window.location.href);
-    if (queryParams.code) {
+    const { code, state } = this.getUrlParams(window.location.href);
+    if (code) {
       this.loginService
-        .initAccessTokenFromCode(queryParams.code)
+        .initAccessTokenFromCode(code, state)
         .subscribe(
           () =>
             (window.location.href = `${window.location.protocol}//${window.location.host}/#/${AppRouting.DASHBOARD}`)
