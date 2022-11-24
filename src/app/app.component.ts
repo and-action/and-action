@@ -8,7 +8,7 @@ import { RepositoryFilterService } from './repository-filter.service';
 import { NavigationStart, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';

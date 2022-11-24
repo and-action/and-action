@@ -4,10 +4,7 @@ import {
   DeployCommitDialogComponent,
   DialogData,
 } from './deploy-commit-dialog.component';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   Commit,
   DeploymentState,
@@ -15,7 +12,7 @@ import {
 } from '../commits-dashboard/commits-dashboard-models';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { GraphQLModule } from '../graphql.module';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const getCommit = (): Commit => ({
   id: 'C_idOfCommit',

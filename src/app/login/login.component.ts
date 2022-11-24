@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LoginService } from '../core/login.service';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   standalone: true,

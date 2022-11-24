@@ -6,10 +6,10 @@ import {
   RepositoryWithCommits,
 } from '../commits-dashboard/commits-dashboard-models';
 import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule as MatDialogModule,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { EMPTY, Observable, of, tap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { getDeploymentEnvironmentColors } from '../status-tag/status-tag-utils';
@@ -29,8 +29,8 @@ import { CommitInfoComponent } from '../commit-info/commit-info.component';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 export interface DialogData {
   repository: RepositoryWithCommits;
