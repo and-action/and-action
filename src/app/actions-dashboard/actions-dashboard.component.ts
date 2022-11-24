@@ -8,7 +8,7 @@ import { StatusIconService } from '../status-icon.service';
 import { RepositoryFilterService } from '../repository-filter.service';
 import { CommonModule } from '@angular/common';
 import { ActionsDashboardItemComponent } from '../actions-dashboard-item/actions-dashboard-item.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 
 @Component({
   standalone: true,

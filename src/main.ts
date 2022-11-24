@@ -18,7 +18,7 @@ import { HttpUnauthorizedInterceptor } from './app/http-unauthorized-interceptor
 import { HttpGithubAuthorizationInterceptor } from './app/http-github-authorization-interceptor';
 import { AndActionDataService } from './app/core/and-action-data.service';
 import { GraphQLModule } from './app/graphql.module';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 if (environment.isEnableProdMode) {

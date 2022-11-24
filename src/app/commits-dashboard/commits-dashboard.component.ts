@@ -8,8 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { CommitsGraphComponent } from '../commits-graph/commits-graph.component';
 import { CommitsListComponent } from '../commits-list/commits-list.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 
 @Component({
   standalone: true,
