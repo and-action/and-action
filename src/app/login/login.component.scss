@@ -3,7 +3,7 @@
 
 :host {
   display: flex;
-  height: 100%;
+  margin-top: $space-xxl;
 }
 
 .login-box {
@@ -16,13 +16,4 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
-}
-
-.login-button {
-  &__icon {
-    margin-left: $space-xs;
-    width: $space-m;
-    height: $space-m;
-    fill: $white;
-  }
 }

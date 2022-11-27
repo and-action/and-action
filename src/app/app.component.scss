@@ -31,7 +31,6 @@
 
   &__filter-input {
     outline: none;
-    font-size: 14px;
     background-color: transparent;
     border: none;
     color: white;
@@ -66,6 +65,9 @@
   }
 
   &__config-button {
+    .mat-icon {
+      margin-right: 0;
+    }
   }
 
   &__filter-toggle-button {
@@ -74,10 +76,17 @@
     &--active {
       background: rgba(0, 0, 0, 0.2);
     }
+
+    .mat-icon {
+      margin-right: 0;
+    }
   }
 
   &__menu-button {
     display: none;
+    .mat-icon {
+      margin-right: 0;
+    }
   }
 
   &__second-row {
@@ -95,14 +104,11 @@
   }
 }
 
-.mat-sidenav-container {
-  flex: 1;
-}
-
 .mat-sidenav {
   padding: $space-xs;
-  .nav-button {
-    display: block;
+  .mat-mdc-button {
+    display: flex;
+    justify-content: flex-start;
 
     &--active {
       background: rgba(0, 0, 0, 0.1);
@@ -122,7 +128,7 @@
 
     &__filter-toggle-button,
     &__menu-button {
-      display: inline-block;
+      display: inline-flex;
     }
 
     .toolbar__first-row .toolbar__filter,

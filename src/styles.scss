@@ -46,6 +46,11 @@ $and-action-theme: mat.define-light-theme(
 @import 'colors';
 @import 'variables';
 
+.mat-mdc-dialog-container {
+  --mdc-dialog-supporting-text-size: 14px;
+  --mdc-dialog-supporting-text-color: $default-text-color;
+}
+
 html,
 body {
   height: 100%;
@@ -57,7 +62,7 @@ body {
   background-color: $default-background-color;
 }
 
-a:not([class^='mat-']) {
+a:not([class*='mdc-button']) {
   text-decoration: none;
   color: $default-text-color;
 

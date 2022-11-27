@@ -33,7 +33,7 @@
 
 .environment {
   &__tag {
-    border-radius: 18px;
+    border-radius: 20px;
     font-size: $font-size-l;
     color: $white;
     padding: $space-xs $space-s;
@@ -62,7 +62,7 @@
     padding: 0 $space-xs;
     color: $color-neutral;
     border: 1px solid $color-neutral;
-    border-radius: 12px;
+    border-radius: 14px;
     // TODO: margin bottom for p tags should be set globally to 0.
     margin: 0;
 
