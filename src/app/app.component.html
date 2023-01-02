@@ -2,6 +2,7 @@
   <a
     class="nav-button"
     mat-button
+    color="inherit"
     [routerLink]="['/', appRouting.DASHBOARD]"
     routerLinkActive="nav-button--active"
     >Actions</a
@@ -9,6 +10,7 @@
   <a
     class="nav-button"
     mat-button
+    color="inherit"
     [routerLink]="['/', appRouting.COMMITS]"
     routerLinkActive="nav-button--active"
     >Commits & Deployments</a
@@ -20,7 +22,7 @@
     <mat-icon class="toolbar__filter-icon">filter_alt</mat-icon>
     <input
       #filterInput
-      class="toolbar__filter-input"
+      class="toolbar__filter-input mat-body"
       placeholder="Repository Filter"
       id="repository-filter"
       name="repository-filter"
@@ -57,6 +59,7 @@
 
     <button
       mat-button
+      color="inherit"
       aria-pressed="true"
       class="toolbar__filter-toggle-button"
       [ngClass]="{
@@ -68,12 +71,18 @@
     </button>
     <a
       mat-button
+      color="inherit"
       class="toolbar__config-button"
       [routerLink]="['/', appRouting.DASHBOARD_CONFIG]"
     >
       <mat-icon>settings</mat-icon>
     </a>
-    <button mat-button class="toolbar__menu-button" (click)="sidenav.toggle()">
+    <button
+      mat-button
+      color="inherit"
+      class="toolbar__menu-button"
+      (click)="sidenav.toggle()"
+    >
       <mat-icon>menu</mat-icon>
     </button>
   </mat-toolbar-row>
@@ -90,7 +99,11 @@
   <mat-sidenav #sidenav position="end" [autoFocus]="false">
     <ng-container *ngTemplateOutlet="navButtons"></ng-container>
     <mat-divider></mat-divider>
-    <a mat-button [routerLink]="['/', appRouting.DASHBOARD_CONFIG]">
+    <a
+      mat-button
+      color="inherit"
+      [routerLink]="['/', appRouting.DASHBOARD_CONFIG]"
+    >
       <mat-icon class="u-margin-right-xs">settings</mat-icon>
       <span>Settings</span>
     </a>
