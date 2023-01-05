@@ -21,8 +21,6 @@
             "optimization": true,
             "outputHashing": "all",
             "sourceMap": true,
-            "aot": true,
-            "buildOptimizer": true,
             "assets": [
               "src/assets",
               "src/favicon.ico",
@@ -76,7 +74,8 @@
             "production": {
               "browserTarget": "and-action:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "local"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

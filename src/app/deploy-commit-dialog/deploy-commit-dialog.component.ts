@@ -31,6 +31,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 export interface DialogData {
   repository: RepositoryWithCommits;
@@ -48,6 +49,7 @@ export interface DialogData {
     MatDividerModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
   ],
   selector: 'ana-deploy-commit-dialog',
   templateUrl: './deploy-commit-dialog.component.html',
