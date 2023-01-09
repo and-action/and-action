@@ -76,6 +76,19 @@ a:not([class*='mdc-button']) {
   }
 }
 
+a.text-link {
+  color: mat.get-color-from-palette($and-action-primary);
+
+  &:hover {
+    text-decoration: underline;
+    color: mat.get-color-from-palette($and-action-primary, 900);
+  }
+
+  &:active {
+    color: mat.get-color-from-palette($and-action-primary, 900);
+  }
+}
+
 ul {
   list-style-type: none;
   margin: 0;
