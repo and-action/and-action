@@ -182,7 +182,7 @@ jobs:
           /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/deployments/${{ github.event.deployment.id }}/statuses \
           -f environment="${{ github.event.deployment.environment }}" \
           -f state="in_progress" \
-          -f log_url="${{ github.event.deployment.url }}" \ # TODO: Check if thats possible
+          -f log_url="${{ github.event.deployment.url }}" \
 
       - uses: actions/checkout@v3
 
