@@ -457,7 +457,7 @@ export class GithubDataService {
       {
         ref: commitSha,
         environment,
-        description: 'Deployed via AndAction',
+        description: 'Deployed via And Action',
         auto_merge: false,
         // Workflow runs are checked above. So deployments should not check contexts since it ignores
         // excluded-workflows configured in AndAction config.

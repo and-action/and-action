@@ -143,7 +143,24 @@ A deployment to an environment is possible, when:
 * The commit that should be deployed is in a successful state.
 * The commit history is the current state. Otherwise, you need to reload the view first.
 
-When triggering a deployment, And Action calls GitHub's REST API to create a deployment. Thus, a new deployment for the selected environment is created having the state pending. This in turn starts the GitHub Actions workflow having the trigger `deployment`. This workflow should do the actual deployment and additionally should take care of setting the correct state for the deployment, i.e. at the beginning it should set it to "in progress" and at the end it should set it to "success" or "failure". Furthermore, you should set a `log_url`. If the `log_url` is set for a deployment, And Action will link that to the environment tag within the Commits & Deployments view. Probably, the `log_url` should be set to the workflow run that was triggered by the deployment.
+
+##### Request to Create a Deployment
+
+When triggering a deployment, And Action calls GitHub's REST API to create a deployment. Thus, a new deployment for the selected environment is created having the state pending.
+
+The post request to create the deployment contains the following properties in the payload:
+
+* `auto_merge`: `false`
+* `description`: `"Deployed via And Action"`
+* `environment`: The name of the environment the deployment is triggered for, e.g. `dev`, `test` or `live`.
+* `payload`: A custom payload containing additional information. Contains property `deployment_type` having one of the values `'forward'`, `'redeploy'` or `'rollback'`.
+* `production_environment`: `true` if value for `environment` is one of `'live'` or `'production'`, otherwise `false`
+* `ref`: The commit sha
+
+
+##### The Deployment Workflow
+
+When a deployment is created in GitHub, it starts the GitHub Actions workflow having the trigger `deployment`. This workflow should do the actual deployment and additionally should take care of setting the correct state for the deployment, i.e. at the beginning it should set it to "in progress" and at the end it should set it to "success" or "failure". Furthermore, you should set a `log_url`. If the `log_url` is set for a deployment, And Action will link that to the environment tag within the Commits & Deployments view. Probably, the `log_url` should be set to the workflow run that was triggered by the deployment.
 
 Example for a deployment workflow:
 ```yaml
@@ -165,7 +182,7 @@ jobs:
           /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/deployments/${{ github.event.deployment.id }}/statuses \
           -f environment="${{ github.event.deployment.environment }}" \
           -f state="in_progress" \
-          -f log_url="${{ github.event.deployment.url }}" \ # TODO: Check if thats possible
+          -f log_url="${{ github.event.deployment.url }}" \
 
       - uses: actions/checkout@v3
 
