@@ -82,8 +82,11 @@ describe('DeployCommitDialogComponent', () => {
     it('should have correct heading ', () =>
       cy.contains('h2', `Deploy to ${repository.name}`));
 
-    it('should show placeholder text', () =>
-      cy.contains('p', 'No environment configuration found.'));
+    it('should show placeholder text', () => {
+      cy.contains('p', 'No environment configuration found.');
+      cy.contains('a', 'Commits & Deployments');
+      cy.contains('a', 'Configuration');
+    });
   });
 
   describe('with config', () => {
