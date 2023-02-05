@@ -20,7 +20,12 @@
             "polyfills": "src/polyfills.ts",
             "optimization": true,
             "outputHashing": "all",
-            "sourceMap": true,
+            "sourceMap": {
+              "scripts": true,
+              "styles": false,
+              "hidden": true,
+              "vendor": true
+            },
             "assets": [
               "src/assets",
               "src/favicon.ico",
@@ -35,6 +40,7 @@
           },
           "configurations": {
             "local": {
+              "sourceMap": true,
               "optimization": false,
               "buildOptimizer": false,
               "vendorChunk": true,
