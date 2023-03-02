@@ -6,6 +6,8 @@ if (environment.sentryDsn) {
   Sentry.init({
     dsn: environment.sentryDsn,
     environment: environment.name,
+    maxValueLength: 20000,
+    normalizeDepth: 10, // Don't disable since this leads to exceptions for cyclic objects.
   });
 }
 
