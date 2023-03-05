@@ -385,7 +385,6 @@ export class GithubDataService {
           id,
         },
         fetchPolicy: 'network-only',
-        errorPolicy: 'ignore',
       })
       .valueChanges.pipe(
         map((queryResult) =>
