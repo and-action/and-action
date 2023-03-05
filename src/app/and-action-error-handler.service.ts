@@ -12,7 +12,7 @@ if (environment.sentryDsn) {
 }
 
 @Injectable()
-export class SentryErrorHandler implements ErrorHandler {
+export class AndActionErrorHandler implements ErrorHandler {
   handleError(error: any) {
     Sentry.captureException(error.originalError || error);
     console.error(error);
