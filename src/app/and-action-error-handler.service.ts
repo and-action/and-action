@@ -1,6 +1,9 @@
 import * as Sentry from '@sentry/browser';
 import { ErrorHandler, Injectable } from '@angular/core';
+import { ApolloError } from '@apollo/client/core';
+
 import { environment } from '../environments/environment';
+import { SnackBarService } from './snack-bar/snack-bar.service';
 
 if (environment.sentryDsn) {
   Sentry.init({
@@ -13,8 +16,16 @@ if (environment.sentryDsn) {
 
 @Injectable()
 export class AndActionErrorHandler implements ErrorHandler {
+  constructor(private snackBarService: SnackBarService) {}
+
   handleError(error: any) {
     Sentry.captureException(error.originalError || error);
     console.error(error);
+
+    this.snackBarService.error(
+      error instanceof ApolloError
+        ? error.message
+        : 'Unknown error. Please try again.'
+    );
   }
 }
