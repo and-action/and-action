@@ -1,7 +1,4 @@
-<div
-  *ngIf="repositories$ | async as repositories; else loading"
-  class="repositories"
->
+<div *ngIf="repositories$ | async as repositories" class="repositories">
   <ng-container *ngFor="let repository of repositories">
     <div [id]="repository.name" class="repository">
       <div class="repository__head">
@@ -32,7 +29,13 @@
   </ng-container>
 </div>
 
-<ng-template #loading>
+<ng-container *ngIf="loadingStatus === loadingStatusEnum.LOADING">
   <mat-progress-spinner class="progress-spinner" mode="indeterminate">
   </mat-progress-spinner>
-</ng-template>
+</ng-container>
+
+<ng-container *ngIf="loadingStatus === loadingStatusEnum.FAILED">
+  <div class="view-placeholder" style="text-align: center">
+    <p>Repositories could not be loaded.</p>
+  </div>
+</ng-container>

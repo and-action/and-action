@@ -10,6 +10,7 @@ import { CommitsGraphComponent } from '../commits-graph/commits-graph.component'
 import { CommitsListComponent } from '../commits-list/commits-list.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
+import { LoadingStatus } from '../loading-status';
 
 @Component({
   standalone: true,
@@ -26,6 +27,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 })
 export class CommitsDashboardComponent implements OnInit, OnDestroy {
   repositories$?: Observable<RepositoryWithCommits[]>;
+
+  protected loadingStatus = LoadingStatus.LOADING;
+  protected loadingStatusEnum = LoadingStatus;
 
   private scrollSubscription?: Subscription;
 
@@ -66,7 +70,11 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
               )
             )
           )
-        )
+        ),
+        tap({
+          next: () => (this.loadingStatus = LoadingStatus.FINISHED),
+          error: () => (this.loadingStatus = LoadingStatus.FAILED),
+        })
       );
 
     this.scrollSubscription = combineLatest([

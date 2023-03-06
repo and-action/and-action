@@ -1,6 +1,4 @@
-<ul
-  *ngIf="viewerAndOrganizations$ | async as viewerOrOrganizations; else loading"
->
+<ul *ngIf="viewerAndOrganizations$ | async as viewerOrOrganizations">
   <li
     class="organization-list__item"
     *ngFor="let viewerOrOrganization of viewerOrOrganizations"
@@ -37,7 +35,13 @@
   </li>
 </ul>
 
-<ng-template #loading>
+<ng-container *ngIf="loadingStatus === loadingStatusEnum.LOADING">
   <mat-progress-spinner class="progress-spinner" mode="indeterminate">
   </mat-progress-spinner>
-</ng-template>
+</ng-container>
+
+<ng-container *ngIf="loadingStatus === loadingStatusEnum.FAILED">
+  <div class="view-placeholder">
+    <p>Repositories could not be loaded.</p>
+  </div>
+</ng-container>
