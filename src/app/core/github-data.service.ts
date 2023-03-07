@@ -258,7 +258,6 @@ export class GithubDataService {
     return this.apollo
       .watchQuery<RepositoryQueryResult>({
         query: repositoriesQuery,
-        errorPolicy: 'ignore',
       })
       .valueChanges.pipe(
         map((queryResult) => {
@@ -335,7 +334,6 @@ export class GithubDataService {
             owner,
             name,
           },
-          errorPolicy: 'ignore',
           pollInterval: 60000,
         })
       );
@@ -385,7 +383,6 @@ export class GithubDataService {
           id,
         },
         fetchPolicy: 'network-only',
-        errorPolicy: 'ignore',
       })
       .valueChanges.pipe(
         map((queryResult) =>

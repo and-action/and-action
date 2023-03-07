@@ -12,7 +12,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppRouting } from './app/app-routing';
 import { LoginGuard } from './app/login.guard';
 import { RepositoryConfigGuard } from './app/repository-config.guard';
-import { SentryErrorHandler } from './app/sentry-error-handler';
+import { AndActionErrorHandler } from './app/and-action-error-handler.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpUnauthorizedInterceptor } from './app/http-unauthorized-interceptor';
 import { HttpGithubAuthorizationInterceptor } from './app/http-github-authorization-interceptor';
@@ -64,7 +64,7 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
   providers: [
-    { provide: ErrorHandler, useClass: SentryErrorHandler },
+    { provide: ErrorHandler, useClass: AndActionErrorHandler },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpUnauthorizedInterceptor,

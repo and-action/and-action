@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
+import { LoadingStatus } from '../loading-status';
+import { tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -31,6 +33,9 @@ export class ActionsDashboardConfigComponent implements OnInit {
   model: { [key: string]: boolean } = {};
   appRouting = AppRouting;
 
+  protected loadingStatus = LoadingStatus.LOADING;
+  protected loadingStatusEnum = LoadingStatus;
+
   constructor(
     private githubDataService: GithubDataService,
     private andActionDataService: AndActionDataService,
@@ -44,7 +49,13 @@ export class ActionsDashboardConfigComponent implements OnInit {
 
     this.githubDataService
       .loadViewerAndOrganizations()
+      .pipe(
+        tap({
+          error: () => (this.loadingStatus = LoadingStatus.FAILED),
+        })
+      )
       .subscribe((viewerAndOrganizations) => {
+        this.loadingStatus = LoadingStatus.FINISHED;
         this.viewerAndOrganizations = viewerAndOrganizations;
         this.model = this.viewerAndOrganizations
           .flatMap((organization) => organization.repositories)

@@ -9,6 +9,7 @@ import { RepositoryFilterService } from '../repository-filter.service';
 import { CommonModule } from '@angular/common';
 import { ActionsDashboardItemComponent } from '../actions-dashboard-item/actions-dashboard-item.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoadingStatus } from '../loading-status';
 
 @Component({
   standalone: true,
@@ -23,6 +24,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class ActionsDashboardComponent implements OnInit {
   viewerAndOrganizations$?: Observable<(GithubViewer | Organization)[]>;
+
+  protected loadingStatus = LoadingStatus.LOADING;
+  protected loadingStatusEnum = LoadingStatus;
 
   constructor(
     private githubDataService: GithubDataService,
@@ -63,7 +67,11 @@ export class ActionsDashboardComponent implements OnInit {
                 )
             )
           )
-        )
+        ),
+        tap({
+          next: () => (this.loadingStatus = LoadingStatus.FINISHED),
+          error: () => (this.loadingStatus = LoadingStatus.FAILED),
+        })
       );
   }
 }
