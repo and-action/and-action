@@ -11,6 +11,7 @@ import { CommitsListComponent } from '../commits-list/commits-list.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoadingStatus } from '../loading-status';
+import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
 
 @Component({
   standalone: true,
@@ -20,16 +21,19 @@ import { LoadingStatus } from '../loading-status';
     CommonModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    PollingProgessComponent,
   ],
   selector: 'ana-commits-dashboard',
   templateUrl: './commits-dashboard.component.html',
   styleUrls: ['./commits-dashboard.component.scss'],
 })
 export class CommitsDashboardComponent implements OnInit, OnDestroy {
-  repositories$?: Observable<RepositoryWithCommits[]>;
+  protected repositories$?: Observable<RepositoryWithCommits[]>;
+  protected repositories?: RepositoryWithCommits[];
 
   protected loadingStatus = LoadingStatus.LOADING;
   protected loadingStatusEnum = LoadingStatus;
+  protected updateIntervalInSeconds = 60;
 
   private scrollSubscription?: Subscription;
 
@@ -72,7 +76,10 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
           )
         ),
         tap({
-          next: () => (this.loadingStatus = LoadingStatus.FINISHED),
+          next: (repositories) => {
+            this.repositories = repositories;
+            this.loadingStatus = LoadingStatus.FINISHED;
+          },
           error: () => (this.loadingStatus = LoadingStatus.FAILED),
         })
       );

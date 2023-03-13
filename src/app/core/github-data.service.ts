@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Apollo, QueryRef } from 'apollo-angular';
+import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Repository } from './repository';
 import { Organization } from './organization';
 import { GithubViewer } from './github-viewer';
-import { forkJoin, from, Observable, of, timer } from 'rxjs';
+import { forkJoin, Observable, of, timer } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Workflow } from './workflow';
@@ -246,8 +246,6 @@ const andActionConfigsQuery = gql`
   providedIn: 'root',
 })
 export class GithubDataService {
-  private repositoryCommitsQueryRef = new Map<string, QueryRef<any>>();
-
   constructor(
     private apollo: Apollo,
     private http: HttpClient,
@@ -324,55 +322,24 @@ export class GithubDataService {
   }
 
   loadRepositoryCommits(owner: string, name: string) {
-    const queryRefKey = `${owner}/${name}`;
-    if (!this.repositoryCommitsQueryRef.has(queryRefKey)) {
-      this.repositoryCommitsQueryRef.set(
-        queryRefKey,
-        this.apollo.watchQuery<any>({
-          query: repositoryCommitsQuery,
-          variables: {
+    return this.apollo
+      .query<any>({
+        query: repositoryCommitsQuery,
+        variables: {
+          owner,
+          name,
+        },
+        fetchPolicy: 'network-only',
+      })
+      .pipe(
+        map((queryResult) =>
+          this.mapRepositoryCommitsQueryResultToRespositoryWithCommits(
+            queryResult,
             owner,
-            name,
-          },
-          pollInterval: 60000,
-        })
+            name
+          )
+        )
       );
-    }
-
-    const queryRef = this.repositoryCommitsQueryRef.get(queryRefKey);
-
-    if (!queryRef) {
-      throw new Error('Error creating Apollo query for repository commits.');
-    }
-
-    return queryRef.valueChanges.pipe(
-      map((queryResult) =>
-        this.mapRepositoryCommitsQueryResultToRespositoryWithCommits(
-          queryResult,
-          owner,
-          name
-        )
-      )
-    );
-  }
-
-  refetchRepositoryCommits(owner: string, name: string) {
-    const queryRefKey = `${owner}/${name}`;
-    const queryRef = this.repositoryCommitsQueryRef.get(queryRefKey);
-
-    if (!queryRef) {
-      throw new Error('Error creating Apollo query for repository commits.');
-    }
-
-    return from(queryRef.refetch()).pipe(
-      map((queryResult) =>
-        this.mapRepositoryCommitsQueryResultToRespositoryWithCommits(
-          queryResult,
-          owner,
-          name
-        )
-      )
-    );
   }
 
   loadCommitState(id: string, andActionConfig: AndActionConfig) {

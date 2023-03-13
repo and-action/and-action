@@ -1,32 +1,40 @@
-<div *ngIf="repositories$ | async as repositories" class="repositories">
-  <ng-container *ngFor="let repository of repositories">
-    <div [id]="repository.name" class="repository">
-      <div class="repository__head">
-        <h2>
-          <a [href]="repository.url" target="_blank" rel="noopener">
-            {{ repository.name }}
-          </a>
-        </h2>
-        <a
-          [href]="repository.url"
-          target="_blank"
-          rel="noopener"
-          class="repository__branch-name"
-        >
-          <svg class="repository__branch-icon">
-            <use xlink:href="#icon-git-branch"></use>
-          </svg>
+<ana-polling-progress
+  [observable]="repositories$"
+  [pollIntervalInSeconds]="updateIntervalInSeconds"
+  class="polling-progress"
+></ana-polling-progress>
 
-          <span>{{ repository.defaultBranchRef.name }}</span>
+<div *ngIf="loadingStatus === loadingStatusEnum.FINISHED" class="repositories">
+  <div
+    *ngFor="let repository of repositories"
+    [id]="repository.name"
+    class="repository"
+  >
+    <div class="repository__head">
+      <h2>
+        <a [href]="repository.url" target="_blank" rel="noopener">
+          {{ repository.name }}
         </a>
-      </div>
+      </h2>
+      <a
+        [href]="repository.url"
+        target="_blank"
+        rel="noopener"
+        class="repository__branch-name"
+      >
+        <svg class="repository__branch-icon">
+          <use xlink:href="#icon-git-branch"></use>
+        </svg>
 
-      <div class="u-flex">
-        <ana-commits-graph [commits]="repository.commits"></ana-commits-graph>
-        <ana-commits-list [repository]="repository"></ana-commits-list>
-      </div>
+        <span>{{ repository.defaultBranchRef.name }}</span>
+      </a>
     </div>
-  </ng-container>
+
+    <div class="u-flex">
+      <ana-commits-graph [commits]="repository.commits"></ana-commits-graph>
+      <ana-commits-list [repository]="repository"></ana-commits-list>
+    </div>
+  </div>
 </div>
 
 <ng-container *ngIf="loadingStatus === loadingStatusEnum.LOADING">
