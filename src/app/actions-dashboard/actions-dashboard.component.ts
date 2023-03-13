@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { ActionsDashboardItemComponent } from '../actions-dashboard-item/actions-dashboard-item.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingStatus } from '../loading-status';
+import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
 
 @Component({
   standalone: true,
@@ -17,16 +18,21 @@ import { LoadingStatus } from '../loading-status';
     ActionsDashboardItemComponent,
     CommonModule,
     MatProgressSpinnerModule,
+    PollingProgessComponent,
   ],
   selector: 'ana-actions-dashboard',
   templateUrl: './actions-dashboard.component.html',
   styleUrls: ['./actions-dashboard.component.scss'],
 })
 export class ActionsDashboardComponent implements OnInit {
-  viewerAndOrganizations$?: Observable<(GithubViewer | Organization)[]>;
+  protected viewerAndOrganizations$?: Observable<
+    (GithubViewer | Organization)[]
+  >;
+  protected viewerAndOrganizations?: (GithubViewer | Organization)[];
 
   protected loadingStatus = LoadingStatus.LOADING;
   protected loadingStatusEnum = LoadingStatus;
+  protected updateIntervalInSeconds = 60;
 
   constructor(
     private githubDataService: GithubDataService,
@@ -40,7 +46,7 @@ export class ActionsDashboardComponent implements OnInit {
       .pipe(
         mergeMap((organizations) =>
           this.githubDataService
-            .pollWorkflowRuns(organizations)
+            .loadWorkflowRuns(organizations)
             .pipe(
               tap((viewerAndOrganizations) =>
                 this.statusIconService.updateStatusIcon(viewerAndOrganizations)
@@ -69,7 +75,10 @@ export class ActionsDashboardComponent implements OnInit {
           )
         ),
         tap({
-          next: () => (this.loadingStatus = LoadingStatus.FINISHED),
+          next: (viewerAndOrganizations) => {
+            this.viewerAndOrganizations = viewerAndOrganizations;
+            this.loadingStatus = LoadingStatus.FINISHED;
+          },
           error: () => (this.loadingStatus = LoadingStatus.FAILED),
         })
       );

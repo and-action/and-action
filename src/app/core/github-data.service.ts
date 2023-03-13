@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { Repository } from './repository';
 import { Organization } from './organization';
 import { GithubViewer } from './github-viewer';
-import { forkJoin, Observable, of, timer } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Workflow } from './workflow';
@@ -434,20 +434,14 @@ export class GithubDataService {
     );
   }
 
-  pollWorkflowRuns(organizations: Organization[]) {
-    const sixtySecondsInMillis = 60 * 1000;
-
-    return timer(0, sixtySecondsInMillis).pipe(
-      mergeMap(() =>
-        forkJoin(
-          organizations.map((organization) =>
-            this.loadRepositoryWorkflowsWithWorkflowRuns(organization).pipe(
-              map((repositories) => ({
-                ...organization,
-                repositories,
-              }))
-            )
-          )
+  loadWorkflowRuns(organizations: Organization[]) {
+    return forkJoin(
+      organizations.map((organization) =>
+        this.loadRepositoryWorkflowsWithWorkflowRuns(organization).pipe(
+          map((repositories) => ({
+            ...organization,
+            repositories,
+          }))
         )
       )
     );
