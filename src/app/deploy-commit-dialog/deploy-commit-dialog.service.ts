@@ -86,10 +86,10 @@ export class DeployCommitDialogService {
   ) {
     const { id: commitId, oid: commitOid } = commitToDeploy;
     const isCurrentEnvironments$ = this.githubDataService
-      .refetchRepositoryCommits(repositoryOwner, repositoryName)
+      .loadRepositoryCommits(repositoryOwner, repositoryName)
       .pipe(
-        mergeMap((refetchedRepository) => {
-          const refetchedCommitToDeploy = refetchedRepository.commits.find(
+        mergeMap((repository) => {
+          const refetchedCommitToDeploy = repository.commits.find(
             (commit) => commit.oid === commitToDeploy.oid
           );
           if (refetchedCommitToDeploy) {
@@ -97,7 +97,7 @@ export class DeployCommitDialogService {
               repositoryOwner,
               repositoryName,
               refetchedCommitToDeploy,
-              refetchedRepository.commits
+              repository.commits
             );
           } else {
             throw new CommitNotFoundError();
@@ -137,7 +137,7 @@ export class DeployCommitDialogService {
           .pipe(
             delay(2000),
             tap(() =>
-              this.githubDataService.refetchRepositoryCommits(
+              this.githubDataService.loadRepositoryCommits(
                 repositoryOwner,
                 repositoryName
               )

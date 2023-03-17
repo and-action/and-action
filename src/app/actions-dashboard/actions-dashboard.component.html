@@ -1,7 +1,16 @@
-<ul *ngIf="viewerAndOrganizations$ | async as viewerOrOrganizations">
+<ana-polling-progress
+  [observable]="viewerAndOrganizations$"
+  [pollIntervalInSeconds]="updateIntervalInSeconds"
+  class="polling-progress"
+></ana-polling-progress>
+
+<ul
+  *ngIf="loadingStatus === loadingStatusEnum.FINISHED"
+  class="organization-list"
+>
   <li
     class="organization-list__item"
-    *ngFor="let viewerOrOrganization of viewerOrOrganizations"
+    *ngFor="let viewerOrOrganization of viewerAndOrganizations"
   >
     <ng-container *ngIf="viewerOrOrganization.repositories as repositories">
       <ng-container *ngIf="repositories.length > 0">

@@ -57,7 +57,13 @@
         "arrow-parens": ["off", "always"],
         "import/order": "off",
         "max-len": "off",
-        "no-shadow": "off"
+        "no-shadow": "off",
+        "rxjs/no-unsafe-takeuntil": [
+          "error",
+          {
+            "allow": ["repeat"]
+          }
+        ]
       }
     },
     {

@@ -4,6 +4,7 @@ import { ApolloError } from '@apollo/client/core';
 
 import { environment } from '../environments/environment';
 import { SnackBarService } from './snack-bar/snack-bar.service';
+import { captureException } from '../utils/log-utils';
 
 if (environment.sentryDsn) {
   Sentry.init({
@@ -19,7 +20,7 @@ export class AndActionErrorHandler implements ErrorHandler {
   constructor(private snackBarService: SnackBarService) {}
 
   handleError(error: any) {
-    Sentry.captureException(error.originalError || error);
+    captureException(error.originalError ?? error);
     console.error(error);
 
     this.snackBarService.error(
