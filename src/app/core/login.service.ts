@@ -28,7 +28,7 @@ export class LoginService {
     window.location.href = `${environment.loginApiUrl}/auth`;
   }
 
-  initAccessTokenFromCode(code: string, state: string = '') {
+  initAccessTokenFromCode(code: string, state = '') {
     return this.http
       .get(`${environment.loginApiUrl}/access_token`, {
         params: {
