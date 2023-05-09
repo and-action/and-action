@@ -10,8 +10,8 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AppRouting } from './app/app-routing';
-import { LoginGuard } from './app/login.guard';
-import { RepositoryConfigGuard } from './app/repository-config.guard';
+import { loginGuard } from './app/login.guard';
+import { repositoryConfigGuard } from './app/repository-config.guard';
 import { AndActionErrorHandler } from './app/and-action-error-handler.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpUnauthorizedInterceptor } from './app/http-unauthorized-interceptor';
@@ -32,7 +32,7 @@ const routes: Routes = [
       import('./app/actions-dashboard/actions-dashboard.component').then(
         (mod) => mod.ActionsDashboardComponent
       ),
-    canActivate: [LoginGuard, RepositoryConfigGuard],
+    canActivate: [loginGuard, repositoryConfigGuard],
   },
   {
     path: AppRouting.DASHBOARD_CONFIG,
@@ -40,7 +40,7 @@ const routes: Routes = [
       import(
         './app/actions-dashboard-config/actions-dashboard-config.component'
       ).then((mod) => mod.ActionsDashboardConfigComponent),
-    canActivate: [LoginGuard],
+    canActivate: [loginGuard],
   },
   {
     path: AppRouting.COMMITS,
@@ -48,7 +48,7 @@ const routes: Routes = [
       import('./app/commits-dashboard/commits-dashboard.component').then(
         (mod) => mod.CommitsDashboardComponent
       ),
-    canActivate: [LoginGuard, RepositoryConfigGuard],
+    canActivate: [loginGuard, repositoryConfigGuard],
   },
   {
     path: AppRouting.LOGIN,
