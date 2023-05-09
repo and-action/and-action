@@ -59,21 +59,19 @@ export class CommitsGraphService {
     }));
 
     function processCommit(commit: Commit, childCommit?: Commit) {
+      function getMinFreeIndentationLevel(occupiedLevels: number[]) {
+        let i = 0;
+        while (occupiedLevels.includes(i)) {
+          ++i;
+        }
+        return i;
+      }
+
       if (!commitIndentationLevel[commit.oid]) {
         const lastCommitIndex = getCommitIndexByOid(commit.oid);
         const level = getMinFreeIndentationLevel(
           occupiedIndentationLevelsForCommitIndex[lastCommitIndex]
         );
-
-        function getMinFreeIndentationLevel(occupiedLevels: number[]) {
-          let i = 0;
-          while (true) {
-            if (!occupiedLevels.includes(i)) {
-              return i;
-            }
-            ++i;
-          }
-        }
 
         const lastCommitIndexRelevantForLevel = childCommit
           ? getCommitIndexByOid(childCommit.oid) + 1

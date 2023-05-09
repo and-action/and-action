@@ -239,7 +239,7 @@ export class DeployCommitDialogService {
           commitToDeploy,
           latestCommitDatePerDeployedEnvironment
         );
-      case DeploymentType.ROLLBACK:
+      case DeploymentType.ROLLBACK: {
         const value =
           this.getDeploymentStateForEnvironment(
             previousEnvironmentName,
@@ -251,6 +251,7 @@ export class DeployCommitDialogService {
               value,
               reason: `Deploy is not possible before <strong>${previousEnvironmentName}</strong> is deployed.`,
             };
+      }
       case DeploymentType.REDEPLOY:
         return { value: true };
       default:
