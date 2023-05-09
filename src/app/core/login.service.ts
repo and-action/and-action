@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -9,11 +9,10 @@ const accessTokenApiKey = 'gh_access_token';
   providedIn: 'root',
 })
 export class LoginService {
-  private myAccessToken?: string | null;
+  private myAccessToken: string | null =
+    localStorage.getItem(accessTokenApiKey);
 
-  constructor(private http: HttpClient) {
-    this.myAccessToken = localStorage.getItem(accessTokenApiKey);
-  }
+  private http = inject(HttpClient);
 
   get accessToken() {
     return this.myAccessToken;
@@ -21,7 +20,7 @@ export class LoginService {
 
   login(isForce = false) {
     if (isForce) {
-      this.myAccessToken = undefined;
+      this.myAccessToken = null;
       localStorage.removeItem(accessTokenApiKey);
     }
 

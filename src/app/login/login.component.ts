@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { LoginService } from '../core/login.service';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  constructor(private loginService: LoginService) {}
+  private loginService = inject(LoginService);
 
   onLoginClick() {
     this.loginService.login();

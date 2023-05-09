@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { GithubDataService } from '../core/github-data.service';
 import { combineLatest, Observable, Subscription, tap } from 'rxjs';
 import { RepositoryWithCommits } from './commits-dashboard-models';
@@ -37,13 +37,11 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
 
   private scrollSubscription?: Subscription;
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private router: Router,
-    private route: ActivatedRoute,
-    private githubDataService: GithubDataService,
-    private repositoryFilterService: RepositoryFilterService
-  ) {}
+  private document = inject(DOCUMENT);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private githubDataService = inject(GithubDataService);
+  private repositoryFilterService = inject(RepositoryFilterService);
 
   ngOnInit(): void {
     this.repositories$ = this.githubDataService

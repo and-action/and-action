@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   Commit,
   DeploymentState,
@@ -67,12 +67,10 @@ export class DeployCommitDialogComponent implements OnInit {
   deploymentType = DeploymentType;
   dateFormat = DEFAULT_DATE_FORMAT;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: DialogData,
-    private deployCommitDialogService: DeployCommitDialogService,
-    private snackBarService: SnackBarService,
-    private dialogRef: MatDialogRef<DeployCommitDialogComponent>
-  ) {}
+  dialogData = inject<DialogData>(MAT_DIALOG_DATA);
+  private deployCommitDialogService = inject(DeployCommitDialogService);
+  private snackBarService = inject(SnackBarService);
+  private dialogRef = inject(MatDialogRef<DeployCommitDialogComponent>);
 
   ngOnInit() {
     this.environments$ = this.deployCommitDialogService

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { catchError, delay, map } from 'rxjs/operators';
 import { GithubDataService } from '../core/github-data.service';
 import { DeployCommitEnvironment } from './deploy-commit-environment';
@@ -26,7 +26,7 @@ interface LatestCommitDatePerDeployedEnvironment {
   providedIn: 'root',
 })
 export class DeployCommitDialogService {
-  constructor(private githubDataService: GithubDataService) {}
+  private githubDataService = inject(GithubDataService);
 
   getEnvironments(
     repositoryOwner: string,

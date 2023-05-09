@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { LoginService } from './core/login.service';
 import { AppRouting } from './app-routing';
 import { environment } from '../environments/environment';
@@ -38,12 +38,11 @@ export class AppComponent implements OnInit {
   isFilterToggleButtonActive = false;
   repositoryFilterValue = '';
 
-  constructor(
-    private loginService: LoginService,
-    private statusIconService: StatusIconService,
-    private repositoryFilterService: RepositoryFilterService,
-    router: Router
-  ) {
+  private loginService = inject(LoginService);
+  private statusIconService = inject(StatusIconService);
+  private repositoryFilterService = inject(RepositoryFilterService);
+
+  constructor(router: Router) {
     router.events
       .pipe(filter((event) => event instanceof NavigationStart))
       .subscribe(() => this.sideNav?.close());

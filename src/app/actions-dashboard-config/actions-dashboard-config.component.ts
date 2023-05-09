@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AppRouting } from '../app-routing';
 import { GithubDataService } from '../core/github-data.service';
 import { GithubViewer } from '../core/github-viewer';
@@ -36,11 +36,9 @@ export class ActionsDashboardConfigComponent implements OnInit {
   protected loadingStatus = LoadingStatus.LOADING;
   protected loadingStatusEnum = LoadingStatus;
 
-  constructor(
-    private githubDataService: GithubDataService,
-    private andActionDataService: AndActionDataService,
-    private router: Router
-  ) {}
+  private githubDataService = inject(GithubDataService);
+  private andActionDataService = inject(AndActionDataService);
+  private router = inject(Router);
 
   ngOnInit() {
     const selectedRepositories =

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Repository } from './repository';
@@ -246,11 +246,9 @@ const andActionConfigsQuery = gql`
   providedIn: 'root',
 })
 export class GithubDataService {
-  constructor(
-    private apollo: Apollo,
-    private http: HttpClient,
-    private andActionDataService: AndActionDataService
-  ) {}
+  private apollo = inject(Apollo);
+  private http = inject(HttpClient);
+  private andActionDataService = inject(AndActionDataService);
 
   loadViewerAndOrganizations() {
     return this.apollo

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   MAT_SNACK_BAR_DATA,
   MatSnackBarRef,
@@ -16,10 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./snack-bar.component.scss'],
 })
 export class SnackBarComponent {
-  constructor(
-    @Inject(MAT_SNACK_BAR_DATA) public data: SnackBarData,
-    private matSnackBarRef: MatSnackBarRef<SnackBarComponent>
-  ) {}
+  public data = inject<SnackBarData>(MAT_SNACK_BAR_DATA);
+  private matSnackBarRef = inject(MatSnackBarRef<SnackBarComponent>);
 
   dismiss() {
     this.matSnackBarRef.dismiss();
