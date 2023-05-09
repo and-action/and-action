@@ -433,7 +433,7 @@ describe('DeployCommitDialogService', () => {
         canBeDeployed: { value: true },
         deploymentType: DeploymentType.ROLLBACK,
         deploymentState,
-        deploymentDate: !!deploymentState ? defaultDeploymentDate : undefined,
+        deploymentDate: deploymentState ? defaultDeploymentDate : undefined,
       };
     }
 
@@ -448,7 +448,7 @@ describe('DeployCommitDialogService', () => {
         },
         deploymentType: DeploymentType.ROLLBACK,
         deploymentState,
-        deploymentDate: !!deploymentState ? defaultDeploymentDate : undefined,
+        deploymentDate: deploymentState ? defaultDeploymentDate : undefined,
       };
     }
 
