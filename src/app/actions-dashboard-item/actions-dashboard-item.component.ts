@@ -18,7 +18,7 @@ import { StatusTagComponent } from '../status-tag/status-tag.component';
   styleUrls: ['./actions-dashboard-item.component.scss'],
 })
 export class ActionsDashboardItemComponent {
-  @Input() repository?: Repository;
+  @Input({ required: true }) repository?: Repository;
 
   protected appRouting = AppRouting;
 

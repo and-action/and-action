@@ -13,7 +13,7 @@ import { DOCUMENT } from '@angular/common';
   selector: '[anaTooltip]',
 })
 export class TooltipDirective {
-  @Input() anaTooltip?: string;
+  @Input({ required: true }) anaTooltip?: string;
   private tooltipContainer?: HTMLElement;
 
   private elementRef = inject(ElementRef);

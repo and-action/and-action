@@ -46,7 +46,9 @@ export class CommitsListComponent {
     return this.myRepository;
   }
 
-  @Input() set repository(repository: RepositoryWithCommits | undefined) {
+  @Input({ required: true }) set repository(
+    repository: RepositoryWithCommits | undefined
+  ) {
     this.myRepository = repository;
     this.environmentColorMapping = this.getDeploymentEnvironmentColors();
   }
