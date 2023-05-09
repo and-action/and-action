@@ -1,4 +1,4 @@
-import { CanActivate, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AndActionDataService } from './core/and-action-data.service';
 import { AppRouting } from './app-routing';
@@ -6,7 +6,7 @@ import { AppRouting } from './app-routing';
 @Injectable({
   providedIn: 'root',
 })
-export class RepositoryConfigGuard implements CanActivate {
+export class RepositoryConfigGuard {
   constructor(
     private router: Router,
     private andActionDataService: AndActionDataService
