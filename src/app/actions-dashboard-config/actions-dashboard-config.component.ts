@@ -29,10 +29,9 @@ import { tap } from 'rxjs';
   styleUrls: ['./actions-dashboard-config.component.scss'],
 })
 export class ActionsDashboardConfigComponent implements OnInit {
-  viewerAndOrganizations?: (GithubViewer | Organization)[];
-  model: { [key: string]: boolean } = {};
-  appRouting = AppRouting;
-
+  protected viewerAndOrganizations?: (GithubViewer | Organization)[];
+  protected model: { [key: string]: boolean } = {};
+  protected appRouting = AppRouting;
   protected loadingStatus = LoadingStatus.LOADING;
   protected loadingStatusEnum = LoadingStatus;
 

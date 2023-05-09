@@ -16,5 +16,5 @@ export class StatusTagComponent {
   @Input() status?: StatusTagStatus;
   @Input() link?: string | null;
 
-  statusTagStatus = StatusTagStatus;
+  protected statusTagStatus = StatusTagStatus;
 }

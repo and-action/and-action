@@ -32,11 +32,11 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  @ViewChild(MatSidenav) sideNav?: MatSidenav;
-  appRouting = AppRouting;
+  @ViewChild(MatSidenav) protected sideNav?: MatSidenav;
+  protected appRouting = AppRouting;
 
-  isFilterToggleButtonActive = false;
-  repositoryFilterValue = '';
+  protected isFilterToggleButtonActive = false;
+  protected repositoryFilterValue = '';
 
   private loginService = inject(LoginService);
   private statusIconService = inject(StatusIconService);

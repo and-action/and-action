@@ -20,7 +20,7 @@ import { StatusTagComponent } from '../status-tag/status-tag.component';
 export class ActionsDashboardItemComponent {
   @Input() repository?: Repository;
 
-  appRouting = AppRouting;
+  protected appRouting = AppRouting;
 
   getStatusTagStatus(workflowRun?: WorkflowRun) {
     return workflowRun

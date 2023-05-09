@@ -16,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./snack-bar.component.scss'],
 })
 export class SnackBarComponent {
-  public data = inject<SnackBarData>(MAT_SNACK_BAR_DATA);
+  protected data = inject<SnackBarData>(MAT_SNACK_BAR_DATA);
   private matSnackBarRef = inject(MatSnackBarRef<SnackBarComponent>);
 
   dismiss() {

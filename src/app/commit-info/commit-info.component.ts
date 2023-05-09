@@ -17,7 +17,7 @@ export class CommitInfoComponent {
   @Input() commit?: Commit;
   @Input() repositoryUrl?: string;
 
-  dateFormat = DEFAULT_DATE_FORMAT;
+  protected dateFormat = DEFAULT_DATE_FORMAT;
 
   private static highlightTicketNumber(commitMessage: string) {
     const match = /MD-[0-9]{4}/.exec(commitMessage);
