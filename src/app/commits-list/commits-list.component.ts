@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   Commit,
   Deployment,
@@ -40,13 +40,15 @@ export class CommitsListComponent {
     [environment: string]: StatusTagColor;
   } = {};
 
-  constructor(private dialog: MatDialog) {}
+  private dialog = inject(MatDialog);
 
   get repository() {
     return this.myRepository;
   }
 
-  @Input() set repository(repository: RepositoryWithCommits | undefined) {
+  @Input({ required: true }) set repository(
+    repository: RepositoryWithCommits | undefined
+  ) {
     this.myRepository = repository;
     this.environmentColorMapping = this.getDeploymentEnvironmentColors();
   }

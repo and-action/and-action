@@ -5,7 +5,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { LoginService } from './core/login.service';
 
 /**
@@ -13,7 +13,7 @@ import { LoginService } from './core/login.service';
  */
 @Injectable()
 export class HttpGithubAuthorizationInterceptor implements HttpInterceptor {
-  constructor(private loginService: LoginService) {}
+  private loginService = inject(LoginService);
 
   intercept(
     req: HttpRequest<any>,

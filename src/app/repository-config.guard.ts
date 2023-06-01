@@ -1,25 +1,18 @@
-import { Router } from '@angular/router';
-import { Injectable } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
 import { AndActionDataService } from './core/and-action-data.service';
 import { AppRouting } from './app-routing';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class RepositoryConfigGuard {
-  constructor(
-    private router: Router,
-    private andActionDataService: AndActionDataService
-  ) {}
+export const repositoryConfigGuard: CanActivateFn = () => {
+  const router = inject(Router);
+  const andActionDataService = inject(AndActionDataService);
 
-  canActivate() {
-    const canShowDashboard =
-      (this.andActionDataService.actionsDashboardConfig
-        ?.selectedRepositoriesNameWithOwnerForDashboard.length ?? 0) > 0;
+  const canShowDashboard =
+    (andActionDataService.actionsDashboardConfig
+      ?.selectedRepositoriesNameWithOwnerForDashboard.length ?? 0) > 0;
 
-    if (!canShowDashboard) {
-      this.router.navigate([AppRouting.DASHBOARD_CONFIG]);
-    }
-    return canShowDashboard;
+  if (!canShowDashboard) {
+    router.navigate([AppRouting.DASHBOARD_CONFIG]);
   }
-}
+  return canShowDashboard;
+};

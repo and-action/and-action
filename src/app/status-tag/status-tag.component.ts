@@ -11,10 +11,10 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./status-tag.component.scss'],
 })
 export class StatusTagComponent {
-  @Input() name?: string;
-  @Input() color?: StatusTagColor;
-  @Input() status?: StatusTagStatus;
-  @Input() link?: string | null;
+  @Input({ required: true }) name?: string;
+  @Input({ required: true }) color?: StatusTagColor;
+  @Input({ required: true }) status?: StatusTagStatus;
+  @Input({ required: true }) link?: string | null;
 
-  statusTagStatus = StatusTagStatus;
+  protected statusTagStatus = StatusTagStatus;
 }

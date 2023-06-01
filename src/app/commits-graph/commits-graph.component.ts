@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  inject,
   Input,
   OnDestroy,
   ViewChild,
@@ -22,10 +23,10 @@ export class CommitsGraphComponent implements AfterViewInit, OnDestroy {
   private commits$ = new BehaviorSubject<Commit[]>([]);
   private commitsSubscription?: Subscription;
 
-  constructor(private commitsGraphService: CommitsGraphService) {}
+  private commitsGraphService = inject(CommitsGraphService);
 
   // TODO: Check why subject is needed. I would prefer calling drawGraph immediately.
-  @Input()
+  @Input({ required: true })
   set commits(commits: Commit[]) {
     this.commits$.next(commits);
   }

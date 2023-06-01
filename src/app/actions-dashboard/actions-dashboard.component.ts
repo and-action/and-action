@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { GithubDataService } from '../core/github-data.service';
 import { map, mergeMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -34,11 +34,9 @@ export class ActionsDashboardComponent implements OnInit {
   protected loadingStatusEnum = LoadingStatus;
   protected updateIntervalInSeconds = 60;
 
-  constructor(
-    private githubDataService: GithubDataService,
-    private statusIconService: StatusIconService,
-    private repositoryFilterService: RepositoryFilterService
-  ) {}
+  private githubDataService = inject(GithubDataService);
+  private statusIconService = inject(StatusIconService);
+  private repositoryFilterService = inject(RepositoryFilterService);
 
   ngOnInit(): void {
     this.viewerAndOrganizations$ = this.githubDataService

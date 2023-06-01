@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   Commit,
   DeploymentState,
@@ -56,23 +56,18 @@ export interface DialogData {
   styleUrls: ['./deploy-commit-dialog.component.scss'],
 })
 export class DeployCommitDialogComponent implements OnInit {
-  environments$?: Observable<DeployCommitEnvironment[]>;
-
-  isLoading = false;
-
-  environmentColorMapping: {
+  protected environments$?: Observable<DeployCommitEnvironment[]>;
+  protected isLoading = false;
+  protected environmentColorMapping: {
     [environment: string]: StatusTagColor;
   } = {};
+  protected deploymentType = DeploymentType;
+  protected dateFormat = DEFAULT_DATE_FORMAT;
+  protected dialogData = inject<DialogData>(MAT_DIALOG_DATA);
 
-  deploymentType = DeploymentType;
-  dateFormat = DEFAULT_DATE_FORMAT;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: DialogData,
-    private deployCommitDialogService: DeployCommitDialogService,
-    private snackBarService: SnackBarService,
-    private dialogRef: MatDialogRef<DeployCommitDialogComponent>
-  ) {}
+  private deployCommitDialogService = inject(DeployCommitDialogService);
+  private snackBarService = inject(SnackBarService);
+  private dialogRef = inject(MatDialogRef<DeployCommitDialogComponent>);
 
   ngOnInit() {
     this.environments$ = this.deployCommitDialogService

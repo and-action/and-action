@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AppRouting } from '../app-routing';
 import { GithubDataService } from '../core/github-data.service';
 import { GithubViewer } from '../core/github-viewer';
@@ -29,18 +29,15 @@ import { tap } from 'rxjs';
   styleUrls: ['./actions-dashboard-config.component.scss'],
 })
 export class ActionsDashboardConfigComponent implements OnInit {
-  viewerAndOrganizations?: (GithubViewer | Organization)[];
-  model: { [key: string]: boolean } = {};
-  appRouting = AppRouting;
-
+  protected viewerAndOrganizations?: (GithubViewer | Organization)[];
+  protected model: { [key: string]: boolean } = {};
+  protected appRouting = AppRouting;
   protected loadingStatus = LoadingStatus.LOADING;
   protected loadingStatusEnum = LoadingStatus;
 
-  constructor(
-    private githubDataService: GithubDataService,
-    private andActionDataService: AndActionDataService,
-    private router: Router
-  ) {}
+  private githubDataService = inject(GithubDataService);
+  private andActionDataService = inject(AndActionDataService);
+  private router = inject(Router);
 
   ngOnInit() {
     const selectedRepositories =

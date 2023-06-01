@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import { ErrorHandler, Injectable } from '@angular/core';
+import { ErrorHandler, inject, Injectable } from '@angular/core';
 import { ApolloError } from '@apollo/client/core';
 
 import { environment } from '../environments/environment';
@@ -17,7 +17,7 @@ if (environment.sentryDsn) {
 
 @Injectable()
 export class AndActionErrorHandler implements ErrorHandler {
-  constructor(private snackBarService: SnackBarService) {}
+  private snackBarService = inject(SnackBarService);
 
   handleError(error: any) {
     captureException(error.originalError ?? error);

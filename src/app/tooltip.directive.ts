@@ -2,7 +2,7 @@ import {
   Directive,
   ElementRef,
   HostListener,
-  Inject,
+  inject,
   Input,
   Renderer2,
 } from '@angular/core';
@@ -13,14 +13,12 @@ import { DOCUMENT } from '@angular/common';
   selector: '[anaTooltip]',
 })
 export class TooltipDirective {
-  @Input() anaTooltip?: string;
+  @Input({ required: true }) anaTooltip?: string;
   private tooltipContainer?: HTMLElement;
 
-  constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
+  private elementRef = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  private document = inject<Document>(DOCUMENT);
 
   @HostListener('mouseenter') onMouseEnter() {
     this.showTooltip();

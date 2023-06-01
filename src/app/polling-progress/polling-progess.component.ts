@@ -27,13 +27,13 @@ import { captureException } from '../../utils/log-utils';
 @Component({
   standalone: true,
   imports: [CommonModule, MatProgressBarModule],
-  selector: 'ana-polling-progress[observable][pollIntervalInSeconds]',
+  selector: 'ana-polling-progress',
   templateUrl: './polling-progess.component.html',
   styleUrls: ['./polling-progess.component.scss'],
 })
 export class PollingProgessComponent implements OnChanges {
-  @Input() observable?: Observable<unknown>;
-  @Input() pollIntervalInSeconds?: number;
+  @Input({ required: true }) observable?: Observable<unknown>;
+  @Input({ required: true }) pollIntervalInSeconds?: number;
 
   protected dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
   protected lastSubscription$?: Observable<Date>;

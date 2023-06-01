@@ -9,15 +9,15 @@ export const maxCommitMessageLength = 100;
 @Component({
   standalone: true,
   imports: [CommonModule, TooltipDirective],
-  selector: 'ana-commit-info[repositoryUrl][commit]',
+  selector: 'ana-commit-info',
   templateUrl: './commit-info.component.html',
   styleUrls: ['./commit-info.component.scss'],
 })
 export class CommitInfoComponent {
-  @Input() commit?: Commit;
-  @Input() repositoryUrl?: string;
+  @Input({ required: true }) commit?: Commit;
+  @Input({ required: true }) repositoryUrl?: string;
 
-  dateFormat = DEFAULT_DATE_FORMAT;
+  protected dateFormat = DEFAULT_DATE_FORMAT;
 
   private static highlightTicketNumber(commitMessage: string) {
     const match = /MD-[0-9]{4}/.exec(commitMessage);
