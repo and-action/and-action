@@ -1,8 +1,6 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { LoginService } from './core/login.service';
 import { AppRouting } from './app-routing';
-import { environment } from '../environments/environment';
-import { EnvironmentName } from '../environments/environment-name';
 import { StatusIconService } from './status-icon.service';
 import { RepositoryFilterService } from './repository-filter.service';
 import { NavigationStart, Router, RouterModule } from '@angular/router';
@@ -59,10 +57,6 @@ export class AppComponent implements OnInit {
         );
     }
 
-    if (environment.name === EnvironmentName.PRODUCTION) {
-      this.initGoogleTagManager();
-    }
-
     this.statusIconService.initFavicons();
   }
 
@@ -76,27 +70,6 @@ export class AppComponent implements OnInit {
       this.repositoryFilterValue = '';
       this.onRepositoryFilterChange(this.repositoryFilterValue);
     }
-  }
-
-  private initGoogleTagManager() {
-    const trackingId = 'UA-162485821-1';
-    const gTagScript = document.createElement('script');
-    gTagScript.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
-
-    document.getElementsByTagName('head')[0].appendChild(gTagScript);
-
-    const gTagScript2 = document.createElement('script');
-    gTagScript2.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-  
-      gtag('config', '${trackingId}');
-    `;
-
-    document.getElementsByTagName('head')[0].appendChild(gTagScript2);
   }
 
   private getUrlParams(url: string) {
