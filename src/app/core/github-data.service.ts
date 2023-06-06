@@ -17,8 +17,17 @@ import {
 import { AndActionDataService } from './and-action-data.service';
 import YAML from 'yaml';
 import { AndActionConfig } from './and-action-config';
-import { ApolloQueryResult } from '@apollo/client/core';
+import { ApolloError, ApolloQueryResult } from '@apollo/client/core';
 import { DeploymentType } from '../deploy-commit-dialog/deployment-type';
+import { GraphQLError } from 'graphql/error';
+
+interface GraphQLErrorWithType extends GraphQLError {
+  type: 'FORBIDDEN' | 'NOT_FOUND';
+}
+
+function isGraphQLErrorWithType(x: GraphQLError): x is GraphQLErrorWithType {
+  return 'type' in x;
+}
 
 interface RepositoryQueryResult {
   viewer: {
@@ -254,24 +263,44 @@ export class GithubDataService {
     return this.apollo
       .watchQuery<RepositoryQueryResult>({
         query: repositoriesQuery,
+        errorPolicy: 'all',
       })
       .valueChanges.pipe(
-        map((queryResult) => {
+        map(({ data, errors }) => {
+          // FORBIDDEN can occur if a public member of an organisation has no access to a repository.
+          // In this case, the repository's value is `null`.
+          // Therefore, this situation is not an error.
+          const isErrorAllowed =
+            !errors ||
+            errors.every(
+              (error) =>
+                isGraphQLErrorWithType(error) &&
+                error.type === 'FORBIDDEN' &&
+                error.path?.at(-1) === 'repositories' &&
+                data.viewer.organizations.nodes[
+                  error.path?.at(-2) as number
+                ] === null
+            );
+          if (!isErrorAllowed) {
+            throw new ApolloError({
+              errorMessage: errors.map((error) => error.message).join('\n'),
+              graphQLErrors: errors,
+            });
+          }
           const viewer: GithubViewer = {
-            login: queryResult.data.viewer.login,
-            avatarUrl: queryResult.data.viewer.avatarUrl,
-            url: queryResult.data.viewer.url,
-            repositories: queryResult.data.viewer.repositories.nodes,
+            login: data.viewer.login,
+            avatarUrl: data.viewer.avatarUrl,
+            url: data.viewer.url,
+            repositories: data.viewer.repositories.nodes,
           };
-          const organizations: Organization[] =
-            queryResult.data.viewer.organizations.nodes
-              .filter((organization) => organization)
-              .map((organization) => ({
-                login: organization?.login ?? '',
-                avatarUrl: organization?.avatarUrl ?? '',
-                url: organization?.url ?? '',
-                repositories: organization?.repositories.nodes ?? [],
-              }));
+          const organizations: Organization[] = data.viewer.organizations.nodes
+            .filter((organization) => organization)
+            .map((organization) => ({
+              login: organization?.login ?? '',
+              avatarUrl: organization?.avatarUrl ?? '',
+              url: organization?.url ?? '',
+              repositories: organization?.repositories.nodes ?? [],
+            }));
           return [viewer, ...organizations];
         })
       );
@@ -378,18 +407,32 @@ export class GithubDataService {
           owner,
           name,
         },
-        errorPolicy: 'ignore',
+        errorPolicy: 'all',
       })
       .pipe(
-        map((queryResult) => {
+        map(({ data, errors }) => {
+          const isErrorAllowed =
+            !errors ||
+            errors.length === 0 ||
+            (errors.length === 1 &&
+              isGraphQLErrorWithType(errors[0]) &&
+              errors[0].type === 'NOT_FOUND' &&
+              errors[0].path?.at(-1) === 'organisationConfig');
+
+          if (!isErrorAllowed) {
+            throw new ApolloError({
+              errorMessage: errors.map((error) => error.message).join('\n'),
+              graphQLErrors: errors,
+            });
+          }
           const getConfig = (yamlText?: string) =>
             yamlText ? YAML.parse(yamlText) : {};
 
           const organisationConfig = getConfig(
-            queryResult.data.organisationConfig?.object?.text
+            data.organisationConfig?.object?.text
           );
           const repositoryConfig = getConfig(
-            queryResult.data.repositoryConfig?.object?.text
+            data.repositoryConfig?.object?.text
           );
           return {
             actions: {

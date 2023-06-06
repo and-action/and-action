@@ -10,6 +10,8 @@ import { of, tap } from 'rxjs';
 import { PollingProgessComponent } from './polling-progess.component';
 import { By } from '@angular/platform-browser';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('PollingProgressComponent', () => {
   let component: PollingProgessComponent;
@@ -18,6 +20,10 @@ describe('PollingProgressComponent', () => {
   let observableEmitCount = 0;
 
   beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [MatSnackBarModule, NoopAnimationsModule],
+    });
+
     fixture = TestBed.createComponent(PollingProgessComponent);
     component = fixture.componentInstance;
     component.pollIntervalInSeconds = pollInterval;
