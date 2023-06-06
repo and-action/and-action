@@ -17,7 +17,6 @@
     "cy:run": "cypress run --component --browser chrome",
     "cy:open": "cypress open --component --browser chrome",
     "lint": "ng lint",
-    "htmllint": "htmllint 'src/**/*.html'",
     "netlify": "netlify",
     "prettier": "prettier --write \"./src/**/*.{html,ts,js,json,scss}\" \"./*.{html,ts,js,json,scss,htmllintrc}\"",
     "prettier-check": "prettier --check \"./src/**/*.{html,ts,js,json,scss}\" \"./*.{html,ts,js,json,scss,htmllintrc}\"",
