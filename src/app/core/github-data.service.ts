@@ -407,18 +407,32 @@ export class GithubDataService {
           owner,
           name,
         },
-        errorPolicy: 'ignore',
+        errorPolicy: 'all',
       })
       .pipe(
-        map((queryResult) => {
+        map(({ data, errors }) => {
+          const isErrorAllowed =
+            !errors ||
+            errors.length === 0 ||
+            (errors.length === 1 &&
+              isGraphQLErrorWithType(errors[0]) &&
+              errors[0].type === 'NOT_FOUND' &&
+              errors[0].path?.at(-1) === 'organisationConfig');
+
+          if (!isErrorAllowed) {
+            throw new ApolloError({
+              errorMessage: errors.map((error) => error.message).join('\n'),
+              graphQLErrors: errors,
+            });
+          }
           const getConfig = (yamlText?: string) =>
             yamlText ? YAML.parse(yamlText) : {};
 
           const organisationConfig = getConfig(
-            queryResult.data.organisationConfig?.object?.text
+            data.organisationConfig?.object?.text
           );
           const repositoryConfig = getConfig(
-            queryResult.data.repositoryConfig?.object?.text
+            data.repositoryConfig?.object?.text
           );
           return {
             actions: {
