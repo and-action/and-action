@@ -12,7 +12,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppRouting } from './app/app-routing';
 import { loginGuard } from './app/login.guard';
 import { repositoryConfigGuard } from './app/repository-config.guard';
-import { AndActionErrorHandler } from './app/and-action-error-handler.service';
+import { AndActionErrorHandler } from './app/and-action-error-handler';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpUnauthorizedInterceptor } from './app/http-unauthorized-interceptor';
 import { HttpGithubAuthorizationInterceptor } from './app/http-github-authorization-interceptor';
