@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges } from '@angular/core';
 import { DEFAULT_DATE_TIME_FORMAT } from '../constants';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { mergeMap, Observable, of, repeat, share, timer } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
-import { captureException } from '../../utils/log-utils';
+import { ErrorService } from '../error.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 /**
  * This component subscribes repeatedly to the given observable.
@@ -26,7 +27,7 @@ import { captureException } from '../../utils/log-utils';
  */
 @Component({
   standalone: true,
-  imports: [CommonModule, MatProgressBarModule],
+  imports: [CommonModule, MatProgressBarModule, MatSnackBarModule],
   selector: 'ana-polling-progress',
   templateUrl: './polling-progess.component.html',
   styleUrls: ['./polling-progess.component.scss'],
@@ -39,6 +40,8 @@ export class PollingProgessComponent implements OnChanges {
   protected lastSubscription$?: Observable<Date>;
   protected progressBarValue$?: Observable<number>;
 
+  private errorService = inject(ErrorService);
+
   ngOnChanges() {
     if (this.observable && this.pollIntervalInSeconds) {
       const updateProgressBarInterval = 200;
@@ -50,7 +53,7 @@ export class PollingProgessComponent implements OnChanges {
           observable$.pipe(
             // Catch error to make sure that polling stays alive.
             catchError((error: unknown) => {
-              captureException(error);
+              this.errorService.handleError(error);
               return of(undefined);
             })
           )

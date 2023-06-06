@@ -7,6 +7,7 @@ import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { FormsModule } from '@angular/forms';
 import { GraphQLModule } from '../graphql.module';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('CommitsDashboardComponent', () => {
   let component: CommitsDashboardComponent;
@@ -18,6 +19,7 @@ describe('CommitsDashboardComponent', () => {
         GraphQLModule,
         FormsModule,
         HttpClientTestingModule,
+        MatSnackBarModule,
         RouterTestingModule,
       ],
     }).compileComponents();
