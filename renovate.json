@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:js-app"],
+  "dependencyDashboard": false,
+  "branchPrefix": "feature/renovate/",
+  "semanticCommitType": "build",
+  "packageRules": [
+    {
+      "groupName": "all",
+      "matchPackagePatterns": ["*"]
+    },
+    {
+      "groupName": "disable angular scoped packages (major)",
+      "matchPackagePrefixes": ["@angular", "angular"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    }
+  ],
+  "npmrc": "legacy-peer-deps=true",
+  "reviewers": ["pchorus"],
+  "ignoreDeps": ["typescript"],
+  "schedule": ["before 4:00 am on Monday"],
+  "prHourlyLimit": 5,
+  "rebaseWhen": "never"
+}

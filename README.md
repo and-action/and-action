@@ -337,3 +337,8 @@ The local login api serves a simple implementation of the login api for And Acti
 New features are developed in separate feature branches. Pushing them to GitHub runs the CI workflow in GitHub actions. Merging a feature branch to master also runs the CI workflow. Additionally, the app is deployed on `https://staging.andaction.dev`.
 
 Creating a GitHub release deploys the app to production on `https://andaction.dev`. 
+
+
+### Renovate
+
+And Action uses [MEND Renovate](https://www.mend.io/renovate/) to update NPM packages automatically on a weekly basis. Configuration is defined in `renovate.json`.
