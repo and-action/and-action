@@ -18,6 +18,6 @@
   "npmrc": "legacy-peer-deps=true",
   "reviewers": ["pchorus"],
   "ignoreDeps": ["typescript"],
-  "schedule": ["before 4am on Monday"],
+  "schedule": ["before 4:00 pm on Monday"],
   "rebaseWhen": "never"
 }
