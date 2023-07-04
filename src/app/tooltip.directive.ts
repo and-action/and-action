@@ -4,6 +4,7 @@ import {
   HostListener,
   inject,
   Input,
+  OnDestroy,
   Renderer2,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -12,7 +13,7 @@ import { DOCUMENT } from '@angular/common';
   standalone: true,
   selector: '[anaTooltip]',
 })
-export class TooltipDirective {
+export class TooltipDirective implements OnDestroy {
   @Input({ required: true }) anaTooltip?: string;
   private tooltipContainer?: HTMLElement;
 
@@ -25,6 +26,10 @@ export class TooltipDirective {
   }
 
   @HostListener('mouseleave') onMouseLeave() {
+    this.hideTooltip();
+  }
+
+  ngOnDestroy() {
     this.hideTooltip();
   }
 
