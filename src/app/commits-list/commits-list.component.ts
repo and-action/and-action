@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import {
   Commit,
   Deployment,
@@ -53,6 +53,8 @@ export class CommitsListComponent {
     this.environmentColorMapping = this.getDeploymentEnvironmentColors();
   }
 
+  @Output() repositoryCommitDeployed = new EventEmitter<void>();
+
   getDeploymentStatusForStatusTag(deployment: Deployment) {
     return {
       [DeploymentState.ABANDONED]: StatusTagStatus.ERROR,
@@ -90,11 +92,18 @@ export class CommitsListComponent {
   }
 
   openDeployDialog(commitToDeploy: Commit, commits: Commit[]) {
-    this.dialog.open(DeployCommitDialogComponent, {
-      data: { repository: this.repository, commitToDeploy, commits },
-      width: '600px',
-      autoFocus: false,
-    });
+    this.dialog
+      .open(DeployCommitDialogComponent, {
+        data: { repository: this.repository, commitToDeploy, commits },
+        width: '600px',
+        autoFocus: false,
+      })
+      .afterClosed()
+      .subscribe((isDeploymentTriggered) => {
+        if (isDeploymentTriggered) {
+          this.repositoryCommitDeployed.next();
+        }
+      });
   }
 
   private getDeploymentEnvironmentColors() {

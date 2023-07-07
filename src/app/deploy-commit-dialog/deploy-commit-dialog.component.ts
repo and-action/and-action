@@ -153,7 +153,7 @@ export class DeployCommitDialogComponent implements OnInit {
       .subscribe(() => {
         this.isLoading = false;
         this.snackBarService.info('Deployment triggered successfully.');
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       });
   }
 }
