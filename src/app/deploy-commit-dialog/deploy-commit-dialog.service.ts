@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, delay, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { GithubDataService } from '../core/github-data.service';
 import { DeployCommitEnvironment } from './deploy-commit-environment';
 import {
@@ -7,7 +7,7 @@ import {
   Deployment,
   DeploymentState,
 } from '../commits-dashboard/commits-dashboard-models';
-import { combineLatest, first, mergeMap, tap, throwError } from 'rxjs';
+import { combineLatest, first, mergeMap, throwError } from 'rxjs';
 import isEqual from 'lodash-es/isEqual';
 import {
   CommitDeploymentsNotUpToDateError,
@@ -135,13 +135,6 @@ export class DeployCommitDialogService {
             deploymentType
           )
           .pipe(
-            delay(2000),
-            tap(() =>
-              this.githubDataService.loadRepositoryCommits(
-                repositoryOwner,
-                repositoryName
-              )
-            ),
             catchError(() => throwError(() => new CreateDeploymentError()))
           );
       }),

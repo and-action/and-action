@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { GithubDataService } from '../core/github-data.service';
 import { combineLatest, Observable, Subscription, tap } from 'rxjs';
 import { RepositoryWithCommits } from './commits-dashboard-models';
-import { map, mergeMap } from 'rxjs/operators';
+import { delay, map, mergeMap } from 'rxjs/operators';
 import { RepositoryFilterService } from '../repository-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, DOCUMENT } from '@angular/common';
@@ -107,5 +107,26 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.scrollSubscription?.unsubscribe();
+  }
+
+  reloadCommitsForRepository(repository: RepositoryWithCommits) {
+    this.githubDataService
+      .loadRepositoryCommits(repository.owner, repository.name)
+      .pipe(delay(3000))
+      .subscribe((repositoryWithCommits) => {
+        const indexToUpdate = this.repositories?.findIndex(
+          (repo) =>
+            repo.owner === repositoryWithCommits.owner &&
+            repo.name === repositoryWithCommits.name
+        );
+
+        if (
+          indexToUpdate !== undefined &&
+          indexToUpdate !== -1 &&
+          this.repositories?.[indexToUpdate]
+        ) {
+          this.repositories[indexToUpdate] = repositoryWithCommits;
+        }
+      });
   }
 }
