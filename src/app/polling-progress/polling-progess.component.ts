@@ -1,5 +1,4 @@
 import { Component, inject, Input, OnChanges } from '@angular/core';
-import { DEFAULT_DATE_TIME_FORMAT } from '../constants';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { mergeMap, Observable, of, repeat, share, timer } from 'rxjs';
@@ -36,7 +35,6 @@ export class PollingProgessComponent implements OnChanges {
   @Input({ required: true }) observable?: Observable<unknown>;
   @Input({ required: true }) pollIntervalInSeconds?: number;
 
-  protected dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
   protected lastSubscription$?: Observable<Date>;
   protected progressBarValue$?: Observable<number>;
 

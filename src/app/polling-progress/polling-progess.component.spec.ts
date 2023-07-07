@@ -12,6 +12,8 @@ import { By } from '@angular/platform-browser';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { DEFAULT_DATE_TIME_FORMAT } from '../constants';
 
 describe('PollingProgressComponent', () => {
   let component: PollingProgessComponent;
@@ -22,6 +24,14 @@ describe('PollingProgressComponent', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule, NoopAnimationsModule],
+      providers: [
+        {
+          provide: DATE_PIPE_DEFAULT_OPTIONS,
+          useValue: {
+            dateFormat: DEFAULT_DATE_TIME_FORMAT,
+          },
+        },
+      ],
     });
 
     fixture = TestBed.createComponent(PollingProgessComponent);

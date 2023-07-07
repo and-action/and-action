@@ -12,7 +12,7 @@ import { StatusTagColor } from '../status-tag/status-tag-color';
 import { MatDialog } from '@angular/material/dialog';
 import { DeployCommitDialogComponent } from '../deploy-commit-dialog/deploy-commit-dialog.component';
 import { getDeploymentEnvironmentColors } from '../status-tag/status-tag-utils';
-import { DEFAULT_DATE_TIME_FORMAT } from '../constants';
+import { DATE_TIME_FORMAT_WITH_TIMEZONE } from '../constants';
 import { CommitInfoComponent } from '../commit-info/commit-info.component';
 import { StatusTagComponent } from '../status-tag/status-tag.component';
 import { TooltipDirective } from '../tooltip.directive';
@@ -81,7 +81,7 @@ export class CommitsListComponent {
       : '';
     return `${datePipe.transform(
       deployment.timestamp,
-      DEFAULT_DATE_TIME_FORMAT,
+      DATE_TIME_FORMAT_WITH_TIMEZONE,
     )}
     ${deployment.creator.login}${creatorName}
     ${deploymentStateOutputTextMapping[deployment.state]}`;
