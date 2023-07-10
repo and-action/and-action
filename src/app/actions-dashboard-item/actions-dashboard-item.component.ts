@@ -26,7 +26,7 @@ export class ActionsDashboardItemComponent {
     return workflowRun
       ? this.getStatusByWorkflowRunStatus(
           workflowRun.status,
-          workflowRun.conclusion
+          workflowRun.conclusion,
         )
       : StatusTagStatus.NONE;
   }
@@ -43,7 +43,7 @@ export class ActionsDashboardItemComponent {
   }
 
   private getStatusByCompletedWorkflowRunConclusion(
-    conclusion: WorkflowRunConclusion
+    conclusion: WorkflowRunConclusion,
   ) {
     return {
       [WorkflowRunConclusion.SUCCESS]: StatusTagStatus.SUCCESS,
@@ -58,7 +58,7 @@ export class ActionsDashboardItemComponent {
 
   private getStatusByWorkflowRunStatus(
     status: WorkflowRunStatus,
-    conclusion: WorkflowRunConclusion
+    conclusion: WorkflowRunConclusion,
   ) {
     return status === WorkflowRunStatus.COMPLETED
       ? this.getStatusByCompletedWorkflowRunConclusion(conclusion)

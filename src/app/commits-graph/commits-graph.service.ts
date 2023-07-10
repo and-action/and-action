@@ -16,7 +16,7 @@ const BEZIER_CURVE_STRETCH_VALUE = 40;
 })
 export class CommitsGraphService {
   private static setIndentationLevelForCommits(
-    commits: Commit[]
+    commits: Commit[],
   ): CommitWithIndentationLevel[] {
     const commitIndentationLevel: {
       [commitOid: string]: number;
@@ -34,7 +34,7 @@ export class CommitsGraphService {
     };
 
     const occupiedIndentationLevelsForCommitIndex: number[][] = commits.map(
-      () => []
+      () => [],
     );
 
     const commitQueue: { oid: string; childOid?: string }[] = [
@@ -46,7 +46,7 @@ export class CommitsGraphService {
       if (commit) {
         processCommit(
           commit,
-          current.childOid ? getCommitByOid(current.childOid) : undefined
+          current.childOid ? getCommitByOid(current.childOid) : undefined,
         );
         pushBranchCommitsToQueue(commit);
       }
@@ -70,7 +70,7 @@ export class CommitsGraphService {
       if (!commitIndentationLevel[commit.oid]) {
         const lastCommitIndex = getCommitIndexByOid(commit.oid);
         const level = getMinFreeIndentationLevel(
-          occupiedIndentationLevelsForCommitIndex[lastCommitIndex]
+          occupiedIndentationLevelsForCommitIndex[lastCommitIndex],
         );
 
         const lastCommitIndexRelevantForLevel = childCommit
@@ -146,14 +146,14 @@ export class CommitsGraphService {
       .attr(
         'width',
         (Math.max(...commits.map((commit) => commit.indentationLevel)) + 1) *
-          BRANCH_WIDTH
+          BRANCH_WIDTH,
       )
       .attr('height', commits.length * COMMIT_HEIGHT);
   }
 
   private static drawCommitNodes(
     svg: d3Selection.Selection<SVGSVGElement, undefined, null, undefined>,
-    commits: CommitWithIndentationLevel[]
+    commits: CommitWithIndentationLevel[],
   ) {
     commits.forEach((commit, index) => {
       svg
@@ -167,7 +167,7 @@ export class CommitsGraphService {
 
   private static drawBranchEdges(
     svg: d3Selection.Selection<SVGSVGElement, undefined, null, undefined>,
-    commits: CommitWithIndentationLevel[]
+    commits: CommitWithIndentationLevel[],
   ) {
     this.drawBranch(commits, undefined, commits[0], svg);
   }
@@ -176,7 +176,7 @@ export class CommitsGraphService {
     commits: CommitWithIndentationLevel[],
     mergeCommit: CommitWithIndentationLevel | undefined,
     latestBranchCommit: CommitWithIndentationLevel,
-    svg: d3Selection.Selection<SVGSVGElement, undefined, null, undefined>
+    svg: d3Selection.Selection<SVGSVGElement, undefined, null, undefined>,
   ) {
     const getCommitByOid = (oid: string) =>
       commits.find((commit) => commit.oid === oid);
@@ -237,7 +237,8 @@ export class CommitsGraphService {
     if (mergeCommit) {
       p.moveTo(
         mergeCommit.indentationLevel * BRANCH_WIDTH + BRANCH_WIDTH / 2,
-        getCommitIndexByOid(mergeCommit.oid) * COMMIT_HEIGHT + COMMIT_HEIGHT / 2
+        getCommitIndexByOid(mergeCommit.oid) * COMMIT_HEIGHT +
+          COMMIT_HEIGHT / 2,
       );
       p.bezierCurveTo(
         mergeCommit.indentationLevel * BRANCH_WIDTH + BRANCH_WIDTH / 2,
@@ -250,7 +251,7 @@ export class CommitsGraphService {
           BEZIER_CURVE_STRETCH_VALUE,
         latestBranchCommitPoint.x,
         (getCommitIndexByOid(mergeCommit.oid) + 1) * COMMIT_HEIGHT +
-          COMMIT_HEIGHT / 2
+          COMMIT_HEIGHT / 2,
       );
     } else {
       p.moveTo(latestBranchCommitPoint.x, latestBranchCommitPoint.y);
@@ -274,7 +275,7 @@ export class CommitsGraphService {
           parentCommitPoint.x,
           parentCommitPoint.y - BEZIER_CURVE_STRETCH_VALUE,
           parentCommitPoint.x,
-          parentCommitPoint.y
+          parentCommitPoint.y,
         );
       } else {
         // Draw branch edges to the end of chart since parent commits are below.

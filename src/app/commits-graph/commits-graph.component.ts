@@ -33,7 +33,7 @@ export class CommitsGraphComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.commitsSubscription = this.commits$.subscribe((commits) =>
-      this.drawGraph(commits)
+      this.drawGraph(commits),
     );
   }
 

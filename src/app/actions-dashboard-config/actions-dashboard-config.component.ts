@@ -49,7 +49,7 @@ export class ActionsDashboardConfigComponent implements OnInit {
       .pipe(
         tap({
           error: () => (this.loadingStatus = LoadingStatus.FAILED),
-        })
+        }),
       )
       .subscribe((viewerAndOrganizations) => {
         this.loadingStatus = LoadingStatus.FINISHED;
@@ -59,11 +59,11 @@ export class ActionsDashboardConfigComponent implements OnInit {
           .reduce(
             (acc, current) => ({
               [current.nameWithOwner]: !!selectedRepositories?.includes(
-                current.nameWithOwner
+                current.nameWithOwner,
               ),
               ...acc,
             }),
-            {}
+            {},
           );
       });
   }
@@ -78,12 +78,12 @@ export class ActionsDashboardConfigComponent implements OnInit {
     }
 
     const selectedRepositoriesForDashboard = Object.keys(this.model).filter(
-      (repositoryNameWithOwner) => this.model[repositoryNameWithOwner]
+      (repositoryNameWithOwner) => this.model[repositoryNameWithOwner],
     );
 
     this.andActionDataService
       .saveActionsDashboardConfig(
-        new ActionsDashboardConfig(selectedRepositoriesForDashboard)
+        new ActionsDashboardConfig(selectedRepositoriesForDashboard),
       )
       .subscribe(() => this.router.navigate([AppRouting.DASHBOARD]));
   }

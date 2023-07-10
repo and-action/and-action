@@ -35,11 +35,11 @@ export class StatusIconService {
 
     this.favicon16?.setAttribute(
       'href',
-      this.getFaviconFileNameForStatus(16, status)
+      this.getFaviconFileNameForStatus(16, status),
     );
     this.favicon32?.setAttribute(
       'href',
-      this.getFaviconFileNameForStatus(32, status)
+      this.getFaviconFileNameForStatus(32, status),
     );
   }
 
@@ -53,7 +53,7 @@ export class StatusIconService {
     return workflowRuns.some(
       (workflowRun) =>
         workflowRun.status === WorkflowRunStatus.COMPLETED &&
-        errorConclusions.includes(workflowRun.conclusion)
+        errorConclusions.includes(workflowRun.conclusion),
     );
   }
 
@@ -61,7 +61,7 @@ export class StatusIconService {
     return workflowRuns.some(
       (workflowRun) =>
         workflowRun.status === WorkflowRunStatus.QUEUED ||
-        workflowRun.status === WorkflowRunStatus.IN_PROGRESS
+        workflowRun.status === WorkflowRunStatus.IN_PROGRESS,
     );
   }
 
@@ -74,7 +74,7 @@ export class StatusIconService {
     return workflowRuns.every(
       (workflowRun) =>
         workflowRun.status === WorkflowRunStatus.COMPLETED &&
-        successConclusions.includes(workflowRun.conclusion)
+        successConclusions.includes(workflowRun.conclusion),
     );
   }
 
@@ -88,7 +88,7 @@ export class StatusIconService {
     };
 
     Object.keys(attributes).forEach((key) =>
-      element.setAttribute(key, attributes[key])
+      element.setAttribute(key, attributes[key]),
     );
 
     if (document && document.head) {

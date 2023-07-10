@@ -16,7 +16,7 @@ export class AndActionDataService {
   saveActionsDashboardConfig(actionsDashboardConfig: ActionsDashboardConfig) {
     localStorage.setItem(
       ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY,
-      JSON.stringify(actionsDashboardConfig)
+      JSON.stringify(actionsDashboardConfig),
     );
     this.myActionsDashboardConfig = actionsDashboardConfig;
     return of(undefined);
@@ -24,7 +24,7 @@ export class AndActionDataService {
 
   initActionsDashboardConfig() {
     const configString = localStorage.getItem(
-      ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY
+      ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY,
     );
     this.myActionsDashboardConfig = configString
       ? (JSON.parse(configString) as ActionsDashboardConfig)

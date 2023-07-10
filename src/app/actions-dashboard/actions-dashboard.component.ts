@@ -47,9 +47,9 @@ export class ActionsDashboardComponent implements OnInit {
             .loadWorkflowRuns(organizations)
             .pipe(
               tap((viewerAndOrganizations) =>
-                this.statusIconService.updateStatusIcon(viewerAndOrganizations)
-              )
-            )
+                this.statusIconService.updateStatusIcon(viewerAndOrganizations),
+              ),
+            ),
         ),
         mergeMap((viewerAndOrganizations) =>
           this.repositoryFilterService.filterValue$.pipe(
@@ -62,15 +62,15 @@ export class ActionsDashboardComponent implements OnInit {
                       !filterValue ||
                       repository.name
                         .toLowerCase()
-                        .includes(filterValue.toLowerCase())
+                        .includes(filterValue.toLowerCase()),
                   ),
                 }))
                 .filter(
                   (viewerAndOrganization) =>
-                    viewerAndOrganization.repositories.length > 0
-                )
-            )
-          )
+                    viewerAndOrganization.repositories.length > 0,
+                ),
+            ),
+          ),
         ),
         tap({
           next: (viewerAndOrganizations) => {
@@ -78,7 +78,7 @@ export class ActionsDashboardComponent implements OnInit {
             this.loadingStatus = LoadingStatus.FINISHED;
           },
           error: () => (this.loadingStatus = LoadingStatus.FAILED),
-        })
+        }),
       );
   }
 }

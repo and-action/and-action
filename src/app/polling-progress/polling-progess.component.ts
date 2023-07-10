@@ -55,11 +55,11 @@ export class PollingProgessComponent implements OnChanges {
             catchError((error: unknown) => {
               this.errorService.handleError(error);
               return of(undefined);
-            })
-          )
+            }),
+          ),
         ),
         map(() => new Date()),
-        share()
+        share(),
       );
 
       this.progressBarValue$ = timer(0, updateProgressBarInterval).pipe(
@@ -67,10 +67,10 @@ export class PollingProgessComponent implements OnChanges {
           (value) =>
             ((((value + 1) * 100) / pollIntervalInSeconds) *
               updateProgressBarInterval) /
-            1000
+            1000,
         ),
         takeUntil(this.lastSubscription$),
-        repeat()
+        repeat(),
       );
     }
   }

@@ -36,7 +36,7 @@ describe('StatusTagComponent', () => {
 
     const svgElement = fixture.debugElement.query(By.css('.tag__status-icon'));
     expect(svgElement.nativeElement.classList).toContain(
-      `tag__status-icon--${status}`
+      `tag__status-icon--${status}`,
     );
   }
 

@@ -12,7 +12,7 @@ describe('CommitsGraphComponent', () => {
     const commitGraphService = TestBed.inject(CommitsGraphService);
 
     spyOn(commitGraphService, 'createCommitsGraphSvg').and.returnValue(
-      d3Selection.create('svg')
+      d3Selection.create('svg'),
     );
 
     fixture = TestBed.createComponent(CommitsGraphComponent);

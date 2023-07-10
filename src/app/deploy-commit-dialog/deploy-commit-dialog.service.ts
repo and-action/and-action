@@ -32,7 +32,7 @@ export class DeployCommitDialogService {
     repositoryOwner: string,
     repositoryName: string,
     commitToDeploy: Commit,
-    commits: Commit[]
+    commits: Commit[],
   ) {
     const latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment =
       this.getLatestCommitDatePerDeployedEnvironment(commits);
@@ -53,26 +53,26 @@ export class DeployCommitDialogService {
               deploymentType: this.getDeploymentType(
                 environmentName,
                 commitToDeploy,
-                latestCommitDatePerDeployedEnvironment
+                latestCommitDatePerDeployedEnvironment,
               ),
               deploymentState: this.getDeploymentStateForEnvironment(
                 environmentName,
-                commitToDeploy
+                commitToDeploy,
               ),
               canBeDeployed: this.canDeployEnvironment(
                 environments,
                 index,
                 commitToDeploy,
                 commits,
-                latestCommitDatePerDeployedEnvironment
+                latestCommitDatePerDeployedEnvironment,
               ),
               deploymentDate: this.getEnvironmentDeploymentDate(
                 environmentName,
-                commitToDeploy
+                commitToDeploy,
               ),
-            })
-          )
-        )
+            }),
+          ),
+        ),
       );
   }
 
@@ -82,7 +82,7 @@ export class DeployCommitDialogService {
     commitToDeploy: Commit,
     environmentName: string,
     deploymentType: DeploymentType,
-    environments: DeployCommitEnvironment[]
+    environments: DeployCommitEnvironment[],
   ) {
     const { id: commitId, oid: commitOid } = commitToDeploy;
     const isCurrentEnvironments$ = this.githubDataService
@@ -90,20 +90,22 @@ export class DeployCommitDialogService {
       .pipe(
         mergeMap((repository) => {
           const refetchedCommitToDeploy = repository.commits.find(
-            (commit) => commit.oid === commitToDeploy.oid
+            (commit) => commit.oid === commitToDeploy.oid,
           );
           if (refetchedCommitToDeploy) {
             return this.getEnvironments(
               repositoryOwner,
               repositoryName,
               refetchedCommitToDeploy,
-              repository.commits
+              repository.commits,
             );
           } else {
             throw new CommitNotFoundError();
           }
         }),
-        map((currentEnvironments) => isEqual(environments, currentEnvironments))
+        map((currentEnvironments) =>
+          isEqual(environments, currentEnvironments),
+        ),
       );
 
     return combineLatest([
@@ -111,8 +113,8 @@ export class DeployCommitDialogService {
         .loadAndActionConfigs(repositoryOwner, repositoryName)
         .pipe(
           mergeMap((andActionConfig) =>
-            this.githubDataService.loadCommitState(commitId, andActionConfig)
-          )
+            this.githubDataService.loadCommitState(commitId, andActionConfig),
+          ),
         ),
 
       isCurrentEnvironments$,
@@ -132,13 +134,13 @@ export class DeployCommitDialogService {
             repositoryName,
             commitOid,
             environmentName,
-            deploymentType
+            deploymentType,
           )
           .pipe(
-            catchError(() => throwError(() => new CreateDeploymentError()))
+            catchError(() => throwError(() => new CreateDeploymentError())),
           );
       }),
-      first() // make observable complete
+      first(), // make observable complete
     );
   }
 
@@ -151,31 +153,31 @@ export class DeployCommitDialogService {
             ...cum,
             [deployment.environment]: commit.committedDate,
           }),
-          {}
+          {},
         );
 
     return commits
       .filter((commit) =>
         commit.deployments.some(
-          (deployment) => deployment.state === DeploymentState.ACTIVE
-        )
+          (deployment) => deployment.state === DeploymentState.ACTIVE,
+        ),
       )
       .reduce(
         (cum, commit) => ({
           ...cum,
           ...getActiveDeploymentsAndCommitDates(commit),
         }),
-        {}
+        {},
       );
   }
 
   private isDeploymentInProgressForCommit(
     environmentName: string,
-    commit: Commit
+    commit: Commit,
   ) {
     const environmentDeploymentState = this.getDeploymentStateForEnvironment(
       environmentName,
-      commit
+      commit,
     );
 
     return (
@@ -191,10 +193,10 @@ export class DeployCommitDialogService {
 
   private isDeploymentInProgressForEnvironment(
     environmentName: string,
-    commits: Commit[]
+    commits: Commit[],
   ) {
     return commits.some((commit) =>
-      this.isDeploymentInProgressForCommit(environmentName, commit)
+      this.isDeploymentInProgressForCommit(environmentName, commit),
     );
   }
 
@@ -203,7 +205,7 @@ export class DeployCommitDialogService {
     environmentIndex: number,
     commitToDeploy: Commit,
     commits: Commit[],
-    latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment
+    latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment,
   ): { value: true } | { value: false; reason: string } {
     const environmentName = environmentNames[environmentIndex];
     const previousEnvironmentName = environmentNames[environmentIndex - 1];
@@ -223,20 +225,20 @@ export class DeployCommitDialogService {
       this.getDeploymentType(
         environmentName,
         commitToDeploy,
-        latestCommitDatePerDeployedEnvironment
+        latestCommitDatePerDeployedEnvironment,
       )
     ) {
       case DeploymentType.FORWARD:
         return this.canDeployForwardCommit(
           previousEnvironmentName,
           commitToDeploy,
-          latestCommitDatePerDeployedEnvironment
+          latestCommitDatePerDeployedEnvironment,
         );
       case DeploymentType.ROLLBACK: {
         const value =
           this.getDeploymentStateForEnvironment(
             previousEnvironmentName,
-            commitToDeploy
+            commitToDeploy,
           ) === DeploymentState.ACTIVE;
         return value
           ? { value }
@@ -255,11 +257,11 @@ export class DeployCommitDialogService {
   private canDeployForwardCommit(
     previousEnvironmentName: string,
     commitToDeploy: Commit,
-    latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment
+    latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment,
   ) {
     const deployment = this.getLatestEnvironmentDeployForCommit(
       previousEnvironmentName,
-      commitToDeploy.deployments
+      commitToDeploy.deployments,
     );
     const value = deployment
       ? deployment.state === DeploymentState.ACTIVE ||
@@ -277,27 +279,27 @@ export class DeployCommitDialogService {
 
   private getDeploymentStateForEnvironment(
     environmentName: string,
-    commitToDeploy: Commit
+    commitToDeploy: Commit,
   ) {
     return this.getLatestEnvironmentDeployForCommit(
       environmentName,
-      commitToDeploy.deployments
+      commitToDeploy.deployments,
     )?.state;
   }
 
   private getEnvironmentDeploymentDate(
     environmentName: string,
-    commitToDeploy: Commit
+    commitToDeploy: Commit,
   ) {
     return this.getLatestEnvironmentDeployForCommit(
       environmentName,
-      commitToDeploy.deployments
+      commitToDeploy.deployments,
     )?.timestamp;
   }
 
   private getLatestEnvironmentDeployForCommit(
     environmentName: string,
-    deployments: Deployment[]
+    deployments: Deployment[],
   ) {
     const deploymentsForEnvironment = deployments
       .filter((deployment) => deployment.environment === environmentName)
@@ -312,7 +314,7 @@ export class DeployCommitDialogService {
   private getDeploymentType(
     environmentName: string,
     commitToDeploy: Commit,
-    latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment
+    latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment,
   ) {
     if (
       this.getDeploymentStateForEnvironment(environmentName, commitToDeploy) ===

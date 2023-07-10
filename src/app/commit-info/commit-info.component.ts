@@ -24,7 +24,7 @@ export class CommitInfoComponent {
     return match
       ? commitMessage.replace(
           match[0],
-          `<span class="u-text-bold u-nowrap">${match[0]}</span>`
+          `<span class="u-text-bold u-nowrap">${match[0]}</span>`,
         )
       : commitMessage;
   }
@@ -35,7 +35,7 @@ export class CommitInfoComponent {
 
   getCommitMessage(commitMessage: string) {
     return CommitInfoComponent.highlightTicketNumber(
-      CommitInfoComponent.allowLineBreaksAfterSlash(commitMessage)
+      CommitInfoComponent.allowLineBreaksAfterSlash(commitMessage),
     );
   }
 
@@ -43,7 +43,7 @@ export class CommitInfoComponent {
     return this.getCommitMessage(
       commitMessage.length > maxCommitMessageLength
         ? `${commitMessage.slice(0, maxCommitMessageLength)}...`
-        : commitMessage
+        : commitMessage,
     ).split('\n')[0];
   }
 

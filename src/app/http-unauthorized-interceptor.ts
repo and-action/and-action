@@ -31,7 +31,7 @@ export class HttpUnauthorizedInterceptor implements HttpInterceptor {
   private static checkAndUpdateRetryCountOn401() {
     const retryCount = parseInt(
       sessionStorage.getItem(retryOn401CountKey) ?? '1',
-      10
+      10,
     );
     const isRetry =
       retryCount <= HttpUnauthorizedInterceptor.maxRetryCountOn401;
@@ -45,7 +45,7 @@ export class HttpUnauthorizedInterceptor implements HttpInterceptor {
 
   intercept(
     req: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((response: unknown) => {
@@ -62,7 +62,7 @@ export class HttpUnauthorizedInterceptor implements HttpInterceptor {
           }
         }
         return throwError(response);
-      })
+      }),
     );
   }
 }

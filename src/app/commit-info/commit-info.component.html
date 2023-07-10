@@ -14,7 +14,7 @@
     <a [href]="commit.commitUrl" target="_blank" rel="noopener">{{
       commit.abbreviatedOid
     }}</a>
-    • {{ commit.committedDate | date : dateFormat }} •
+    • {{ commit.committedDate | date: dateFormat }} •
     <a
       *ngIf="
         commit.author?.login || commit.committer.email;

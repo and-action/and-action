@@ -47,7 +47,7 @@ export class CommitsListComponent {
   }
 
   @Input({ required: true }) set repository(
-    repository: RepositoryWithCommits | undefined
+    repository: RepositoryWithCommits | undefined,
   ) {
     this.myRepository = repository;
     this.environmentColorMapping = this.getDeploymentEnvironmentColors();
@@ -81,7 +81,7 @@ export class CommitsListComponent {
       : '';
     return `${datePipe.transform(
       deployment.timestamp,
-      DEFAULT_DATE_TIME_FORMAT
+      DEFAULT_DATE_TIME_FORMAT,
     )}
     ${deployment.creator.login}${creatorName}
     ${deploymentStateOutputTextMapping[deployment.state]}`;
@@ -109,7 +109,7 @@ export class CommitsListComponent {
   private getDeploymentEnvironmentColors() {
     const environments =
       this.myRepository?.commits.flatMap((commit) =>
-        commit.deployments.flatMap((deployment) => deployment.environment)
+        commit.deployments.flatMap((deployment) => deployment.environment),
       ) ?? [];
     return getDeploymentEnvironmentColors(environments);
   }

@@ -75,20 +75,20 @@ export class DeployCommitDialogComponent implements OnInit {
         this.dialogData.repository.owner,
         this.dialogData.repository.name,
         this.dialogData.commitToDeploy,
-        this.dialogData.commits
+        this.dialogData.commits,
       )
       .pipe(
         tap(
           (environments) =>
             (this.environmentColorMapping = getDeploymentEnvironmentColors(
-              environments.map((env) => env.name)
-            ))
+              environments.map((env) => env.name),
+            )),
         ),
         catchError((error: unknown) =>
           error instanceof NoEnvironmentConfigFoundError
             ? of([])
-            : throwError(() => error)
-        )
+            : throwError(() => error),
+        ),
       );
   }
 
@@ -117,7 +117,7 @@ export class DeployCommitDialogComponent implements OnInit {
 
   deployToEnvironment(
     environment: DeployCommitEnvironment,
-    environments: DeployCommitEnvironment[]
+    environments: DeployCommitEnvironment[],
   ) {
     this.isLoading = true;
     const { owner, name } = this.dialogData.repository;
@@ -128,7 +128,7 @@ export class DeployCommitDialogComponent implements OnInit {
         this.dialogData.commitToDeploy,
         environment.name,
         environment.deploymentType,
-        environments
+        environments,
       )
       .pipe(
         catchError((error: unknown) => {
@@ -148,7 +148,7 @@ export class DeployCommitDialogComponent implements OnInit {
             error instanceof CommitDeploymentsNotUpToDateError
             ? EMPTY
             : throwError(() => error);
-        })
+        }),
       )
       .subscribe(() => {
         this.isLoading = false;

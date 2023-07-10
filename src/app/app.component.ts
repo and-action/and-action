@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
         .initAccessTokenFromCode(code, state)
         .subscribe(
           () =>
-            (window.location.href = `${window.location.protocol}//${window.location.host}/#/${AppRouting.DASHBOARD}`)
+            (window.location.href = `${window.location.protocol}//${window.location.host}/#/${AppRouting.DASHBOARD}`),
         );
     }
 

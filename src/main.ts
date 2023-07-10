@@ -30,7 +30,7 @@ const routes: Routes = [
     path: AppRouting.DASHBOARD,
     loadComponent: () =>
       import('./app/actions-dashboard/actions-dashboard.component').then(
-        (mod) => mod.ActionsDashboardComponent
+        (mod) => mod.ActionsDashboardComponent,
       ),
     canActivate: [loginGuard, repositoryConfigGuard],
   },
@@ -46,7 +46,7 @@ const routes: Routes = [
     path: AppRouting.COMMITS,
     loadComponent: () =>
       import('./app/commits-dashboard/commits-dashboard.component').then(
-        (mod) => mod.CommitsDashboardComponent
+        (mod) => mod.CommitsDashboardComponent,
       ),
     canActivate: [loginGuard, repositoryConfigGuard],
   },

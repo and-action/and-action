@@ -32,21 +32,21 @@ describe('DeployCommitDialogService', () => {
       '100000',
       new Date('2022-06-01T08:00:00Z'),
       'Commit before',
-      []
+      [],
     );
 
     commitToDeploy = getCommitMock(
       '200000',
       new Date('2022-06-02T08:00:00Z'),
       'Commit to deploy',
-      [commitBefore.oid]
+      [commitBefore.oid],
     );
 
     commitAfter = getCommitMock(
       '300000',
       new Date('2022-06-03T08:00:00Z'),
       'Commit after',
-      [commitToDeploy.oid]
+      [commitToDeploy.oid],
     );
 
     const githubDataService = TestBed.inject(GithubDataService);
@@ -55,7 +55,7 @@ describe('DeployCommitDialogService', () => {
         deployment: {
           environments: ['dev', 'test', 'live'],
         },
-      })
+      }),
     );
   });
 
@@ -76,7 +76,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         deployableEnvironment(),
         nonDeployableEnvironment('dev'),
-        nonDeployableEnvironment('test')
+        nonDeployableEnvironment('test'),
       );
     });
 
@@ -91,7 +91,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         redeployableEnvironment(),
         deployableEnvironment(),
-        nonDeployableEnvironment('test')
+        nonDeployableEnvironment('test'),
       );
     });
 
@@ -109,7 +109,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         redeployableEnvironment(),
         redeployableEnvironment(),
-        deployableEnvironment()
+        deployableEnvironment(),
       );
     });
 
@@ -128,7 +128,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         redeployableEnvironment(),
         redeployableEnvironment(),
-        redeployableEnvironment()
+        redeployableEnvironment(),
       );
     });
 
@@ -147,7 +147,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         deployableEnvironment(),
         nonDeployableEnvironment('dev'),
-        nonDeployableEnvironment('test')
+        nonDeployableEnvironment('test'),
       );
     });
 
@@ -168,7 +168,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         redeployableEnvironment(),
         deployableEnvironment(),
-        nonDeployableEnvironment('test')
+        nonDeployableEnvironment('test'),
       );
     });
 
@@ -192,7 +192,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         redeployableEnvironment(),
         redeployableEnvironment(),
-        deployableEnvironment()
+        deployableEnvironment(),
       );
     });
 
@@ -217,7 +217,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         redeployableEnvironment(),
         redeployableEnvironment(),
-        redeployableEnvironment()
+        redeployableEnvironment(),
       );
     });
 
@@ -242,7 +242,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         deployableRollbackEnvironment(DeploymentState.INACTIVE),
         nonDeployableRollbackEnvironment('dev', DeploymentState.INACTIVE),
-        nonDeployableRollbackEnvironment('test', DeploymentState.INACTIVE)
+        nonDeployableRollbackEnvironment('test', DeploymentState.INACTIVE),
       );
     });
 
@@ -259,7 +259,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         deployableEnvironment(DeploymentState.INACTIVE),
         nonDeployableEnvironment('dev'),
-        nonDeployableEnvironment('test')
+        nonDeployableEnvironment('test'),
       );
     });
 
@@ -276,7 +276,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         deployableRollbackEnvironment(DeploymentState.INACTIVE),
         deployableEnvironment(),
-        nonDeployableEnvironment('test')
+        nonDeployableEnvironment('test'),
       );
     });
 
@@ -308,7 +308,7 @@ describe('DeployCommitDialogService', () => {
             deploymentType: DeploymentType.FORWARD,
           },
           nonDeployableEnvironment('dev'),
-          nonDeployableEnvironment('test')
+          nonDeployableEnvironment('test'),
         );
       });
     });
@@ -333,7 +333,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         deployableRollbackEnvironment(DeploymentState.INACTIVE),
         nonDeployableRollbackEnvironment('dev', DeploymentState.INACTIVE),
-        redeployableEnvironment()
+        redeployableEnvironment(),
       );
     });
 
@@ -359,14 +359,14 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         redeployableEnvironment(),
         deployableEnvironment(),
-        nonDeployableEnvironment('test')
+        nonDeployableEnvironment('test'),
       );
     });
 
     function createDeployment(
       environmentName: string,
       deploymentDate: Date,
-      state: DeploymentState
+      state: DeploymentState,
     ): Deployment {
       return {
         id: 'deploy-id',
@@ -382,7 +382,7 @@ describe('DeployCommitDialogService', () => {
       return createDeployment(
         environmentName,
         defaultDeploymentDate,
-        DeploymentState.ACTIVE
+        DeploymentState.ACTIVE,
       );
     }
 
@@ -390,12 +390,12 @@ describe('DeployCommitDialogService', () => {
       return createDeployment(
         environmentName,
         defaultDeploymentDate,
-        DeploymentState.INACTIVE
+        DeploymentState.INACTIVE,
       );
     }
 
     function deployableEnvironment(
-      deploymentState?: DeploymentState
+      deploymentState?: DeploymentState,
     ): ExpectedEnvironment {
       return {
         canBeDeployed: { value: true },
@@ -406,7 +406,7 @@ describe('DeployCommitDialogService', () => {
     }
 
     function nonDeployableEnvironment(
-      previousEnvironmentName: string
+      previousEnvironmentName: string,
     ): ExpectedEnvironment {
       return {
         canBeDeployed: {
@@ -427,7 +427,7 @@ describe('DeployCommitDialogService', () => {
     }
 
     function deployableRollbackEnvironment(
-      deploymentState?: DeploymentState
+      deploymentState?: DeploymentState,
     ): ExpectedEnvironment {
       return {
         canBeDeployed: { value: true },
@@ -439,7 +439,7 @@ describe('DeployCommitDialogService', () => {
 
     function nonDeployableRollbackEnvironment(
       previousEnvironmentName: string,
-      deploymentState?: DeploymentState
+      deploymentState?: DeploymentState,
     ): ExpectedEnvironment {
       return {
         canBeDeployed: {
@@ -455,11 +455,11 @@ describe('DeployCommitDialogService', () => {
     function checkExpectedEnvironments(
       dev: ExpectedEnvironment,
       test: ExpectedEnvironment,
-      live: ExpectedEnvironment
+      live: ExpectedEnvironment,
     ) {
       const createDeployCommitEnvironment = (
         name: string,
-        environment: ExpectedEnvironment
+        environment: ExpectedEnvironment,
       ): DeployCommitEnvironment => ({
         name,
         canBeDeployed: environment.canBeDeployed,
@@ -487,7 +487,7 @@ describe('DeployCommitDialogService', () => {
     oid: string,
     committedDate: Date,
     message: string,
-    parents: string[]
+    parents: string[],
   ): Commit {
     return {
       parents,
