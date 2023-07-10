@@ -6,12 +6,26 @@ import {
 } from './commit-info.component';
 import { getCommitMock } from '../../test-utils/data-mocks';
 import { By } from '@angular/platform-browser';
+import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { DEFAULT_DATE_TIME_FORMAT } from '../constants';
 
 describe('CommitInfoComponent', () => {
   let component: CommitInfoComponent;
   let fixture: ComponentFixture<CommitInfoComponent>;
 
   beforeEach(async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: DATE_PIPE_DEFAULT_OPTIONS,
+          useValue: {
+            dateFormat: DEFAULT_DATE_TIME_FORMAT,
+            timezone: '+0200',
+          },
+        },
+      ],
+    });
+
     fixture = TestBed.createComponent(CommitInfoComponent);
     component = fixture.componentInstance;
 
@@ -31,7 +45,7 @@ describe('CommitInfoComponent', () => {
       'Merge pull request #1 from organisation/feature/MD-1234 commit for testing everything',
     );
     expect(commitInfosElement.nativeElement.textContent).toContain(
-      'd819c2b • 2022-05-11 • testuser',
+      'd819c2b • 2022-05-11, 11:41 AM GMT+2 • testuser',
     );
   });
 

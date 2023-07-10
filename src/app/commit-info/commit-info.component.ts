@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Commit } from '../commits-dashboard/commits-dashboard-models';
-import { DEFAULT_DATE_FORMAT } from '../constants';
+import { DATE_TIME_FORMAT_WITH_TIMEZONE } from '../constants';
 import { CommonModule } from '@angular/common';
 import { TooltipDirective } from '../tooltip.directive';
 
@@ -17,7 +17,7 @@ export class CommitInfoComponent {
   @Input({ required: true }) commit?: Commit;
   @Input({ required: true }) repositoryUrl?: string;
 
-  protected dateFormat = DEFAULT_DATE_FORMAT;
+  protected dateTimeFormat = DATE_TIME_FORMAT_WITH_TIMEZONE;
 
   private static highlightTicketNumber(commitMessage: string) {
     const match = /MD-[0-9]{4}/.exec(commitMessage);

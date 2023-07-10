@@ -20,6 +20,8 @@ import { AndActionDataService } from './app/core/and-action-data.service';
 import { GraphQLModule } from './app/graphql.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { DEFAULT_DATE_TIME_FORMAT } from './app/constants';
 
 if (environment.isEnableProdMode) {
   enableProdMode();
@@ -64,6 +66,12 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
   providers: [
+    {
+      provide: DATE_PIPE_DEFAULT_OPTIONS,
+      useValue: {
+        dateFormat: DEFAULT_DATE_TIME_FORMAT,
+      },
+    },
     { provide: ErrorHandler, useClass: AndActionErrorHandler },
     {
       provide: HTTP_INTERCEPTORS,
