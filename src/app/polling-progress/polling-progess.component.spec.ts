@@ -64,7 +64,7 @@ describe('PollingProgressComponent', () => {
       tap(() => {
         ++observableEmitCount;
         throw new Error('Test');
-      })
+      }),
     );
     component.pollIntervalInSeconds = pollInterval;
 
@@ -85,28 +85,28 @@ describe('PollingProgressComponent', () => {
     tickMillis: number,
     expectedTime: string,
     expectedProgressBarValue: number,
-    expectedObservableEmitCount: number
+    expectedObservableEmitCount: number,
   ) {
     tick(tickMillis);
     fixture.detectChanges();
 
     const { lastSubscriptionElement, progressElement } = getElements();
     expect(lastSubscriptionElement.nativeElement.textContent.trim()).toEqual(
-      `Last update: 2023-03-01, ${expectedTime} AM`
+      `Last update: 2023-03-01, ${expectedTime} AM`,
     );
     // Math.floor is needed since values have decimal digits, probably due to the tick.
     expect(Math.floor(progressElement.componentInstance.value)).toEqual(
-      expectedProgressBarValue
+      expectedProgressBarValue,
     );
     expect(observableEmitCount).toEqual(expectedObservableEmitCount);
   }
 
   function getElements() {
     const lastSubscriptionElement = fixture.debugElement.query(
-      By.css('.status__last-subscription')
+      By.css('.status__last-subscription'),
     );
     const progressElement = fixture.debugElement.query(
-      By.directive(MatProgressBar)
+      By.directive(MatProgressBar),
     );
     return { lastSubscriptionElement, progressElement };
   }

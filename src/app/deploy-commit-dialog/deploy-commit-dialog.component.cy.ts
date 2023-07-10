@@ -38,7 +38,7 @@ describe('DeployCommitDialogComponent', () => {
   };
 
   function mountComponent(
-    getEnvironments: () => Observable<DeployCommitEnvironment[]>
+    getEnvironments: () => Observable<DeployCommitEnvironment[]>,
   ) {
     cy.mount(DeployCommitDialogComponent, {
       imports: [
@@ -75,8 +75,8 @@ describe('DeployCommitDialogComponent', () => {
   describe('without andaction.yml config', () => {
     beforeEach(() =>
       mountComponent(() =>
-        throwError(() => new NoEnvironmentConfigFoundError())
-      )
+        throwError(() => new NoEnvironmentConfigFoundError()),
+      ),
     );
 
     it('should have correct heading ', () =>
@@ -129,16 +129,16 @@ describe('DeployCommitDialogComponent', () => {
         false,
         `Deploy triggered on ${datePipe.transform(
           deploymentDate,
-          DEFAULT_DATE_FORMAT
+          DEFAULT_DATE_FORMAT,
         )} at ${datePipe.transform(deploymentDate, 'H:mm:ss')}`,
-        'Active'
+        'Active',
       );
       checkEnvironment('test', 'Deploy', false);
       checkEnvironment(
         'live',
         'Deploy',
         true,
-        'Deploy is not possible before test is deployed.'
+        'Deploy is not possible before test is deployed.',
       );
 
       function checkEnvironment(
@@ -146,7 +146,7 @@ describe('DeployCommitDialogComponent', () => {
         expectedButtonLabel: string,
         expectedDisabled: boolean,
         expectedText?: string,
-        expectedState?: string
+        expectedState?: string,
       ) {
         cy.contains('.environment__tag', environmentName)
           .next('button.environment__action')

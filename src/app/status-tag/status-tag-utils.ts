@@ -15,6 +15,6 @@ export function getDeploymentEnvironmentColors(environmentNames: string[]) {
       ...cum,
       [environment]: colors[index % colors.length],
     }),
-    {} as { [environment: string]: StatusTagColor }
+    {} as { [environment: string]: StatusTagColor },
   );
 }

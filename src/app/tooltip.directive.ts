@@ -47,7 +47,7 @@ export class TooltipDirective implements OnDestroy {
         return paragraph;
       })
       .forEach((text) =>
-        this.renderer.appendChild(this.tooltipContainer, text)
+        this.renderer.appendChild(this.tooltipContainer, text),
       );
     this.renderer.appendChild(this.document.body, this.tooltipContainer);
     this.renderer.addClass(this.tooltipContainer, 'tooltip');

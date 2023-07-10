@@ -48,17 +48,17 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
       .loadOrganizationsWithSelectedRepositories()
       .pipe(
         map((organizations) =>
-          organizations.flatMap((organization) => organization.repositories)
+          organizations.flatMap((organization) => organization.repositories),
         ),
         mergeMap((repositories) =>
           combineLatest(
             repositories.map((repository) =>
               this.githubDataService.loadRepositoryCommits(
                 repository.owner.login,
-                repository.name
-              )
-            )
-          )
+                repository.name,
+              ),
+            ),
+          ),
         ),
         mergeMap((repositories) =>
           this.repositoryFilterService.filterValue$.pipe(
@@ -68,10 +68,10 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
                   !filterValue ||
                   repository.name
                     .toLowerCase()
-                    .includes(filterValue.toLowerCase())
-              )
-            )
-          )
+                    .includes(filterValue.toLowerCase()),
+              ),
+            ),
+          ),
         ),
         tap({
           next: (repositories) => {
@@ -79,7 +79,7 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
             this.loadingStatus = LoadingStatus.FINISHED;
           },
           error: () => (this.loadingStatus = LoadingStatus.FAILED),
-        })
+        }),
       );
 
     this.scrollSubscription = combineLatest([
@@ -100,7 +100,7 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
               this.router.navigate([], { replaceUrl: true });
             });
           }
-        })
+        }),
       )
       .subscribe();
   }
@@ -117,7 +117,7 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
         const indexToUpdate = this.repositories?.findIndex(
           (repo) =>
             repo.owner === repositoryWithCommits.owner &&
-            repo.name === repositoryWithCommits.name
+            repo.name === repositoryWithCommits.name,
         );
 
         if (

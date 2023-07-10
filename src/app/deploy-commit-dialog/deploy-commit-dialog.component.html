@@ -85,8 +85,8 @@
         <div class="environment__text">
           <p *ngIf="environment.deploymentDate">
             Deploy triggered on
-            {{ environment.deploymentDate | date : dateFormat }} at
-            {{ environment.deploymentDate | date : 'H:mm:ss' }}
+            {{ environment.deploymentDate | date: dateFormat }} at
+            {{ environment.deploymentDate | date: 'H:mm:ss' }}
           </p>
           <p
             *ngIf="!environment.canBeDeployed.value"

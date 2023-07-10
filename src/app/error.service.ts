@@ -17,7 +17,7 @@ export class ErrorService {
     this.snackBarService.error(
       error instanceof ApolloError
         ? error.message
-        : 'Unknown error. Please try again.'
+        : 'Unknown error. Please try again.',
     );
   }
 }

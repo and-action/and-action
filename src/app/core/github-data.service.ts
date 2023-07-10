@@ -279,7 +279,7 @@ export class GithubDataService {
                 error.path?.at(-1) === 'repositories' &&
                 data.viewer.organizations.nodes[
                   error.path?.at(-2) as number
-                ] === null
+                ] === null,
             );
           if (!isErrorAllowed) {
             throw new ApolloError({
@@ -302,7 +302,7 @@ export class GithubDataService {
               repositories: organization?.repositories.nodes ?? [],
             }));
           return [viewer, ...organizations];
-        })
+        }),
       );
   }
 
@@ -319,12 +319,12 @@ export class GithubDataService {
             repositories: organization.repositories.filter(
               (repository) =>
                 repositoryNameWithOwnerList.indexOf(
-                  repository.nameWithOwner
-                ) !== -1
+                  repository.nameWithOwner,
+                ) !== -1,
             ),
           }))
-          .filter((organization) => organization.repositories.length > 0)
-      )
+          .filter((organization) => organization.repositories.length > 0),
+      ),
     );
   }
 
@@ -335,16 +335,16 @@ export class GithubDataService {
           mergeMap((andActionConfig) =>
             this.loadDefaultBranchWorkflowRuns(
               repository,
-              andActionConfig
+              andActionConfig,
             ).pipe(
               map((workflowsWithWorkflowRuns) => ({
                 ...repository,
                 workflowsWithWorkflowRuns,
-              }))
-            )
-          )
-        )
-      )
+              })),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -363,9 +363,9 @@ export class GithubDataService {
           this.mapRepositoryCommitsQueryResultToRespositoryWithCommits(
             queryResult,
             owner,
-            name
-          )
-        )
+            name,
+          ),
+        ),
       );
   }
 
@@ -384,21 +384,21 @@ export class GithubDataService {
             .filter(
               (checkSuite) =>
                 !andActionConfig.deployment?.['excluded-workflows']?.includes(
-                  checkSuite.workflowRun?.workflow.name ?? checkSuite.app.name
-                )
+                  checkSuite.workflowRun?.workflow.name ?? checkSuite.app.name,
+                ),
             )
             .every(
               (node) =>
                 // TODO: Create enum for status and conclusion
-                node.status === 'COMPLETED' && node.conclusion === 'SUCCESS'
-            )
-        )
+                node.status === 'COMPLETED' && node.conclusion === 'SUCCESS',
+            ),
+        ),
       );
   }
 
   loadAndActionConfigs(
     owner: string,
-    name: string
+    name: string,
   ): Observable<AndActionConfig> {
     return this.apollo
       .query<any>({
@@ -429,10 +429,10 @@ export class GithubDataService {
             yamlText ? YAML.parse(yamlText) : {};
 
           const organisationConfig = getConfig(
-            data.organisationConfig?.object?.text
+            data.organisationConfig?.object?.text,
           );
           const repositoryConfig = getConfig(
-            data.repositoryConfig?.object?.text
+            data.repositoryConfig?.object?.text,
           );
           return {
             actions: {
@@ -444,7 +444,7 @@ export class GithubDataService {
               ...repositoryConfig?.deployment,
             },
           };
-        })
+        }),
       );
   }
 
@@ -453,7 +453,7 @@ export class GithubDataService {
     repositoryName: string,
     commitSha: string,
     environment: string,
-    deploymentType: DeploymentType
+    deploymentType: DeploymentType,
   ) {
     // The GraphQL api for creating deployments does not allow the deployment of a commit sha.
     // Therefore, the REST API is used.
@@ -471,7 +471,7 @@ export class GithubDataService {
         payload: {
           deployment_type: deploymentType,
         },
-      }
+      },
     );
   }
 
@@ -482,15 +482,15 @@ export class GithubDataService {
           map((repositories) => ({
             ...organization,
             repositories,
-          }))
-        )
-      )
+          })),
+        ),
+      ),
     );
   }
 
   private loadDefaultBranchWorkflowRuns(
     repository: Repository,
-    andActionConfig: AndActionConfig
+    andActionConfig: AndActionConfig,
   ) {
     return this.loadWorkflows(repository.nameWithOwner).pipe(
       map((workflowsResult) =>
@@ -498,10 +498,10 @@ export class GithubDataService {
           .filter(
             (workflow) =>
               !andActionConfig.actions?.['excluded-workflows']?.includes(
-                workflow.name
-              )
+                workflow.name,
+              ),
           )
-          .sort((a, b) => a.name.localeCompare(b.name))
+          .sort((a, b) => a.name.localeCompare(b.name)),
       ),
       mergeMap((workflows) =>
         workflows.length > 0
@@ -509,32 +509,32 @@ export class GithubDataService {
               workflows.map((workflow) =>
                 this.http
                   .get<{ total_count: number; workflow_runs: WorkflowRun[] }>(
-                    `https://api.github.com/repos/${repository.nameWithOwner}/actions/workflows/${workflow.id}/runs?branch=${repository.defaultBranchRef.name}`
+                    `https://api.github.com/repos/${repository.nameWithOwner}/actions/workflows/${workflow.id}/runs?branch=${repository.defaultBranchRef.name}`,
                   )
                   .pipe(
                     map((workflowRunsResult) => ({
                       workflow,
                       workflowRuns: workflowRunsResult.workflow_runs,
                     })),
-                    catchError(() => of({ workflow, workflowRuns: [] }))
-                  )
-              )
+                    catchError(() => of({ workflow, workflowRuns: [] })),
+                  ),
+              ),
             )
-          : of([])
-      )
+          : of([]),
+      ),
     );
   }
 
   private loadWorkflows(repositoryNameWithOwner: string) {
     return this.http.get<{ total_count: number; workflows: Workflow[] }>(
-      `https://api.github.com/repos/${repositoryNameWithOwner}/actions/workflows`
+      `https://api.github.com/repos/${repositoryNameWithOwner}/actions/workflows`,
     );
   }
 
   private mapRepositoryCommitsQueryResultToRespositoryWithCommits(
     queryResult: ApolloQueryResult<any>,
     owner: string,
-    name: string
+    name: string,
   ) {
     const commits =
       queryResult.data.repository.defaultBranchRef.target.history.edges.map(
@@ -555,7 +555,7 @@ export class GithubDataService {
           message: node.message,
           isMergeCommit: node.parents.edges.length > 1,
           parents: node.parents.edges.map(
-            ({ node: parentNode }: any) => parentNode.oid
+            ({ node: parentNode }: any) => parentNode.oid,
           ),
           deployments: node.deployments.edges.map(
             ({ node: deployment }: any): Deployment => ({
@@ -568,9 +568,9 @@ export class GithubDataService {
               state: deployment.state,
               logUrl: deployment.latestStatus?.logUrl,
               timestamp: new Date(deployment.createdAt),
-            })
+            }),
           ),
-        })
+        }),
       );
 
     const repository: RepositoryWithCommits = {

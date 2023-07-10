@@ -39,7 +39,7 @@ export class LoginService {
         tap((data: any) => {
           this.myAccessToken = data.access_token;
           localStorage.setItem(accessTokenApiKey, data.access_token);
-        })
+        }),
       );
   }
 }

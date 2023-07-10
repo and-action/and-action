@@ -21,7 +21,7 @@ describe('ActionsDashboardConfigComponent', () => {
     const andActionDataService = TestBed.inject(AndActionDataService);
     spyOnProperty(
       andActionDataService,
-      'actionsDashboardConfig'
+      'actionsDashboardConfig',
     ).and.returnValue(new ActionsDashboardConfig([]));
     fixture = TestBed.createComponent(ActionsDashboardConfigComponent);
     component = fixture.componentInstance;

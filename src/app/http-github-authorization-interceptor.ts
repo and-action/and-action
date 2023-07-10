@@ -17,7 +17,7 @@ export class HttpGithubAuthorizationInterceptor implements HttpInterceptor {
 
   intercept(
     req: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     const accessToken = this.loginService.accessToken;
     if (accessToken) {
