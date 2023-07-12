@@ -1,6 +1,13 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  Signal,
+  signal,
+} from '@angular/core';
 import { GithubDataService } from '../core/github-data.service';
-import { combineLatest, Observable, Subscription, tap } from 'rxjs';
+import { combineLatest, Observable, tap } from 'rxjs';
 import { RepositoryWithCommits } from './commits-dashboard-models';
 import { delay, map, mergeMap } from 'rxjs/operators';
 import { RepositoryFilterService } from '../repository-filter.service';
@@ -12,6 +19,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoadingStatus } from '../loading-status';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -27,23 +35,24 @@ import { PollingProgessComponent } from '../polling-progress/polling-progess.com
   templateUrl: './commits-dashboard.component.html',
   styleUrls: ['./commits-dashboard.component.scss'],
 })
-export class CommitsDashboardComponent implements OnInit, OnDestroy {
+export class CommitsDashboardComponent {
   protected repositories$?: Observable<RepositoryWithCommits[]>;
-  protected repositories?: RepositoryWithCommits[];
+
+  protected repositories = signal<RepositoryWithCommits[]>([]);
+  protected filteredRepositories: Signal<RepositoryWithCommits[]>;
 
   protected loadingStatus = LoadingStatus.LOADING;
   protected loadingStatusEnum = LoadingStatus;
   protected updateIntervalInSeconds = 60;
 
-  private scrollSubscription?: Subscription;
-
-  private document = inject(DOCUMENT);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  private queryParams = toSignal(inject(ActivatedRoute).queryParams);
   private githubDataService = inject(GithubDataService);
-  private repositoryFilterService = inject(RepositoryFilterService);
 
-  ngOnInit(): void {
+  constructor() {
+    const router = inject(Router);
+    const document = inject(DOCUMENT);
+    const filterValue = toSignal(inject(RepositoryFilterService).filterValue$);
+
     this.repositories$ = this.githubDataService
       .loadOrganizationsWithSelectedRepositories()
       .pipe(
@@ -60,53 +69,42 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
             ),
           ),
         ),
-        mergeMap((repositories) =>
-          this.repositoryFilterService.filterValue$.pipe(
-            map((filterValue) =>
-              repositories.filter(
-                (repository) =>
-                  !filterValue ||
-                  repository.name
-                    .toLowerCase()
-                    .includes(filterValue.toLowerCase()),
-              ),
-            ),
-          ),
-        ),
         tap({
           next: (repositories) => {
-            this.repositories = repositories;
+            this.repositories.set(repositories);
             this.loadingStatus = LoadingStatus.FINISHED;
           },
           error: () => (this.loadingStatus = LoadingStatus.FAILED),
         }),
       );
 
-    this.scrollSubscription = combineLatest([
-      this.repositories$,
-      this.route.queryParams,
-    ])
-      .pipe(
-        tap(([, queryParams]) => {
-          if (queryParams.repository) {
-            setTimeout(() => {
-              this.document
-                .getElementById(this.route.snapshot.queryParams.repository)
-                ?.scrollIntoView({
-                  block: 'start',
-                  inline: 'start',
-                  behavior: 'smooth',
-                });
-              this.router.navigate([], { replaceUrl: true });
-            });
-          }
-        }),
-      )
-      .subscribe();
-  }
+    this.filteredRepositories = computed<RepositoryWithCommits[]>(() =>
+      this.repositories().filter(
+        (repository) =>
+          !filterValue() ||
+          repository.name
+            .toLowerCase()
+            .includes(filterValue()?.toLowerCase() ?? ''),
+      ),
+    );
 
-  ngOnDestroy() {
-    this.scrollSubscription?.unsubscribe();
+    effect(() => {
+      if (
+        this.queryParams()?.repository &&
+        this.filteredRepositories().length > 0
+      ) {
+        setTimeout(() => {
+          document
+            .getElementById(this.queryParams()?.repository)
+            ?.scrollIntoView({
+              block: 'start',
+              inline: 'start',
+              behavior: 'smooth',
+            });
+          router.navigate([], { replaceUrl: true });
+        });
+      }
+    });
   }
 
   reloadCommitsForRepository(repository: RepositoryWithCommits) {
@@ -114,7 +112,7 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
       .loadRepositoryCommits(repository.owner, repository.name)
       .pipe(delay(3000))
       .subscribe((repositoryWithCommits) => {
-        const indexToUpdate = this.repositories?.findIndex(
+        const indexToUpdate = this.repositories().findIndex(
           (repo) =>
             repo.owner === repositoryWithCommits.owner &&
             repo.name === repositoryWithCommits.name,
@@ -123,9 +121,11 @@ export class CommitsDashboardComponent implements OnInit, OnDestroy {
         if (
           indexToUpdate !== undefined &&
           indexToUpdate !== -1 &&
-          this.repositories?.[indexToUpdate]
+          this.repositories()[indexToUpdate]
         ) {
-          this.repositories[indexToUpdate] = repositoryWithCommits;
+          this.repositories.mutate(
+            (value) => (value[indexToUpdate] = repositoryWithCommits),
+          );
         }
       });
   }

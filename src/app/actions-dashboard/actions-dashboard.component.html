@@ -1,4 +1,5 @@
 <ana-polling-progress
+  *ngIf="viewerAndOrganizations$"
   [observable]="viewerAndOrganizations$"
   [pollIntervalInSeconds]="updateIntervalInSeconds"
   class="polling-progress"
@@ -10,7 +11,7 @@
 >
   <li
     class="organization-list__item"
-    *ngFor="let viewerOrOrganization of viewerAndOrganizations"
+    *ngFor="let viewerOrOrganization of filteredViewerAndOrganizations()"
   >
     <ng-container *ngIf="viewerOrOrganization.repositories as repositories">
       <ng-container *ngIf="repositories.length > 0">

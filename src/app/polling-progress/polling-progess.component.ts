@@ -22,7 +22,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
  *
  * The component catches errors that are thrown by the given observable to keep polling alive.
  * Nevertheless, it sends the error to Sentry.
- * The given observable itself should to additional individual error handling if needed.
+ * The given observable itself should do additional individual error handling if needed.
  */
 @Component({
   standalone: true,
@@ -31,8 +31,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   templateUrl: './polling-progess.component.html',
   styleUrls: ['./polling-progess.component.scss'],
 })
-export class PollingProgessComponent implements OnChanges {
-  @Input({ required: true }) observable?: Observable<unknown>;
+export class PollingProgessComponent<T> implements OnChanges {
+  @Input({ required: true }) observable?: Observable<T>;
   @Input({ required: true }) pollIntervalInSeconds?: number;
 
   protected lastSubscription$?: Observable<Date>;
