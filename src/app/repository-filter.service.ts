@@ -1,21 +1,27 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
+import { QueryParamName } from './query-param-name';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RepositoryFilterService implements OnDestroy {
-  private filterValueSubject = new BehaviorSubject<string>('');
+export class RepositoryFilterService {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  get filterValue$() {
-    return this.filterValueSubject.asObservable();
-  }
-
-  ngOnDestroy() {
-    this.filterValueSubject.complete();
-  }
+  value = toSignal(
+    this.route.queryParams.pipe(
+      map((queryParams) => queryParams[QueryParamName.REPOSITORY_FILTER] ?? ''),
+    ),
+  );
 
   setValue(value: string) {
-    this.filterValueSubject.next(value);
+    const queryParams = { ...this.route.snapshot.queryParams };
+    value
+      ? (queryParams[QueryParamName.REPOSITORY_FILTER] = value)
+      : delete queryParams[QueryParamName.REPOSITORY_FILTER];
+    this.router.navigate([], { queryParams });
   }
 }
