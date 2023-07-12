@@ -16,8 +16,8 @@ import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { DEFAULT_DATE_TIME_FORMAT } from '../constants';
 
 describe('PollingProgressComponent', () => {
-  let component: PollingProgessComponent;
-  let fixture: ComponentFixture<PollingProgessComponent>;
+  let component: PollingProgessComponent<boolean>;
+  let fixture: ComponentFixture<PollingProgessComponent<boolean>>;
   const pollInterval = 60;
   let observableEmitCount = 0;
 
@@ -34,7 +34,7 @@ describe('PollingProgressComponent', () => {
       ],
     });
 
-    fixture = TestBed.createComponent(PollingProgessComponent);
+    fixture = TestBed.createComponent(PollingProgessComponent<boolean>);
     component = fixture.componentInstance;
     component.pollIntervalInSeconds = pollInterval;
 
