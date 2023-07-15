@@ -34,11 +34,10 @@ export class AppComponent implements OnInit {
   protected appRouting = AppRouting;
 
   protected isFilterToggleButtonActive = false;
-  protected repositoryFilterValue = '';
 
   private loginService = inject(LoginService);
   private statusIconService = inject(StatusIconService);
-  private repositoryFilterService = inject(RepositoryFilterService);
+  protected repositoryFilter = inject(RepositoryFilterService);
 
   constructor(router: Router) {
     router.events
@@ -60,15 +59,10 @@ export class AppComponent implements OnInit {
     this.statusIconService.initFavicons();
   }
 
-  onRepositoryFilterChange(value: string) {
-    this.repositoryFilterService.setValue(value);
-  }
-
   toggleMobileRepositoryFilterForm() {
     this.isFilterToggleButtonActive = !this.isFilterToggleButtonActive;
     if (!this.isFilterToggleButtonActive) {
-      this.repositoryFilterValue = '';
-      this.onRepositoryFilterChange(this.repositoryFilterValue);
+      this.repositoryFilter.setValue('');
     }
   }
 

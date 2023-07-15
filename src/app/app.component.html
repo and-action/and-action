@@ -26,18 +26,14 @@
       placeholder="Repository Filter"
       id="repository-filter"
       name="repository-filter"
-      [(ngModel)]="repositoryFilterValue"
       autocomplete="off"
-      (input)="onRepositoryFilterChange(repositoryFilterValue)"
+      (input)="repositoryFilter.setValue(filterInput.value)"
+      [value]="repositoryFilter.value()"
     />
     <button
       class="toolbar__filter-button"
       aria-label="Clear"
-      (click)="
-        repositoryFilterValue = '';
-        onRepositoryFilterChange('');
-        filterInput.focus()
-      "
+      (click)="repositoryFilter.setValue(''); filterInput.focus()"
     >
       <mat-icon>close</mat-icon>
     </button>

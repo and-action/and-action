@@ -51,7 +51,7 @@ export class CommitsDashboardComponent {
   constructor() {
     const router = inject(Router);
     const document = inject(DOCUMENT);
-    const filterValue = toSignal(inject(RepositoryFilterService).filterValue$);
+    const filterValue = inject(RepositoryFilterService).value;
 
     this.repositories$ = this.githubDataService
       .loadOrganizationsWithSelectedRepositories()

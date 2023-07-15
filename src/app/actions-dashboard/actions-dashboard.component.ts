@@ -11,7 +11,6 @@ import { ActionsDashboardItemComponent } from '../actions-dashboard-item/actions
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingStatus } from '../loading-status';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -41,7 +40,7 @@ export class ActionsDashboardComponent {
     const githubDataService = inject(GithubDataService);
     const statusIconService = inject(StatusIconService);
     const viewerAndOrganizations = signal<(GithubViewer | Organization)[]>([]);
-    const filterValue = toSignal(inject(RepositoryFilterService).filterValue$);
+    const filterValue = inject(RepositoryFilterService).value;
 
     this.viewerAndOrganizations$ = githubDataService
       .loadOrganizationsWithSelectedRepositories()
