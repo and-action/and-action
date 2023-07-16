@@ -7,7 +7,10 @@
 
 <div *ngIf="loadingStatus === loadingStatusEnum.FINISHED" class="repositories">
   <div
-    *ngFor="let repository of filteredRepositories()"
+    *ngFor="
+      let repository of filteredRepositories();
+      trackBy: repositoriesTrackBy
+    "
     [id]="repository.name"
     class="repository"
   >

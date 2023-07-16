@@ -107,7 +107,7 @@ export class CommitsDashboardComponent {
     });
   }
 
-  reloadCommitsForRepository(repository: RepositoryWithCommits) {
+  protected reloadCommitsForRepository(repository: RepositoryWithCommits) {
     this.githubDataService
       .loadRepositoryCommits(repository.owner, repository.name)
       .pipe(delay(3000))
@@ -128,5 +128,9 @@ export class CommitsDashboardComponent {
           );
         }
       });
+  }
+
+  protected repositoriesTrackBy(_: number, item: RepositoryWithCommits) {
+    return item.id;
   }
 }

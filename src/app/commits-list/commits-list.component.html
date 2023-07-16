@@ -1,5 +1,8 @@
 <ul class="repository__list">
-  <li class="repository__commit" *ngFor="let commit of repository?.commits">
+  <li
+    class="repository__commit"
+    *ngFor="let commit of repository?.commits; trackBy: commitsTrackBy"
+  >
     <div class="repository__commit-content">
       <ana-commit-info
         [commit]="commit"
@@ -7,7 +10,10 @@
       ></ana-commit-info>
       <div>
         <ana-status-tag
-          *ngFor="let deployment of commit.deployments"
+          *ngFor="
+            let deployment of commit.deployments;
+            trackBy: deploymentsTrackBy
+          "
           [name]="deployment.environment"
           [status]="getDeploymentStatusForStatusTag(deployment)"
           [color]="getDeploymentStatusTagColor(deployment)"
