@@ -107,7 +107,7 @@ export class CommitsDashboardComponent {
     });
   }
 
-  reloadCommitsForRepository(repository: RepositoryWithCommits) {
+  protected reloadCommitsForRepository(repository: RepositoryWithCommits) {
     this.githubDataService
       .loadRepositoryCommits(repository.owner, repository.name)
       .pipe(delay(3000))
