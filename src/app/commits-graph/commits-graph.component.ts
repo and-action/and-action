@@ -43,6 +43,6 @@ export class CommitsGraphComponent implements AfterViewInit, OnDestroy {
 
   private drawGraph(commits: Commit[]) {
     const svg = this.commitsGraphService.createCommitsGraphSvg(commits);
-    this.graphContainer?.nativeElement.appendChild(svg.node());
+    this.graphContainer?.nativeElement.replaceChildren(svg.node());
   }
 }
