@@ -106,6 +106,14 @@ export class CommitsListComponent {
       });
   }
 
+  protected commitsTrackBy(_: number, item: Commit) {
+    return item.id;
+  }
+
+  protected deploymentsTrackBy(_: number, item: Deployment) {
+    return item.id;
+  }
+
   private getDeploymentEnvironmentColors() {
     const environments =
       this.myRepository?.commits.flatMap((commit) =>

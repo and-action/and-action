@@ -129,4 +129,8 @@ export class CommitsDashboardComponent {
         }
       });
   }
+
+  protected repositoriesTrackBy(_: number, item: RepositoryWithCommits) {
+    return item.id;
+  }
 }
