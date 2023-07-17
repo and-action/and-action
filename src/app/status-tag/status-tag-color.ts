@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 export enum StatusTagColor {
   GREEN = '#00c853',
   YELLOW = '#ffd600',
