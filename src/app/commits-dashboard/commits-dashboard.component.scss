@@ -30,7 +30,7 @@
   padding: 0 $space-m $space-m $space-m;
   border-radius: $default-border-radius;
   box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
-  width: 420px;
+  width: 460px;
   flex: 0 0 auto;
 
   &__head {
@@ -62,6 +62,7 @@
   }
 
   .repository {
+    padding: 0 $space-s $space-s $space-s;
     width: calc(100% - #{$space-s});
     scroll-snap-align: center;
   }
