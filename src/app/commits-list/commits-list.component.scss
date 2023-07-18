@@ -36,6 +36,15 @@
     }
   }
 }
+@media (max-width: $max-width-mobile) {
+  .repository {
+    &__commit {
+      height: 80px;
+      font-size: $font-size-xxs;
+      line-height: $line-height-xxs;
+    }
+  }
+}
 
 @media (pointer: coarse) {
   .repository {
