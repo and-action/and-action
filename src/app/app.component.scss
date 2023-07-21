@@ -120,6 +120,30 @@
   }
 }
 
+.offline-info {
+  z-index: 2000;
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: 8px auto;
+  padding: 22px 36px;
+  width: 200px;
+  text-align: center;
+  color: white;
+  border-radius: 4px;
+  background-color: #c62828;
+  box-shadow:
+    0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 6px 10px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: $max-width-tablet) {
+  .offline-info {
+    bottom: 0;
+  }
+}
+
 @media (max-width: $max-width-mobile-landscape) {
   .toolbar {
     &__config-button {

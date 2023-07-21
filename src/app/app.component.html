@@ -109,3 +109,5 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<p *ngIf="!isOnline()" class="offline-info">No network connection</p>

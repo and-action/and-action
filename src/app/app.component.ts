@@ -4,7 +4,7 @@ import { AppRouting } from './app-routing';
 import { StatusIconService } from './status-icon.service';
 import { RepositoryFilterService } from './repository-filter.service';
 import { NavigationStart, Router, RouterModule } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, fromEvent, merge, startWith } from 'rxjs';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
+import { map } from 'rxjs/operators';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -34,6 +36,12 @@ export class AppComponent implements OnInit {
   protected appRouting = AppRouting;
 
   protected isFilterToggleButtonActive = false;
+  protected isOnline = toSignal(
+    merge(fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(
+      startWith(navigator.onLine),
+      map(() => navigator.onLine),
+    ),
+  );
 
   private loginService = inject(LoginService);
   private statusIconService = inject(StatusIconService);
