@@ -10,9 +10,9 @@ import { catchError } from 'rxjs/operators';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppRouting } from './app-routing';
+import { HttpStatus } from './http-status';
 
 const retryOn401CountKey = 'retry-on-401-count';
-const httpStatus401Unauthorized = 401;
 
 /**
  * Interceptor that checks response for http error code 401.
@@ -51,7 +51,7 @@ export class HttpUnauthorizedInterceptor implements HttpInterceptor {
       catchError((response: unknown) => {
         if (
           response instanceof HttpErrorResponse &&
-          response.status === httpStatus401Unauthorized
+          response.status === HttpStatus._401_UNAUTHORIZED
         ) {
           const isRetry =
             HttpUnauthorizedInterceptor.checkAndUpdateRetryCountOn401();

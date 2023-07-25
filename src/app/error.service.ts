@@ -12,14 +12,17 @@ import { HttpStatus } from './http-status';
 export class ErrorService {
   private snackBarService = inject(SnackBarService);
 
-  handleError(error: any) {
+  handleError(error: unknown) {
     console.error(error);
 
     if (this.suppressMessage(error)) {
       return;
     }
 
-    captureException(error.originalError ?? error);
+    const hasOriginalError = (obj: any): obj is { originalError: unknown } =>
+      'originalError' in obj;
+
+    captureException(hasOriginalError(error) ? error.originalError : error);
     this.snackBarService.error(
       error instanceof ApolloError
         ? error.message
