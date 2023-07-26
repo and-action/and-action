@@ -43,7 +43,8 @@
           "error",
           {
             "selector": "enumMember",
-            "format": ["UPPER_CASE"]
+            "format": ["UPPER_CASE"],
+            "leadingUnderscore": "allow"
           }
         ],
         "@typescript-eslint/no-shadow": "error",

@@ -170,7 +170,7 @@ ul {
 }
 
 .form-error {
-  color: #d50000;
+  color: mat.get-color-from-palette($and-action-warn, 800);
 }
 
 .u-flex {

@@ -48,7 +48,7 @@ describe('PollingProgressComponent', () => {
     jasmine.clock().mockDate(new Date('2023-03-01T08:00:00.000'));
     component.observable = of(true).pipe(tap(() => ++observableEmitCount));
 
-    checkTextAndProgressDontExist();
+    checkEmptyLastSubscriptionAndProgressDontExist();
 
     component.ngOnChanges();
     fixture.detectChanges();
@@ -68,12 +68,14 @@ describe('PollingProgressComponent', () => {
     discardPeriodicTasks();
   }));
 
-  it('should keep polling on error', fakeAsync(() => {
+  it('should keep polling on error without updating timestamp of last update', fakeAsync(() => {
     jasmine.clock().mockDate(new Date('2023-03-01T08:00:00.000'));
     component.observable = of(true).pipe(
       tap(() => {
         ++observableEmitCount;
-        throw new Error('Test');
+        if (observableEmitCount !== 2) {
+          throw new Error('Test');
+        }
       }),
     );
     component.pollIntervalInSeconds = pollInterval;
@@ -81,10 +83,10 @@ describe('PollingProgressComponent', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    tickAndCheck(1, '8:00', 0, 1);
-    tickAndCheck(30000, '8:00', 50, 1);
+    tickAndCheck(1, undefined, 0, 1);
+    tickAndCheck(30000, undefined, 50, 1);
     tickAndCheck(60000, '8:01', 50, 2);
-    tickAndCheck(60000, '8:02', 50, 3);
+    tickAndCheck(60000, '8:01', 50, 3);
 
     // Async pipes subscribe to timer observables.
     // It seems that there are still timers in the queue that need to be discarded.
@@ -93,7 +95,7 @@ describe('PollingProgressComponent', () => {
 
   function tickAndCheck(
     tickMillis: number,
-    expectedTime: string,
+    expectedTime: string | undefined,
     expectedProgressBarValue: number,
     expectedObservableEmitCount: number,
   ) {
@@ -101,8 +103,11 @@ describe('PollingProgressComponent', () => {
     fixture.detectChanges();
 
     const { lastSubscriptionElement, progressElement } = getElements();
+    const expectedLastUpdate = expectedTime
+      ? `Last update: 2023-03-01, ${expectedTime} AM`
+      : 'Last update: -';
     expect(lastSubscriptionElement.nativeElement.textContent.trim()).toEqual(
-      `Last update: 2023-03-01, ${expectedTime} AM`,
+      expectedLastUpdate,
     );
     // Math.floor is needed since values have decimal digits, probably due to the tick.
     expect(Math.floor(progressElement.componentInstance.value)).toEqual(
@@ -121,9 +126,11 @@ describe('PollingProgressComponent', () => {
     return { lastSubscriptionElement, progressElement };
   }
 
-  function checkTextAndProgressDontExist() {
+  function checkEmptyLastSubscriptionAndProgressDontExist() {
     const { lastSubscriptionElement, progressElement } = getElements();
-    expect(lastSubscriptionElement).toBeNull();
+    expect(lastSubscriptionElement.nativeElement.textContent.trim()).toEqual(
+      'Last update: -',
+    );
     expect(progressElement).toBeNull();
   }
 });

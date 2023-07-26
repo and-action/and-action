@@ -2,7 +2,7 @@ import { Component, inject, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { mergeMap, Observable, of, repeat, share, timer } from 'rxjs';
-import { catchError, map, takeUntil } from 'rxjs/operators';
+import { catchError, map, takeUntil, tap } from 'rxjs/operators';
 import { ErrorService } from '../error.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -35,9 +35,10 @@ export class PollingProgessComponent<T> implements OnChanges {
   @Input({ required: true }) observable?: Observable<T>;
   @Input({ required: true }) pollIntervalInSeconds?: number;
 
-  protected lastSubscription$?: Observable<Date>;
+  protected lastSubscription$?: Observable<Date | undefined>;
   protected progressBarValue$?: Observable<number>;
 
+  private lastSubscription?: Date;
   private errorService = inject(ErrorService);
 
   ngOnChanges() {
@@ -49,6 +50,10 @@ export class PollingProgessComponent<T> implements OnChanges {
       this.lastSubscription$ = timer(0, pollIntervalInSeconds * 1000).pipe(
         mergeMap(() =>
           observable$.pipe(
+            // Set new timestamp to lastSubscription only if no error occurs.
+            // In case of an error, the timestamp of the last succesful update
+            // should be shown.
+            tap(() => (this.lastSubscription = new Date())),
             // Catch error to make sure that polling stays alive.
             catchError((error: unknown) => {
               this.errorService.handleError(error);
@@ -56,7 +61,7 @@ export class PollingProgessComponent<T> implements OnChanges {
             }),
           ),
         ),
-        map(() => new Date()),
+        map(() => this.lastSubscription),
         share(),
       );
 
