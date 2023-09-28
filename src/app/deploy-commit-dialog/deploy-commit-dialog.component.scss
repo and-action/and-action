@@ -6,6 +6,16 @@
   position: relative;
 }
 
+.dialog-title {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+
+  &__icon {
+    margin-right: 8px;
+  }
+}
+
 .environment-list {
   display: grid;
   grid-template-columns: repeat(4, auto);
