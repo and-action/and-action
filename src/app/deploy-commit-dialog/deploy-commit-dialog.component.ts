@@ -127,7 +127,6 @@ export class DeployCommitDialogComponent implements OnInit {
         name,
         this.dialogData.commitToDeploy,
         environment.name,
-        environment.deploymentType,
         environments,
       )
       .pipe(

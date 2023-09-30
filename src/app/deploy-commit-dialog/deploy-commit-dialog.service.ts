@@ -81,7 +81,6 @@ export class DeployCommitDialogService {
     repositoryName: string,
     commitToDeploy: Commit,
     environmentName: string,
-    deploymentType: DeploymentType,
     environments: DeployCommitEnvironment[],
   ) {
     const { id: commitId, oid: commitOid } = commitToDeploy;
@@ -134,7 +133,6 @@ export class DeployCommitDialogService {
             repositoryName,
             commitOid,
             environmentName,
-            deploymentType,
           )
           .pipe(
             catchError(() => throwError(() => new CreateDeploymentError())),
