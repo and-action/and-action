@@ -98,7 +98,7 @@ describe('DeployCommitDialogComponent', () => {
           {
             name: 'dev',
             canBeDeployed: { value: true },
-            deploymentType: DeploymentType.REDEPLOY,
+            deploymentType: DeploymentType.FORWARD,
             deploymentDate,
             deploymentState: DeploymentState.ACTIVE,
           },
@@ -125,7 +125,7 @@ describe('DeployCommitDialogComponent', () => {
 
       checkEnvironment(
         'dev',
-        'Redeploy',
+        'Deploy',
         false,
         `Deploy triggered on ${datePipe.transform(
           deploymentDate,

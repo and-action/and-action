@@ -18,7 +18,6 @@ import { AndActionDataService } from './and-action-data.service';
 import YAML from 'yaml';
 import { AndActionConfig } from './and-action-config';
 import { ApolloError, ApolloQueryResult } from '@apollo/client/core';
-import { DeploymentType } from '../deploy-commit-dialog/deployment-type';
 import { GraphQLError } from 'graphql/error';
 
 interface GraphQLErrorWithType extends GraphQLError {
@@ -453,7 +452,6 @@ export class GithubDataService {
     repositoryName: string,
     commitSha: string,
     environment: string,
-    deploymentType: DeploymentType,
   ) {
     // The GraphQL api for creating deployments does not allow the deployment of a commit sha.
     // Therefore, the REST API is used.
@@ -468,9 +466,6 @@ export class GithubDataService {
         // excluded-workflows configured in AndAction config.
         required_contexts: [],
         production_environment: ['live', 'production'].includes(environment),
-        payload: {
-          deployment_type: deploymentType,
-        },
       },
     );
   }

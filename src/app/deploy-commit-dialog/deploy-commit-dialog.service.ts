@@ -81,7 +81,6 @@ export class DeployCommitDialogService {
     repositoryName: string,
     commitToDeploy: Commit,
     environmentName: string,
-    deploymentType: DeploymentType,
     environments: DeployCommitEnvironment[],
   ) {
     const { id: commitId, oid: commitOid } = commitToDeploy;
@@ -134,7 +133,6 @@ export class DeployCommitDialogService {
             repositoryName,
             commitOid,
             environmentName,
-            deploymentType,
           )
           .pipe(
             catchError(() => throwError(() => new CreateDeploymentError())),
@@ -247,8 +245,6 @@ export class DeployCommitDialogService {
               reason: `Deploy is not possible before <strong>${previousEnvironmentName}</strong> is deployed.`,
             };
       }
-      case DeploymentType.REDEPLOY:
-        return { value: true };
       default:
         return { value: false, reason: 'Unknown deployment type.' };
     }
@@ -316,25 +312,10 @@ export class DeployCommitDialogService {
     commitToDeploy: Commit,
     latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment,
   ) {
-    if (
-      this.getDeploymentStateForEnvironment(environmentName, commitToDeploy) ===
-        DeploymentState.ACTIVE ||
-      this.isDeploymentInProgressForCommit(environmentName, commitToDeploy)
-    ) {
-      return DeploymentType.REDEPLOY;
-    } else if (
-      !latestCommitDatePerDeployedEnvironment[environmentName] ||
-      commitToDeploy.committedDate >
-        latestCommitDatePerDeployedEnvironment[environmentName]
-    ) {
-      return DeploymentType.FORWARD;
-    } else if (
-      latestCommitDatePerDeployedEnvironment[environmentName] &&
+    return latestCommitDatePerDeployedEnvironment[environmentName] &&
       commitToDeploy.committedDate <
         latestCommitDatePerDeployedEnvironment[environmentName]
-    ) {
-      return DeploymentType.ROLLBACK;
-    }
-    throw new Error('Unknown deployment type');
+      ? DeploymentType.ROLLBACK
+      : DeploymentType.FORWARD;
   }
 }
