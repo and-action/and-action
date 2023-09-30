@@ -98,8 +98,6 @@ export class DeployCommitDialogComponent implements OnInit {
         return 'Deploy';
       case DeploymentType.ROLLBACK:
         return 'Rollback';
-      case DeploymentType.REDEPLOY:
-        return 'Redeploy';
     }
   }
 

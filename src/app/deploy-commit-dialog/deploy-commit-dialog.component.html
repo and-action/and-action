@@ -57,10 +57,6 @@
         </p>
 
         <button
-          *ngIf="
-            environment.deploymentType !== deploymentType.REDEPLOY;
-            else redeployButton
-          "
           mat-flat-button
           color="primary"
           type="button"
@@ -70,18 +66,6 @@
         >
           {{ getDeployButtonLabel(environment.deploymentType) }}
         </button>
-        <ng-template #redeployButton>
-          <button
-            mat-stroked-button
-            color="primary"
-            type="button"
-            class="environment__action"
-            (click)="deployToEnvironment(environment, environments)"
-            [disabled]="!environment.canBeDeployed.value || isLoading"
-          >
-            {{ getDeployButtonLabel(environment.deploymentType) }}
-          </button>
-        </ng-template>
 
         <div class="environment__text">
           <p *ngIf="environment.deploymentDate">

@@ -89,7 +89,7 @@ describe('DeployCommitDialogService', () => {
       commitToDeploy.deployments = [activeDeployment('dev')];
 
       checkExpectedEnvironments(
-        redeployableEnvironment(),
+        deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(),
         nonDeployableEnvironment('test'),
       );
@@ -107,14 +107,14 @@ describe('DeployCommitDialogService', () => {
       ];
 
       checkExpectedEnvironments(
-        redeployableEnvironment(),
-        redeployableEnvironment(),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(),
       );
     });
 
     it(`
-    should allow redeployment of all environments if all are actively deployed:
+    should allow deployment of all environments if all are actively deployed:
     - commit after
     - commit to deploy *dev* *test* *live*
     - commit before
@@ -126,9 +126,9 @@ describe('DeployCommitDialogService', () => {
       ];
 
       checkExpectedEnvironments(
-        redeployableEnvironment(),
-        redeployableEnvironment(),
-        redeployableEnvironment(),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
       );
     });
 
@@ -166,7 +166,7 @@ describe('DeployCommitDialogService', () => {
       commitToDeploy.deployments = [activeDeployment('dev')];
 
       checkExpectedEnvironments(
-        redeployableEnvironment(),
+        deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(),
         nonDeployableEnvironment('test'),
       );
@@ -190,14 +190,14 @@ describe('DeployCommitDialogService', () => {
       ];
 
       checkExpectedEnvironments(
-        redeployableEnvironment(),
-        redeployableEnvironment(),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(),
       );
     });
 
     it(`
-    should allow redeployment of all environments if all are actively deployed:
+    should allow deployment of all environments if all are actively deployed:
     - commit after
     - commit to deploy *dev* *test* *live*
     - commit before dev test live
@@ -215,9 +215,9 @@ describe('DeployCommitDialogService', () => {
       ];
 
       checkExpectedEnvironments(
-        redeployableEnvironment(),
-        redeployableEnvironment(),
-        redeployableEnvironment(),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
       );
     });
 
@@ -314,7 +314,7 @@ describe('DeployCommitDialogService', () => {
     });
 
     it(`
-    should always allow redeployment of active deployment:
+    should always allow deployment of active deployment:
     - commit after *dev* *test*
     - commit to deploy dev test *live*
     - commit before
@@ -333,7 +333,7 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         deployableRollbackEnvironment(DeploymentState.INACTIVE),
         nonDeployableRollbackEnvironment('dev', DeploymentState.INACTIVE),
-        redeployableEnvironment(),
+        deployableEnvironment(DeploymentState.ACTIVE),
       );
     });
 
@@ -357,7 +357,7 @@ describe('DeployCommitDialogService', () => {
       ];
 
       checkExpectedEnvironments(
-        redeployableEnvironment(),
+        deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(),
         nonDeployableEnvironment('test'),
       );
@@ -414,15 +414,6 @@ describe('DeployCommitDialogService', () => {
           reason: `Deploy is not possible before <strong>${previousEnvironmentName}</strong> is deployed.`,
         },
         deploymentType: DeploymentType.FORWARD,
-      };
-    }
-
-    function redeployableEnvironment(): ExpectedEnvironment {
-      return {
-        canBeDeployed: { value: true },
-        deploymentType: DeploymentType.REDEPLOY,
-        deploymentDate: defaultDeploymentDate,
-        deploymentState: DeploymentState.ACTIVE,
       };
     }
 
