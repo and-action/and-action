@@ -1,5 +1,15 @@
 {
   "rules": {
-    "@typescript-eslint/consistent-type-imports": ["error", { "disallowTypeAnnotations": false }]
+    "@angular-eslint/component-selector": [
+      "error",
+      {
+        "type": "element",
+        "style": "kebab-case"
+      }
+    ],
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      { "disallowTypeAnnotations": false }
+    ]
   }
 }

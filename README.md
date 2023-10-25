@@ -342,3 +342,9 @@ Creating a GitHub release deploys the app to production on `https://andaction.de
 ### Renovate
 
 And Action uses [MEND Renovate](https://www.mend.io/renovate/) to update NPM packages automatically on a weekly basis. Configuration is defined in `renovate.json`.
+
+
+### Storybook
+
+Storybook is used to implement components in isolation.
+Run `ng run and-action:storybook` to open Storybook.
