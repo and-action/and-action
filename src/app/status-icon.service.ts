@@ -28,10 +28,10 @@ export class StatusIconService {
     const status = this.hasWorkflowRunsWithError(workflowRuns)
       ? StatusIconStatus.FAILURE
       : this.hasWorkflowRunsInProgress(workflowRuns)
-      ? StatusIconStatus.IN_PROGRESS
-      : this.allWorkflowRunsSuccessful(workflowRuns)
-      ? StatusIconStatus.SUCCESS
-      : StatusIconStatus.NONE;
+        ? StatusIconStatus.IN_PROGRESS
+        : this.allWorkflowRunsSuccessful(workflowRuns)
+          ? StatusIconStatus.SUCCESS
+          : StatusIconStatus.NONE;
 
     this.favicon16?.setAttribute(
       'href',
@@ -103,10 +103,10 @@ export class StatusIconService {
       status === StatusIconStatus.SUCCESS
         ? '-success.png'
         : status === StatusIconStatus.IN_PROGRESS
-        ? '-in-progress.png'
-        : status === StatusIconStatus.FAILURE
-        ? '-failure.png'
-        : '.png';
+          ? '-in-progress.png'
+          : status === StatusIconStatus.FAILURE
+            ? '-failure.png'
+            : '.png';
 
     return `assets/favicons/${size}x${size}${iconFileNameSuffix}`;
   }
