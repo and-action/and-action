@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:js-app"],
-  "dependencyDashboard": false,
+  "dependencyDashboard": true,
   "branchPrefix": "feature/renovate/",
   "semanticCommitType": "build",
   "packageRules": [
