@@ -134,10 +134,10 @@ export class DeployCommitDialogComponent implements OnInit {
             error instanceof CommitNotFoundError
               ? 'Cannot trigger deployment, because commit to deploy could not be found.'
               : error instanceof CommitStatusNotSuccessfulError
-              ? 'Cannot trigger deployment, because GitHub status checks for commit are not successful.'
-              : error instanceof CommitDeploymentsNotUpToDateError
-              ? 'Cannot trigger deployment, because something changed in the meantime. Please reopen the deploy dialog and try again.'
-              : 'Error triggering deployment. Please try again.';
+                ? 'Cannot trigger deployment, because GitHub status checks for commit are not successful.'
+                : error instanceof CommitDeploymentsNotUpToDateError
+                  ? 'Cannot trigger deployment, because something changed in the meantime. Please reopen the deploy dialog and try again.'
+                  : 'Error triggering deployment. Please try again.';
 
           this.snackBarService.error(errorMessage);
 
