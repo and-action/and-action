@@ -9,15 +9,15 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": ["zen-observable"],
             "outputPath": "dist",
             "index": "src/index.html",
-            "main": "src/main.ts",
+            "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": ["src/polyfills.ts"],
             "optimization": true,
             "outputHashing": "all",
             "sourceMap": {
@@ -42,8 +42,6 @@
             "local": {
               "sourceMap": true,
               "optimization": false,
-              "buildOptimizer": false,
-              "vendorChunk": true,
               "outputHashing": "none"
             },
             "dev": {
