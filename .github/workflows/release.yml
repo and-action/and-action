@@ -20,7 +20,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-bundle
-          path: dist
+          path: dist/browser
 
   deploy-production:
     name: Deploy to AWS S3 Production

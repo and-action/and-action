@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-bundle
-          path: dist
+          path: dist/browser
 
   deploy-dev:
     name: Deploy to AWS S3 Dev
