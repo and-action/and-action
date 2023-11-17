@@ -123,8 +123,10 @@ export class CommitsDashboardComponent {
           indexToUpdate !== -1 &&
           this.repositories()[indexToUpdate]
         ) {
-          this.repositories.mutate(
-            (value) => (value[indexToUpdate] = repositoryWithCommits),
+          this.repositories.update((repositories) =>
+            repositories.map((value, index) =>
+              index === indexToUpdate ? repositoryWithCommits : value,
+            ),
           );
         }
       });
