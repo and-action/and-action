@@ -30,7 +30,7 @@ jobs:
       - run: npm ci
       - run: npm run cy:run
       - name: Archive screenshots and videos
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots-and-videos
@@ -49,7 +49,7 @@ jobs:
       - run: npm ci
       - run: npm run build -- --configuration=dev
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-bundle
           path: dist/browser
@@ -62,7 +62,7 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: app-bundle
           path: app-bundle
