@@ -503,7 +503,10 @@ export class GithubDataService {
           ? forkJoin(
               workflows.map((workflow) =>
                 this.http
-                  .get<{ total_count: number; workflow_runs: WorkflowRun[] }>(
+                  .get<{
+                    total_count: number;
+                    workflow_runs: WorkflowRun[];
+                  }>(
                     `https://api.github.com/repos/${repository.nameWithOwner}/actions/workflows/${workflow.id}/runs?branch=${repository.defaultBranchRef.name}`,
                   )
                   .pipe(
