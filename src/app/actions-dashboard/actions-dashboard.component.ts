@@ -4,7 +4,6 @@ import { mergeMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Organization } from '../core/organization';
 import { GithubViewer } from '../core/github-viewer';
-import { StatusIconService } from '../status-icon.service';
 import { RepositoryFilterService } from '../repository-filter.service';
 import { CommonModule } from '@angular/common';
 import { ActionsDashboardItemComponent } from '../actions-dashboard-item/actions-dashboard-item.component';
@@ -38,7 +37,6 @@ export class ActionsDashboardComponent {
 
   constructor() {
     const githubDataService = inject(GithubDataService);
-    const statusIconService = inject(StatusIconService);
     const viewerAndOrganizations = signal<(GithubViewer | Organization)[]>([]);
     const filterValue = inject(RepositoryFilterService).value;
 
@@ -46,13 +44,7 @@ export class ActionsDashboardComponent {
       .loadOrganizationsWithSelectedRepositories()
       .pipe(
         mergeMap((organizations) =>
-          githubDataService
-            .loadWorkflowRuns(organizations)
-            .pipe(
-              tap((viewerAndOrgs) =>
-                statusIconService.updateStatusIcon(viewerAndOrgs),
-              ),
-            ),
+          githubDataService.loadWorkflowRuns(organizations),
         ),
 
         tap({

@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { LoginService } from './core/login.service';
 import { AppRouting } from './app-routing';
-import { StatusIconService } from './status-icon.service';
 import { RepositoryFilterService } from './repository-filter.service';
 import { NavigationStart, Router, RouterModule } from '@angular/router';
 import { filter, fromEvent, merge, startWith } from 'rxjs';
@@ -44,7 +43,6 @@ export class AppComponent implements OnInit {
   );
 
   private loginService = inject(LoginService);
-  private statusIconService = inject(StatusIconService);
   protected repositoryFilter = inject(RepositoryFilterService);
 
   constructor(router: Router) {
@@ -63,8 +61,6 @@ export class AppComponent implements OnInit {
             (window.location.href = `${window.location.protocol}//${window.location.host}/#/${AppRouting.DASHBOARD}`),
         );
     }
-
-    this.statusIconService.initFavicons();
   }
 
   toggleMobileRepositoryFilterForm() {
