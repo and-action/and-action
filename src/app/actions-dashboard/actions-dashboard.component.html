@@ -1,57 +1,59 @@
-<ana-polling-progress
-  *ngIf="viewerAndOrganizations$"
-  [observable]="viewerAndOrganizations$"
-  [pollIntervalInSeconds]="updateIntervalInSeconds"
-  class="polling-progress"
-></ana-polling-progress>
+@if (viewerAndOrganizations$) {
+  <ana-polling-progress
+    [observable]="viewerAndOrganizations$"
+    [pollIntervalInSeconds]="updateIntervalInSeconds"
+    class="polling-progress"
+  ></ana-polling-progress>
+}
 
-<ul
-  *ngIf="loadingStatus === loadingStatusEnum.FINISHED"
-  class="organization-list"
->
-  <li
-    class="organization-list__item"
-    *ngFor="let viewerOrOrganization of filteredViewerAndOrganizations()"
-  >
-    <ng-container *ngIf="viewerOrOrganization.repositories as repositories">
-      <ng-container *ngIf="repositories.length > 0">
-        <h2 class="viewer-or-organization">
-          <a
-            class="viewer-or-organization__link"
-            [href]="viewerOrOrganization.url"
-            target="_blank"
-            rel="noopener"
-          >
-            <img
-              class="viewer-or-organization__avatar"
-              [src]="viewerOrOrganization.avatarUrl"
-            />
-            <span>{{ viewerOrOrganization.login }}</span>
-          </a>
-        </h2>
-        <ul class="repository-list">
-          <li
-            *ngFor="let repository of repositories"
-            class="repository-list__item"
-          >
-            <ana-actions-dashboard-item
-              class="repository-list__item-content"
-              [repository]="repository"
-            ></ana-actions-dashboard-item>
-          </li>
-        </ul>
-      </ng-container>
-    </ng-container>
-  </li>
-</ul>
+@if (loadingStatus === loadingStatusEnum.FINISHED) {
+  <ul class="organization-list">
+    @for (
+      viewerOrOrganization of filteredViewerAndOrganizations();
+      track viewerOrOrganization
+    ) {
+      <li class="organization-list__item">
+        @if (viewerOrOrganization.repositories.length > 0) {
+          <h2 class="viewer-or-organization">
+            <a
+              class="viewer-or-organization__link"
+              [href]="viewerOrOrganization.url"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                class="viewer-or-organization__avatar"
+                [src]="viewerOrOrganization.avatarUrl"
+              />
+              <span>{{ viewerOrOrganization.login }}</span>
+            </a>
+          </h2>
+          <ul class="repository-list">
+            @for (
+              repository of viewerOrOrganization.repositories;
+              track repository
+            ) {
+              <li class="repository-list__item">
+                <ana-actions-dashboard-item
+                  class="repository-list__item-content"
+                  [repository]="repository"
+                ></ana-actions-dashboard-item>
+              </li>
+            }
+          </ul>
+        }
+      </li>
+    }
+  </ul>
+}
 
-<ng-container *ngIf="loadingStatus === loadingStatusEnum.LOADING">
+@if (loadingStatus === loadingStatusEnum.LOADING) {
   <mat-progress-spinner class="progress-spinner" mode="indeterminate">
   </mat-progress-spinner>
-</ng-container>
+}
 
-<ng-container *ngIf="loadingStatus === loadingStatusEnum.FAILED">
+@if (loadingStatus === loadingStatusEnum.FAILED) {
   <div class="view-placeholder">
     <p>Repositories could not be loaded.</p>
   </div>
-</ng-container>
+}

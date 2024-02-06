@@ -36,47 +36,43 @@
   </symbol>
 </svg>
 
-<a
-  *ngIf="link; else nonLink"
-  class="tag"
-  [style.background-color]="color"
-  [href]="link"
-  target="_blank"
-  rel="noopener"
->
-  <ng-template [ngTemplateOutlet]="tagContent"></ng-template>
-</a>
-
-<ng-template #nonLink>
+@if (link) {
+  <a
+    class="tag"
+    [style.background-color]="color"
+    [href]="link"
+    target="_blank"
+    rel="noopener"
+  >
+    <ng-template [ngTemplateOutlet]="tagContent"></ng-template>
+  </a>
+} @else {
   <p class="tag" [style.background-color]="color">
     <ng-template [ngTemplateOutlet]="tagContent"></ng-template>
   </p>
-</ng-template>
+}
 
 <ng-template #tagContent>
   <span class="tag__name">{{ name }}</span>
-  <span *ngIf="status !== statusTagStatus.NONE" class="tag__status">
-    <svg [class]="'tag__status-icon tag__status-icon--' + status">
-      <use
-        *ngIf="status === statusTagStatus.SUCCESS"
-        xlink:href="#check-circle-fill"
-      ></use>
-      <use
-        *ngIf="status === statusTagStatus.ERROR"
-        xlink:href="#x-circle-fill"
-      ></use>
-      <use
-        *ngIf="status === statusTagStatus.IN_PROGRESS"
-        xlink:href="#loading-circle"
-      ></use>
-      <use
-        *ngIf="status === statusTagStatus.WAITING"
-        xlink:href="#dot-fill"
-      ></use>
-      <use
-        *ngIf="status === statusTagStatus.SKIPPED"
-        xlink:href="#skip-circle"
-      ></use>
-    </svg>
-  </span>
+  @if (status !== statusTagStatus.NONE) {
+    <span class="tag__status">
+      <svg [class]="'tag__status-icon tag__status-icon--' + status">
+        @if (status === statusTagStatus.SUCCESS) {
+          <use xlink:href="#check-circle-fill"></use>
+        }
+        @if (status === statusTagStatus.ERROR) {
+          <use xlink:href="#x-circle-fill"></use>
+        }
+        @if (status === statusTagStatus.IN_PROGRESS) {
+          <use xlink:href="#loading-circle"></use>
+        }
+        @if (status === statusTagStatus.WAITING) {
+          <use xlink:href="#dot-fill"></use>
+        }
+        @if (status === statusTagStatus.SKIPPED) {
+          <use xlink:href="#skip-circle"></use>
+        }
+      </svg>
+    </span>
+  }
 </ng-template>

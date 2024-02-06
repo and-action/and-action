@@ -6,7 +6,7 @@ import {
   deploymentStateOutputTextMapping,
   RepositoryWithCommits,
 } from '../commits-dashboard/commits-dashboard-models';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { StatusTagStatus } from '../status-tag/status-tag-status';
 import { StatusTagColor } from '../status-tag/status-tag-color';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,7 +23,6 @@ import { MatButtonModule } from '@angular/material/button';
   standalone: true,
   imports: [
     CommitInfoComponent,
-    CommonModule,
     MatButtonModule,
     MatIconModule,
     StatusTagComponent,

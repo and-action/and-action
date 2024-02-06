@@ -10,15 +10,14 @@
   >
   </ana-commit-info>
 
-  <ng-container *ngIf="environments$ | async as environments">
-    <ng-container *ngIf="environments.length === 0">
+  @if (environments$ | async; as environments) {
+    @if (environments.length === 0) {
       <p class="u-text-placeholder">No environment configuration found.</p>
       <p class="u-text-placeholder">
         Please make sure that you have a .github/andaction.yml file either in
         your repository or in your organization's .github repository containing
         the key "environments".
       </p>
-
       <p class="u-text-placeholder">
         For more information, please see the documentation about
         <a
@@ -40,13 +39,13 @@
         </a>
         .
       </p>
-    </ng-container>
-
+    }
     <div class="environment-list">
-      <ng-container
-        class="environment"
-        *ngFor="let environment of environments; let index = index"
-      >
+      @for (
+        environment of environments;
+        track environment;
+        let index = $index
+      ) {
         <p
           [style]="{
             'background-color': environmentColorMapping[environment.name]
@@ -68,31 +67,35 @@
         </button>
 
         <div class="environment__text">
-          <p *ngIf="environment.deploymentDate">
-            Deploy triggered on
-            {{ environment.deploymentDate | date: dateFormat }} at
-            {{ environment.deploymentDate | date: 'H:mm:ss' }}
-          </p>
-          <p
-            *ngIf="!environment.canBeDeployed.value"
-            class="u-text-placeholder"
-            [innerHTML]="environment.canBeDeployed.reason"
-          ></p>
+          @if (environment.deploymentDate) {
+            <p>
+              Deploy triggered on
+              {{ environment.deploymentDate | date: dateFormat }} at
+              {{ environment.deploymentDate | date: 'H:mm:ss' }}
+            </p>
+          }
+          @if (!environment.canBeDeployed.value) {
+            <p
+              class="u-text-placeholder"
+              [innerHTML]="environment.canBeDeployed.reason"
+            ></p>
+          }
         </div>
 
         <div class="environment__state">
-          <p
-            *ngIf="environment.deploymentState"
-            class="environment__state-tag"
-            [ngClass]="getStateTagCssClass(environment.deploymentState)"
-          >
-            {{ getDeploymentStateOutputText(environment.deploymentState) }}
-          </p>
+          @if (environment.deploymentState) {
+            <p
+              class="environment__state-tag"
+              [ngClass]="getStateTagCssClass(environment.deploymentState)"
+            >
+              {{ getDeploymentStateOutputText(environment.deploymentState) }}
+            </p>
+          }
         </div>
         <mat-divider></mat-divider>
-      </ng-container>
+      }
     </div>
-  </ng-container>
+  }
 </mat-dialog-content>
 
 <div mat-dialog-actions align="end">
@@ -107,6 +110,8 @@
   </button>
 </div>
 
-<div *ngIf="isLoading" class="dialog-progress">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+@if (isLoading) {
+  <div class="dialog-progress">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+}

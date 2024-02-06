@@ -2,9 +2,10 @@
   <p class="status__last-subscription">
     Last update: {{ (lastSubscription$ | async | date) ?? '-' }}
   </p>
-  <mat-progress-bar
-    *ngIf="progressBarValue$ | async as progressBarValue"
-    [value]="progressBarValue"
-    class="status__progress"
-  ></mat-progress-bar>
+  @if (progressBarValue$ | async; as progressBarValue) {
+    <mat-progress-bar
+      [value]="progressBarValue"
+      class="status__progress"
+    ></mat-progress-bar>
+  }
 </div>

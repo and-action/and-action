@@ -7,12 +7,12 @@ import { WorkflowRunConclusion } from '../core/workflow-run-conclusion';
 import { StatusTagStatus } from '../status-tag/status-tag-status';
 import { AppRouting } from '../app-routing';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { StatusTagComponent } from '../status-tag/status-tag.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, StatusTagComponent],
+  imports: [RouterModule, StatusTagComponent],
   selector: 'ana-actions-dashboard-item',
   templateUrl: './actions-dashboard-item.component.html',
   styleUrls: ['./actions-dashboard-item.component.scss'],

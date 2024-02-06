@@ -1,56 +1,57 @@
-<ana-polling-progress
-  *ngIf="repositories$"
-  [observable]="repositories$"
-  [pollIntervalInSeconds]="updateIntervalInSeconds"
-  class="polling-progress"
-></ana-polling-progress>
+@if (repositories$) {
+  <ana-polling-progress
+    [observable]="repositories$"
+    [pollIntervalInSeconds]="updateIntervalInSeconds"
+    class="polling-progress"
+  ></ana-polling-progress>
+}
 
-<div *ngIf="loadingStatus === loadingStatusEnum.FINISHED" class="repositories">
-  <div
-    *ngFor="
-      let repository of filteredRepositories();
-      trackBy: repositoriesTrackBy
-    "
-    [id]="repository.name"
-    class="repository"
-  >
-    <div class="repository__head">
-      <h2>
-        <a [href]="repository.url" target="_blank" rel="noopener">
-          {{ repository.name }}
-        </a>
-      </h2>
-      <a
-        [href]="repository.url"
-        target="_blank"
-        rel="noopener"
-        class="repository__branch-name"
-      >
-        <svg class="repository__branch-icon">
-          <use xlink:href="#icon-git-branch"></use>
-        </svg>
+@if (loadingStatus === loadingStatusEnum.FINISHED) {
+  <div class="repositories">
+    @for (
+      repository of filteredRepositories();
+      track repositoriesTrackBy($index, repository)
+    ) {
+      <div [id]="repository.name" class="repository">
+        <div class="repository__head">
+          <h2>
+            <a [href]="repository.url" target="_blank" rel="noopener">
+              {{ repository.name }}
+            </a>
+          </h2>
+          <a
+            [href]="repository.url"
+            target="_blank"
+            rel="noopener"
+            class="repository__branch-name"
+          >
+            <svg class="repository__branch-icon">
+              <use xlink:href="#icon-git-branch"></use>
+            </svg>
 
-        <span>{{ repository.defaultBranchRef.name }}</span>
-      </a>
-    </div>
+            <span>{{ repository.defaultBranchRef.name }}</span>
+          </a>
+        </div>
 
-    <div class="u-flex">
-      <ana-commits-graph [commits]="repository.commits"></ana-commits-graph>
-      <ana-commits-list
-        [repository]="repository"
-        (repositoryCommitDeployed)="reloadCommitsForRepository(repository)"
-      ></ana-commits-list>
-    </div>
+        <div class="u-flex">
+          <ana-commits-graph [commits]="repository.commits"></ana-commits-graph>
+          <ana-commits-list
+            [repository]="repository"
+            (repositoryCommitDeployed)="reloadCommitsForRepository(repository)"
+          ></ana-commits-list>
+        </div>
+      </div>
+    }
   </div>
-</div>
+}
 
-<ng-container *ngIf="loadingStatus === loadingStatusEnum.LOADING">
+@if (loadingStatus === loadingStatusEnum.LOADING) {
   <mat-progress-spinner class="progress-spinner" mode="indeterminate">
   </mat-progress-spinner>
-</ng-container>
+}
 
-<ng-container *ngIf="loadingStatus === loadingStatusEnum.FAILED">
+@if (loadingStatus === loadingStatusEnum.FAILED) {
   <div class="view-placeholder">
     <p>Repositories could not be loaded.</p>
   </div>
-</ng-container>
+}
