@@ -15,7 +15,7 @@ import { CommitsGraphService } from './commits-graph.service';
   standalone: true,
   selector: 'ana-commits-graph',
   templateUrl: './commits-graph.component.html',
-  styleUrls: ['./commits-graph.component.scss'],
+  styleUrl: './commits-graph.component.scss',
 })
 export class CommitsGraphComponent implements AfterViewInit, OnDestroy {
   @ViewChild('graphContainer') private graphContainer?: ElementRef;

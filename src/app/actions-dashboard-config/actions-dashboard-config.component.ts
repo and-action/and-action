@@ -25,7 +25,7 @@ import { tap } from 'rxjs';
   ],
   selector: 'ana-actions-dashboard-config',
   templateUrl: './actions-dashboard-config.component.html',
-  styleUrls: ['./actions-dashboard-config.component.scss'],
+  styleUrl: './actions-dashboard-config.component.scss',
 })
 export class ActionsDashboardConfigComponent implements OnInit {
   protected viewerAndOrganizations?: (GithubViewer | Organization)[];

@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [MatButtonModule],
   selector: 'ana-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private loginService = inject(LoginService);

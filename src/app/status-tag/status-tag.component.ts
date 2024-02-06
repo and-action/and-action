@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   selector: 'ana-status-tag',
   templateUrl: './status-tag.component.html',
-  styleUrls: ['./status-tag.component.scss'],
+  styleUrl: './status-tag.component.scss',
 })
 export class StatusTagComponent {
   @Input({ required: true }) name?: string;

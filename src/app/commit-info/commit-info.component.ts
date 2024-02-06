@@ -11,7 +11,7 @@ export const maxCommitMessageLength = 100;
   imports: [CommonModule, TooltipDirective],
   selector: 'ana-commit-info',
   templateUrl: './commit-info.component.html',
-  styleUrls: ['./commit-info.component.scss'],
+  styleUrl: './commit-info.component.scss',
 })
 export class CommitInfoComponent {
   @Input({ required: true }) commit?: Commit;

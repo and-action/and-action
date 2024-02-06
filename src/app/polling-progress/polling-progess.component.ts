@@ -29,7 +29,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   imports: [CommonModule, MatProgressBarModule, MatSnackBarModule],
   selector: 'ana-polling-progress',
   templateUrl: './polling-progess.component.html',
-  styleUrls: ['./polling-progess.component.scss'],
+  styleUrl: './polling-progess.component.scss',
 })
 export class PollingProgessComponent<T> implements OnChanges {
   @Input({ required: true }) observable?: Observable<T>;

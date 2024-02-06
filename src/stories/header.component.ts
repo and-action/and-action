@@ -66,7 +66,7 @@ import type { User } from './User';
       </div>
     </div>
   </header>`,
-  styleUrls: ['./header.css'],
+  styleUrl: './header.css',
 })
 export default class HeaderComponent {
   @Input()

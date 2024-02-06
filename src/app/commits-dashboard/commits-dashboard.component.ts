@@ -32,7 +32,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   ],
   selector: 'ana-commits-dashboard',
   templateUrl: './commits-dashboard.component.html',
-  styleUrls: ['./commits-dashboard.component.scss'],
+  styleUrl: './commits-dashboard.component.scss',
 })
 export class CommitsDashboardComponent {
   protected repositories$?: Observable<RepositoryWithCommits[]>;

@@ -28,7 +28,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   ],
   selector: 'ana-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   @ViewChild(MatSidenav) protected sideNav?: MatSidenav;

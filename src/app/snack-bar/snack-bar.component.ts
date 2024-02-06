@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [MatButtonModule, MatIconModule],
   selector: 'ana-snack-bar',
   templateUrl: './snack-bar.component.html',
-  styleUrls: ['./snack-bar.component.scss'],
+  styleUrl: './snack-bar.component.scss',
 })
 export class SnackBarComponent {
   protected data = inject<SnackBarData>(MAT_SNACK_BAR_DATA);
