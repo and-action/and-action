@@ -6,8 +6,8 @@
     {{ repository?.name }}
   </a>
 </h3>
-<ng-container *ngIf="repository && repository.workflowsWithWorkflowRuns">
-  <ng-container *ngIf="repository.workflowsWithWorkflowRuns.length > 0">
+@if (repository && repository.workflowsWithWorkflowRuns) {
+  @if (repository.workflowsWithWorkflowRuns.length > 0) {
     <a
       [href]="repository.url"
       target="_blank"
@@ -17,38 +17,31 @@
       <svg class="branch-title__icon">
         <use xlink:href="#icon-git-branch"></use>
       </svg>
-
       <span>{{ repository.defaultBranchRef.name }}</span>
     </a>
     <ul class="workflow-list">
-      <ng-container
-        *ngFor="
-          let workflowWithWorkflowRuns of repository.workflowsWithWorkflowRuns
-        "
-      >
-        <li
-          *ngIf="workflowWithWorkflowRuns.workflowRuns?.[0]"
-          class="workflow-list__item"
-        >
-          <ana-status-tag
-            [name]="workflowWithWorkflowRuns.workflow.name"
-            [link]="workflowWithWorkflowRuns.workflowRuns[0].html_url"
-            [status]="
-              getStatusTagStatus(workflowWithWorkflowRuns.workflowRuns[0])
-            "
-            [color]="
-              getStatusTagColor(workflowWithWorkflowRuns.workflowRuns[0])
-            "
-          ></ana-status-tag>
-        </li>
-      </ng-container>
+      @for (
+        workflowWithWorkflowRuns of repository.workflowsWithWorkflowRuns;
+        track workflowWithWorkflowRuns
+      ) {
+        @if (workflowWithWorkflowRuns.workflowRuns[0]) {
+          <li class="workflow-list__item">
+            <ana-status-tag
+              [name]="workflowWithWorkflowRuns.workflow.name"
+              [link]="workflowWithWorkflowRuns.workflowRuns[0].html_url"
+              [status]="
+                getStatusTagStatus(workflowWithWorkflowRuns.workflowRuns[0])
+              "
+              [color]="
+                getStatusTagColor(workflowWithWorkflowRuns.workflowRuns[0])
+              "
+            ></ana-status-tag>
+          </li>
+        }
+      }
     </ul>
-  </ng-container>
-
-  <p
-    *ngIf="repository.workflowsWithWorkflowRuns.length === 0"
-    class="u-text-placeholder"
-  >
-    No workflows configured
-  </p>
-</ng-container>
+  }
+  @if (repository.workflowsWithWorkflowRuns.length === 0) {
+    <p class="u-text-placeholder">No workflows configured</p>
+  }
+}

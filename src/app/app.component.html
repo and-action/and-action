@@ -110,4 +110,6 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-<p *ngIf="!isOnline()" class="offline-info">No network connection</p>
+@if (!isOnline()) {
+  <p class="offline-info">No network connection</p>
+}

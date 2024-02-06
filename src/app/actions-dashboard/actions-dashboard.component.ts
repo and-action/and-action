@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Organization } from '../core/organization';
 import { GithubViewer } from '../core/github-viewer';
 import { RepositoryFilterService } from '../repository-filter.service';
-import { CommonModule } from '@angular/common';
+
 import { ActionsDashboardItemComponent } from '../actions-dashboard-item/actions-dashboard-item.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingStatus } from '../loading-status';
@@ -15,7 +15,6 @@ import { PollingProgessComponent } from '../polling-progress/polling-progess.com
   standalone: true,
   imports: [
     ActionsDashboardItemComponent,
-    CommonModule,
     MatProgressSpinnerModule,
     PollingProgessComponent,
   ],

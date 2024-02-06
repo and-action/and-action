@@ -12,7 +12,7 @@ import { RepositoryWithCommits } from './commits-dashboard-models';
 import { delay, map, mergeMap } from 'rxjs/operators';
 import { RepositoryFilterService } from '../repository-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { CommitsGraphComponent } from '../commits-graph/commits-graph.component';
 import { CommitsListComponent } from '../commits-list/commits-list.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -26,7 +26,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
   imports: [
     CommitsGraphComponent,
     CommitsListComponent,
-    CommonModule,
     MatDialogModule,
     MatProgressSpinnerModule,
     PollingProgessComponent,

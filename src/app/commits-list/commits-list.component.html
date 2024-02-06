@@ -1,38 +1,38 @@
 <ul class="repository__list">
-  <li
-    class="repository__commit"
-    *ngFor="let commit of repository?.commits; trackBy: commitsTrackBy"
-  >
-    <div class="repository__commit-content">
-      <ana-commit-info
-        [commit]="commit"
-        [repositoryUrl]="repository?.url"
-      ></ana-commit-info>
-      <div>
-        <ana-status-tag
-          *ngFor="
-            let deployment of commit.deployments;
-            trackBy: deploymentsTrackBy
-          "
-          [name]="deployment.environment"
-          [status]="getDeploymentStatusForStatusTag(deployment)"
-          [color]="getDeploymentStatusTagColor(deployment)"
-          [link]="deployment.logUrl"
-          class="repository__deployment"
-          [class.repository__deployment--light]="
-            !isDeploymentActive(deployment)
-          "
-          [anaTooltip]="getTooltipContent(deployment)"
-        ></ana-status-tag>
+  @for (commit of repository?.commits; track commitsTrackBy($index, commit)) {
+    <li class="repository__commit">
+      <div class="repository__commit-content">
+        <ana-commit-info
+          [commit]="commit"
+          [repositoryUrl]="repository?.url"
+        ></ana-commit-info>
+        <div>
+          @for (
+            deployment of commit.deployments;
+            track deploymentsTrackBy($index, deployment)
+          ) {
+            <ana-status-tag
+              [name]="deployment.environment"
+              [status]="getDeploymentStatusForStatusTag(deployment)"
+              [color]="getDeploymentStatusTagColor(deployment)"
+              [link]="deployment.logUrl"
+              class="repository__deployment"
+              [class.repository__deployment--light]="
+                !isDeploymentActive(deployment)
+              "
+              [anaTooltip]="getTooltipContent(deployment)"
+            ></ana-status-tag>
+          }
+        </div>
       </div>
-    </div>
-    <button
-      class="repository__commit-deploy"
-      mat-icon-button
-      color="accent"
-      (click)="openDeployDialog(commit, repository?.commits ?? [])"
-    >
-      <mat-icon>rocket_launch</mat-icon>
-    </button>
-  </li>
+      <button
+        class="repository__commit-deploy"
+        mat-icon-button
+        color="accent"
+        (click)="openDeployDialog(commit, repository?.commits ?? [])"
+      >
+        <mat-icon>rocket_launch</mat-icon>
+      </button>
+    </li>
+  }
 </ul>
