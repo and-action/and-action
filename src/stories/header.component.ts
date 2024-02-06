@@ -44,27 +44,23 @@ import type { User } from './User';
               ></storybook-button>
             }
           </div>
-        }
-        @if (!user) {
+        } @else {
           <div>
-            @if (!user) {
-              <storybook-button
-                size="small"
-                class="margin-left"
-                (onClick)="onLogin.emit($event)"
-                label="Log in"
-              ></storybook-button>
-            }
-            @if (!user) {
-              <storybook-button
-                primary
-                size="small"
-                primary="true"
-                class="margin-left"
-                (onClick)="onCreateAccount.emit($event)"
-                label="Sign up"
-              ></storybook-button>
-            }
+            <storybook-button
+              size="small"
+              class="margin-left"
+              (onClick)="onLogin.emit($event)"
+              label="Log in"
+            ></storybook-button>
+
+            <storybook-button
+              primary
+              size="small"
+              primary="true"
+              class="margin-left"
+              (onClick)="onCreateAccount.emit($event)"
+              label="Sign up"
+            ></storybook-button>
           </div>
         }
       </div>

@@ -28,9 +28,11 @@
             <svg class="repository__branch-icon">
               <use xlink:href="#icon-git-branch"></use>
             </svg>
+
             <span>{{ repository.defaultBranchRef.name }}</span>
           </a>
         </div>
+
         <div class="u-flex">
           <ana-commits-graph [commits]="repository.commits"></ana-commits-graph>
           <ana-commits-list

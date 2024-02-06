@@ -13,33 +13,34 @@
       track viewerOrOrganization
     ) {
       <li class="organization-list__item">
-        @if (viewerOrOrganization.repositories; as repositories) {
-          @if (repositories.length > 0) {
-            <h2 class="viewer-or-organization">
-              <a
-                class="viewer-or-organization__link"
-                [href]="viewerOrOrganization.url"
-                target="_blank"
-                rel="noopener"
-              >
-                <img
-                  class="viewer-or-organization__avatar"
-                  [src]="viewerOrOrganization.avatarUrl"
-                />
-                <span>{{ viewerOrOrganization.login }}</span>
-              </a>
-            </h2>
-            <ul class="repository-list">
-              @for (repository of repositories; track repository) {
-                <li class="repository-list__item">
-                  <ana-actions-dashboard-item
-                    class="repository-list__item-content"
-                    [repository]="repository"
-                  ></ana-actions-dashboard-item>
-                </li>
-              }
-            </ul>
-          }
+        @if (viewerOrOrganization.repositories.length > 0) {
+          <h2 class="viewer-or-organization">
+            <a
+              class="viewer-or-organization__link"
+              [href]="viewerOrOrganization.url"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                class="viewer-or-organization__avatar"
+                [src]="viewerOrOrganization.avatarUrl"
+              />
+              <span>{{ viewerOrOrganization.login }}</span>
+            </a>
+          </h2>
+          <ul class="repository-list">
+            @for (
+              repository of viewerOrOrganization.repositories;
+              track repository
+            ) {
+              <li class="repository-list__item">
+                <ana-actions-dashboard-item
+                  class="repository-list__item-content"
+                  [repository]="repository"
+                ></ana-actions-dashboard-item>
+              </li>
+            }
+          </ul>
         }
       </li>
     }

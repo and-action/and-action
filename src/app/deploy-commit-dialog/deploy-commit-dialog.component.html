@@ -46,52 +46,53 @@
         track environment;
         let index = $index
       ) {
-        <ng-container class="environment">
-          <p
-            [style]="{
-              'background-color': environmentColorMapping[environment.name]
-            }"
-            class="environment__tag"
-          >
-            {{ environment.name }}
-          </p>
-          <button
-            mat-flat-button
-            color="primary"
-            type="button"
-            class="environment__action"
-            (click)="deployToEnvironment(environment, environments)"
-            [disabled]="!environment.canBeDeployed.value || isLoading"
-          >
-            {{ getDeployButtonLabel(environment.deploymentType) }}
-          </button>
-          <div class="environment__text">
-            @if (environment.deploymentDate) {
-              <p>
-                Deploy triggered on
-                {{ environment.deploymentDate | date: dateFormat }} at
-                {{ environment.deploymentDate | date: 'H:mm:ss' }}
-              </p>
-            }
-            @if (!environment.canBeDeployed.value) {
-              <p
-                class="u-text-placeholder"
-                [innerHTML]="environment.canBeDeployed.reason"
-              ></p>
-            }
-          </div>
-          <div class="environment__state">
-            @if (environment.deploymentState) {
-              <p
-                class="environment__state-tag"
-                [ngClass]="getStateTagCssClass(environment.deploymentState)"
-              >
-                {{ getDeploymentStateOutputText(environment.deploymentState) }}
-              </p>
-            }
-          </div>
-          <mat-divider></mat-divider>
-        </ng-container>
+        <p
+          [style]="{
+            'background-color': environmentColorMapping[environment.name]
+          }"
+          class="environment__tag"
+        >
+          {{ environment.name }}
+        </p>
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="button"
+          class="environment__action"
+          (click)="deployToEnvironment(environment, environments)"
+          [disabled]="!environment.canBeDeployed.value || isLoading"
+        >
+          {{ getDeployButtonLabel(environment.deploymentType) }}
+        </button>
+
+        <div class="environment__text">
+          @if (environment.deploymentDate) {
+            <p>
+              Deploy triggered on
+              {{ environment.deploymentDate | date: dateFormat }} at
+              {{ environment.deploymentDate | date: 'H:mm:ss' }}
+            </p>
+          }
+          @if (!environment.canBeDeployed.value) {
+            <p
+              class="u-text-placeholder"
+              [innerHTML]="environment.canBeDeployed.reason"
+            ></p>
+          }
+        </div>
+
+        <div class="environment__state">
+          @if (environment.deploymentState) {
+            <p
+              class="environment__state-tag"
+              [ngClass]="getStateTagCssClass(environment.deploymentState)"
+            >
+              {{ getDeploymentStateOutputText(environment.deploymentState) }}
+            </p>
+          }
+        </div>
+        <mat-divider></mat-divider>
       }
     </div>
   }
