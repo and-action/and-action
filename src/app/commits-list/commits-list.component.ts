@@ -30,7 +30,7 @@ import { MatButtonModule } from '@angular/material/button';
   ],
   selector: 'ana-commits-list',
   templateUrl: './commits-list.component.html',
-  styleUrls: ['./commits-list.component.scss'],
+  styleUrl: './commits-list.component.scss',
 })
 export class CommitsListComponent {
   private myRepository?: RepositoryWithCommits;

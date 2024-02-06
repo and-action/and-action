@@ -15,7 +15,7 @@ import { StatusTagComponent } from '../status-tag/status-tag.component';
   imports: [RouterModule, StatusTagComponent],
   selector: 'ana-actions-dashboard-item',
   templateUrl: './actions-dashboard-item.component.html',
-  styleUrls: ['./actions-dashboard-item.component.scss'],
+  styleUrl: './actions-dashboard-item.component.scss',
 })
 export class ActionsDashboardItemComponent {
   @Input({ required: true }) repository?: Repository;

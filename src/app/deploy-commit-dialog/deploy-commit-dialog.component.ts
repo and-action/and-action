@@ -53,7 +53,7 @@ export interface DialogData {
   ],
   selector: 'ana-deploy-commit-dialog',
   templateUrl: './deploy-commit-dialog.component.html',
-  styleUrls: ['./deploy-commit-dialog.component.scss'],
+  styleUrl: './deploy-commit-dialog.component.scss',
 })
 export class DeployCommitDialogComponent implements OnInit {
   protected environments$?: Observable<DeployCommitEnvironment[]>;

@@ -20,7 +20,7 @@ import { PollingProgessComponent } from '../polling-progress/polling-progess.com
   ],
   selector: 'ana-actions-dashboard',
   templateUrl: './actions-dashboard.component.html',
-  styleUrls: ['./actions-dashboard.component.scss'],
+  styleUrl: './actions-dashboard.component.scss',
 })
 export class ActionsDashboardComponent {
   protected viewerAndOrganizations$?: Observable<
