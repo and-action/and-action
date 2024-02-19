@@ -1,0 +1,34 @@
+@use '../../colors';
+@use '../../variables';
+
+:host {
+  display: flex;
+  align-items: center;
+  gap: variables.$space-xs;
+}
+
+.status {
+  width: variables.$space-m;
+  height: variables.$space-m;
+
+  &__icon {
+    width: variables.$space-m;
+    height: variables.$space-m;
+
+    &--success {
+      fill: colors.$color-success;
+    }
+
+    &--failed {
+      fill: colors.$color-error;
+    }
+
+    &--pending {
+      fill: colors.$color-in-progress;
+    }
+  }
+}
+
+.status-text {
+  margin: 0;
+}
