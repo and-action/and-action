@@ -19,6 +19,8 @@ import YAML from 'yaml';
 import { AndActionConfig } from './and-action-config';
 import { ApolloError, ApolloQueryResult } from '@apollo/client/core';
 import { GraphQLError } from 'graphql/error';
+import { CheckStatusState } from './check-status-state';
+import { CheckConclusionState } from './check-conclusion-state';
 
 interface GraphQLErrorWithType extends GraphQLError {
   type: 'FORBIDDEN' | 'NOT_FOUND';
@@ -51,8 +53,8 @@ interface CheckSuiteNode {
       name: string;
     };
   };
-  status: string;
-  conclusion?: string;
+  status: CheckStatusState;
+  conclusion?: CheckConclusionState;
 }
 
 interface CommitStateQueryResult {
@@ -370,14 +372,14 @@ export class GithubDataService {
 
   loadCommitState(id: string, andActionConfig: AndActionConfig) {
     return this.apollo
-      .watchQuery<CommitStateQueryResult>({
+      .query<CommitStateQueryResult>({
         query: commitStateQuery,
         variables: {
           id,
         },
         fetchPolicy: 'network-only',
       })
-      .valueChanges.pipe(
+      .pipe(
         map((queryResult) =>
           queryResult.data.node.checkSuites.nodes
             .filter(
@@ -388,8 +390,8 @@ export class GithubDataService {
             )
             .every(
               (node) =>
-                // TODO: Create enum for status and conclusion
-                node.status === 'COMPLETED' && node.conclusion === 'SUCCESS',
+                node.status === CheckStatusState.COMPLETED &&
+                node.conclusion === CheckConclusionState.SUCCESS,
             ),
         ),
       );
