@@ -19,6 +19,8 @@ import { NoEnvironmentConfigFoundError } from './deploy-commit-errors';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DatePipe } from '@angular/common';
 import { DEFAULT_DATE_FORMAT } from '../constants';
+import { CommitState } from '../core/commit-state';
+import { StatusWithTextStatus } from '../core/status-with-text';
 
 describe('DeployCommitDialogComponent', () => {
   const commits: Commit[] = [getCommitMock()];
@@ -37,8 +39,45 @@ describe('DeployCommitDialogComponent', () => {
     commits,
   };
 
+  const commitStateSuccess: CommitState = {
+    status: StatusWithTextStatus.SUCCESS,
+    text: 'GitHub status checks are successful. Commit can be deployed.',
+    url: 'https://github.com/organisation/repository-name/commit/200000',
+    checkSuites: [
+      {
+        status: StatusWithTextStatus.SUCCESS,
+        text: 'CI',
+        url: 'https://github.com/organisation/repository-name/actions/runs/1',
+      },
+      {
+        status: StatusWithTextStatus.SUCCESS,
+        text: 'Merge checks',
+        url: 'https://github.com/organisation/repository-name/actions/runs/2',
+      },
+    ],
+  };
+
+  const commitStateFailed: CommitState = {
+    status: StatusWithTextStatus.FAILED,
+    text: 'GitHub status checks failed. Commit cannot be deployed.',
+    url: 'https://github.com/organisation/repository-name/commit/200000',
+    checkSuites: [
+      {
+        status: StatusWithTextStatus.FAILED,
+        text: 'CI',
+        url: 'https://github.com/organisation/repository-name/actions/runs/1',
+      },
+      {
+        status: StatusWithTextStatus.SUCCESS,
+        text: 'Merge checks',
+        url: 'https://github.com/organisation/repository-name/actions/runs/2',
+      },
+    ],
+  };
+
   function mountComponent(
     getEnvironments: () => Observable<DeployCommitEnvironment[]>,
+    commitState: CommitState,
   ) {
     cy.mount(DeployCommitDialogComponent, {
       imports: [
@@ -52,6 +91,7 @@ describe('DeployCommitDialogComponent', () => {
           useValue: {
             getEnvironments,
             deployToEnvironment: () => of({}),
+            getDeployCommitState: () => of(commitState),
           },
         },
         {
@@ -74,8 +114,9 @@ describe('DeployCommitDialogComponent', () => {
 
   describe('without andaction.yml config', () => {
     beforeEach(() =>
-      mountComponent(() =>
-        throwError(() => new NoEnvironmentConfigFoundError()),
+      mountComponent(
+        () => throwError(() => new NoEnvironmentConfigFoundError()),
+        commitStateSuccess,
       ),
     );
 
@@ -91,49 +132,79 @@ describe('DeployCommitDialogComponent', () => {
 
   describe('with config', () => {
     const deploymentDate = new Date('2022-12-23 21:50:13 GMT+0100');
+    const getEnvironments = (): Observable<DeployCommitEnvironment[]> =>
+      of([
+        {
+          name: 'dev',
+          canBeDeployed: { value: true },
+          deploymentType: DeploymentType.FORWARD,
+          deploymentDate,
+          deploymentState: DeploymentState.ACTIVE,
+        },
+        {
+          name: 'test',
+          canBeDeployed: { value: true },
+          deploymentType: DeploymentType.FORWARD,
+        },
+        {
+          name: 'live',
+          canBeDeployed: {
+            value: false,
+            reason:
+              'Deploy is not possible before <strong>test</strong> is deployed.',
+          },
+          deploymentType: DeploymentType.FORWARD,
+        },
+      ]);
 
-    beforeEach(() => {
-      const getEnvironments = (): Observable<DeployCommitEnvironment[]> =>
-        of([
-          {
-            name: 'dev',
-            canBeDeployed: { value: true },
-            deploymentType: DeploymentType.FORWARD,
-            deploymentDate,
-            deploymentState: DeploymentState.ACTIVE,
-          },
-          {
-            name: 'test',
-            canBeDeployed: { value: true },
-            deploymentType: DeploymentType.FORWARD,
-          },
-          {
-            name: 'live',
-            canBeDeployed: {
-              value: false,
-              reason:
-                'Deploy is not possible before <strong>test</strong> is deployed.',
-            },
-            deploymentType: DeploymentType.FORWARD,
-          },
-        ]);
-      mountComponent(getEnvironments);
+    it('should show commit state and buttons correctly for successful commit state', () => {
+      mountComponent(getEnvironments, commitStateSuccess);
+      checkCommitStates(commitStateSuccess);
+      checkEnvironments(true);
     });
 
-    it('should show buttons correctly', () => {
+    it('should show commit state and buttons correctly for failed commit state', () => {
+      mountComponent(getEnvironments, commitStateFailed);
+      checkCommitStates(commitStateFailed);
+      checkEnvironments(false);
+    });
+
+    function checkCommitStates(commitState: CommitState) {
+      const checkCommitState = (
+        $element: any,
+        expectedStatus: StatusWithTextStatus,
+        expectedText: string,
+      ) => {
+        cy.wrap($element).find(`.status__icon--${expectedStatus}`);
+        cy.wrap($element).find('.status-text').should('contain', expectedText);
+      };
+
+      cy.get('ana-status-with-text').then(($elements) => {
+        checkCommitState($elements[0], commitState.status, commitState.text);
+        commitState.checkSuites.forEach((checkSuite, index) => {
+          checkCommitState(
+            $elements[index + 1],
+            checkSuite.status,
+            checkSuite.text,
+          );
+        });
+      });
+    }
+
+    function checkEnvironments(isCommitStatusSuccess: boolean) {
       const datePipe = new DatePipe('en-us');
 
       checkEnvironment(
         'dev',
         'Deploy',
-        false,
+        !isCommitStatusSuccess,
         `Deploy triggered on ${datePipe.transform(
           deploymentDate,
           DEFAULT_DATE_FORMAT,
         )} at ${datePipe.transform(deploymentDate, 'H:mm:ss')}`,
         'Active',
       );
-      checkEnvironment('test', 'Deploy', false);
+      checkEnvironment('test', 'Deploy', !isCommitStatusSuccess);
       checkEnvironment(
         'live',
         'Deploy',
@@ -166,6 +237,6 @@ describe('DeployCommitDialogComponent', () => {
           cy.contains('ana-snack-bar button', 'Close').click();
         }
       }
-    });
+    }
   });
 });

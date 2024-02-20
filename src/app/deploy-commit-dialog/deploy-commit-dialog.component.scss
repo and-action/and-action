@@ -16,6 +16,16 @@
   }
 }
 
+.commit-status {
+  padding: $space-xs;
+  background-color: $highlight-background-color;
+  border-radius: $default-border-radius;
+
+  &__check-suite {
+    margin-left: $space-l;
+  }
+}
+
 .environment-list {
   display: grid;
   grid-template-columns: repeat(4, auto);

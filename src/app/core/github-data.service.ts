@@ -52,6 +52,7 @@ interface CheckSuiteNode {
     workflow: {
       name: string;
     };
+    url: string;
   };
   status: CheckStatusState;
   conclusion?: CheckConclusionState;
@@ -221,6 +222,7 @@ const commitStateQuery = gql`
               workflow {
                 name
               }
+              url
             }
             status
             conclusion
@@ -381,20 +383,26 @@ export class GithubDataService {
       })
       .pipe(
         map((queryResult) =>
-          queryResult.data.node.checkSuites.nodes
-            .filter(
-              (checkSuite) =>
-                !andActionConfig.deployment?.['excluded-workflows']?.includes(
-                  checkSuite.workflowRun?.workflow.name ?? checkSuite.app.name,
-                ),
-            )
-            .every(
-              (node) =>
-                node.status === CheckStatusState.COMPLETED &&
-                node.conclusion === CheckConclusionState.SUCCESS,
-            ),
+          queryResult.data.node.checkSuites.nodes.filter(
+            (checkSuite) =>
+              !andActionConfig.deployment?.['excluded-workflows']?.includes(
+                checkSuite.workflowRun?.workflow.name ?? checkSuite.app.name,
+              ),
+          ),
         ),
       );
+  }
+
+  isCommitStateSuccessful(id: string, andActionConfig: AndActionConfig) {
+    return this.loadCommitState(id, andActionConfig).pipe(
+      map((checkSuites) =>
+        checkSuites.every(
+          (node) =>
+            node.status === CheckStatusState.COMPLETED &&
+            node.conclusion === CheckConclusionState.SUCCESS,
+        ),
+      ),
+    );
   }
 
   loadAndActionConfigs(

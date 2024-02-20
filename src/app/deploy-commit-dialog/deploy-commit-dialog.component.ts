@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Signal } from '@angular/core';
 import {
   Commit,
   DeploymentState,
@@ -32,6 +32,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { CommitState } from '../core/commit-state';
+import { StatusWithTextComponent } from '../status-with-text/status-with-text.component';
+import { StatusWithTextStatus } from '../core/status-with-text';
 
 export interface DialogData {
   repository: RepositoryWithCommits;
@@ -50,6 +54,7 @@ export interface DialogData {
     MatIconModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    StatusWithTextComponent,
   ],
   selector: 'ana-deploy-commit-dialog',
   templateUrl: './deploy-commit-dialog.component.html',
@@ -68,6 +73,15 @@ export class DeployCommitDialogComponent implements OnInit {
   private deployCommitDialogService = inject(DeployCommitDialogService);
   private snackBarService = inject(SnackBarService);
   private dialogRef = inject(MatDialogRef<DeployCommitDialogComponent>);
+
+  protected commitState: Signal<CommitState | null> = toSignal(
+    this.deployCommitDialogService.getDeployCommitState(
+      this.dialogData.repository.owner,
+      this.dialogData.repository.name,
+      this.dialogData.commitToDeploy,
+    ),
+    { initialValue: null },
+  );
 
   ngOnInit() {
     this.environments$ = this.deployCommitDialogService
@@ -111,6 +125,14 @@ export class DeployCommitDialogComponent implements OnInit {
     return deploymentState
       ? `environment__state-tag--${deploymentState.toLowerCase()}`
       : '';
+  }
+
+  canBeDeployed(environment: DeployCommitEnvironment) {
+    return (
+      environment.canBeDeployed.value &&
+      this.commitState()?.status === StatusWithTextStatus.SUCCESS &&
+      !this.isLoading
+    );
   }
 
   deployToEnvironment(
