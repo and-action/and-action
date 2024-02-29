@@ -12,6 +12,10 @@ import { DeployCommitEnvironment } from './deploy-commit-environment';
 import { GithubDataService } from '../core/github-data.service';
 import { of } from 'rxjs';
 import { DeploymentType } from './deployment-type';
+import { CheckStatusState } from '../core/check-status-state';
+import { CheckConclusionState } from '../core/check-conclusion-state';
+import { CommitState } from '../core/commit-state';
+import { StatusWithTextStatus } from '../core/status-with-text';
 
 describe('DeployCommitDialogService', () => {
   let service: DeployCommitDialogService;
@@ -471,6 +475,96 @@ describe('DeployCommitDialogService', () => {
           commitAfter,
         ])
         .subscribe((environments) => expect(environments).toEqual(expected));
+    }
+  });
+
+  describe('getDeployCommitState', () => {
+    it('should return successful commit state correctly', () =>
+      checkDeployCommitState(
+        CheckStatusState.COMPLETED,
+        CheckConclusionState.SUCCESS,
+        StatusWithTextStatus.SUCCESS,
+        'Deployment status checks are successful. Commit can be deployed.',
+      ));
+
+    it('should return failed commit state correctly', () =>
+      checkDeployCommitState(
+        CheckStatusState.COMPLETED,
+        CheckConclusionState.FAILURE,
+        StatusWithTextStatus.FAILED,
+        'Deployment status checks failed. Commit cannot be deployed.',
+      ));
+
+    it('should return pending commit state correctly', () =>
+      checkDeployCommitState(
+        CheckStatusState.PENDING,
+        undefined,
+        StatusWithTextStatus.PENDING,
+        'Deployment status checks pending. Commit cannot be deployed.',
+      ));
+
+    function checkDeployCommitState(
+      checkStatusState: CheckStatusState,
+      checkConclusionState: CheckConclusionState | undefined,
+      expectedStatus: StatusWithTextStatus,
+      expectedText: string,
+    ) {
+      const githubDataService = TestBed.inject(GithubDataService);
+      spyOn(githubDataService, 'loadCommitState').and.returnValue(
+        of([
+          {
+            app: {
+              name: 'GitHub Actions',
+            },
+            workflowRun: {
+              workflow: {
+                name: 'CI',
+              },
+              url: 'https://github.com/organisation/repository-name/actions/runs/1',
+            },
+            status: checkStatusState,
+            conclusion: checkConclusionState,
+          },
+          {
+            app: {
+              name: 'GitHub Actions',
+            },
+            workflowRun: {
+              workflow: {
+                name: 'Merge Checks',
+              },
+              url: 'https://github.com/organisation/repository-name/actions/runs/2',
+            },
+            status: CheckStatusState.COMPLETED,
+            conclusion: CheckConclusionState.SUCCESS,
+          },
+        ]),
+      );
+
+      let commitState!: CommitState | null;
+      service
+        .getDeployCommitState('testOwner', 'testRepo', commitToDeploy)
+        .subscribe((result) => (commitState = result));
+
+      const expectedCommitState: CommitState = {
+        status: expectedStatus,
+        text: expectedText,
+        url: 'https://github.com/organisation/repository-name/commit/200000',
+        checkSuites: [
+          {
+            status: expectedStatus,
+            text: 'CI',
+            url: 'https://github.com/organisation/repository-name/actions/runs/1',
+          },
+          {
+            status: StatusWithTextStatus.SUCCESS,
+            text: 'Merge Checks',
+            url: 'https://github.com/organisation/repository-name/actions/runs/2',
+          },
+        ],
+      };
+
+      expect(commitState).toEqual(expectedCommitState);
     }
   });
 

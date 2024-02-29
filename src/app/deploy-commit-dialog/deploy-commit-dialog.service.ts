@@ -17,6 +17,11 @@ import {
   NoEnvironmentConfigFoundError,
 } from './deploy-commit-errors';
 import { DeploymentType } from './deployment-type';
+import { CheckStatusState } from '../core/check-status-state';
+import { CheckConclusionState } from '../core/check-conclusion-state';
+import { StatusWithText, StatusWithTextStatus } from '../core/status-with-text';
+import { CommitState } from '../core/commit-state';
+import { assertIsNotUndefinedAndNotNull } from '../assert';
 
 interface LatestCommitDatePerDeployedEnvironment {
   [environment: string]: Date;
@@ -76,6 +81,75 @@ export class DeployCommitDialogService {
       );
   }
 
+  getDeployCommitState(
+    repositoryOwner: string,
+    repositoryName: string,
+    commitToDeploy: Commit,
+  ) {
+    const { id: commitId } = commitToDeploy;
+    return this.githubDataService
+      .loadAndActionConfigs(repositoryOwner, repositoryName)
+      .pipe(
+        mergeMap((andActionConfig) =>
+          this.githubDataService.loadCommitState(commitId, andActionConfig),
+        ),
+        map((checkSuites): StatusWithText[] =>
+          checkSuites.map((checkSuite) => {
+            assertIsNotUndefinedAndNotNull(checkSuite.workflowRun?.url);
+            return {
+              status:
+                checkSuite.status === CheckStatusState.COMPLETED &&
+                checkSuite.conclusion === CheckConclusionState.SUCCESS
+                  ? StatusWithTextStatus.SUCCESS
+                  : checkSuite.status === CheckStatusState.COMPLETED &&
+                      [
+                        CheckConclusionState.ACTION_REQUIRED,
+                        CheckConclusionState.CANCELLED,
+                        CheckConclusionState.FAILURE,
+                        CheckConclusionState.STALE,
+                        CheckConclusionState.STARTUP_FAILURE,
+                        CheckConclusionState.TIMED_OUT,
+                        undefined,
+                      ].includes(checkSuite.conclusion)
+                    ? StatusWithTextStatus.FAILED
+                    : StatusWithTextStatus.PENDING,
+              text:
+                checkSuite.workflowRun?.workflow.name ?? checkSuite.app.name,
+              url: checkSuite.workflowRun?.url,
+            };
+          }),
+        ),
+        map((checkSuites): CommitState | null => {
+          const [status, text] = checkSuites.some(
+            (checkSuite) => checkSuite.status === StatusWithTextStatus.FAILED,
+          )
+            ? [
+                StatusWithTextStatus.FAILED,
+                'Deployment status checks failed. Commit cannot be deployed.',
+              ]
+            : checkSuites.some(
+                  (checkSuite) =>
+                    checkSuite.status === StatusWithTextStatus.PENDING,
+                )
+              ? [
+                  StatusWithTextStatus.PENDING,
+                  'Deployment status checks pending. Commit cannot be deployed.',
+                ]
+              : [
+                  StatusWithTextStatus.SUCCESS,
+                  'Deployment status checks are successful. Commit can be deployed.',
+                ];
+
+          return {
+            status,
+            text,
+            url: commitToDeploy.commitUrl,
+            checkSuites,
+          };
+        }),
+      );
+  }
+
   deployToEnvironment(
     repositoryOwner: string,
     repositoryName: string,
@@ -112,7 +186,10 @@ export class DeployCommitDialogService {
         .loadAndActionConfigs(repositoryOwner, repositoryName)
         .pipe(
           mergeMap((andActionConfig) =>
-            this.githubDataService.loadCommitState(commitId, andActionConfig),
+            this.githubDataService.isCommitStateSuccessful(
+              commitId,
+              andActionConfig,
+            ),
           ),
         ),
 

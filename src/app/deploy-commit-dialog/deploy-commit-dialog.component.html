@@ -4,7 +4,7 @@
 </h2>
 <mat-dialog-content>
   <ana-commit-info
-    class="u-margin-bottom-xl"
+    class="u-margin-bottom-m"
     [commit]="dialogData.commitToDeploy"
     [repositoryUrl]="dialogData.repository.url"
   >
@@ -39,62 +39,83 @@
         </a>
         .
       </p>
-    }
-    <div class="environment-list">
-      @for (
-        environment of environments;
-        track environment;
-        let index = $index
-      ) {
-        <p
-          [style]="{
-            'background-color': environmentColorMapping[environment.name]
-          }"
-          class="environment__tag"
-        >
-          {{ environment.name }}
-        </p>
+    } @else {
+      @if (commitState(); as commitState) {
+        <div class="commit-status u-margin-bottom-m">
+          <ana-status-with-text
+            [status]="commitState.status"
+            [text]="commitState.text"
+            [link]="commitState.url"
+            class="u-text-bold u-margin-bottom-xxs"
+          />
 
-        <button
-          mat-flat-button
-          color="primary"
-          type="button"
-          class="environment__action"
-          (click)="deployToEnvironment(environment, environments)"
-          [disabled]="!environment.canBeDeployed.value || isLoading"
-        >
-          {{ getDeployButtonLabel(environment.deploymentType) }}
-        </button>
-
-        <div class="environment__text">
-          @if (environment.deploymentDate) {
-            <p>
-              Deploy triggered on
-              {{ environment.deploymentDate | date: dateFormat }} at
-              {{ environment.deploymentDate | date: 'H:mm:ss' }}
-            </p>
-          }
-          @if (!environment.canBeDeployed.value) {
-            <p
-              class="u-text-placeholder"
-              [innerHTML]="environment.canBeDeployed.reason"
-            ></p>
+          @for (checkSuite of commitState.checkSuites; track checkSuite) {
+            <ana-status-with-text
+              class="commit-status__check-suite"
+              [status]="checkSuite.status"
+              [text]="checkSuite.text"
+              [link]="checkSuite.url"
+            />
           }
         </div>
-
-        <div class="environment__state">
-          @if (environment.deploymentState) {
-            <p
-              class="environment__state-tag"
-              [ngClass]="getStateTagCssClass(environment.deploymentState)"
-            >
-              {{ getDeploymentStateOutputText(environment.deploymentState) }}
-            </p>
-          }
-        </div>
-        <mat-divider></mat-divider>
       }
-    </div>
+
+      <div class="environment-list">
+        @for (
+          environment of environments;
+          track environment;
+          let index = $index
+        ) {
+          <p
+            [style]="{
+              'background-color': environmentColorMapping[environment.name]
+            }"
+            class="environment__tag"
+          >
+            {{ environment.name }}
+          </p>
+
+          <button
+            mat-flat-button
+            color="primary"
+            type="button"
+            class="environment__action"
+            (click)="deployToEnvironment(environment, environments)"
+            [disabled]="!canBeDeployed(environment)"
+          >
+            {{ getDeployButtonLabel(environment.deploymentType) }}
+          </button>
+
+          <div class="environment__text">
+            @if (environment.deploymentDate) {
+              <p>
+                Deploy triggered on
+                {{ environment.deploymentDate | date: dateFormat }} at
+                {{ environment.deploymentDate | date: 'H:mm:ss' }}
+              </p>
+            }
+            @if (!environment.canBeDeployed.value) {
+              <p
+                class="u-text-placeholder"
+                [innerHTML]="environment.canBeDeployed.reason"
+              ></p>
+            }
+          </div>
+
+          <div class="environment__state">
+            @if (environment.deploymentState) {
+              <p
+                class="environment__state-tag"
+                [ngClass]="getStateTagCssClass(environment.deploymentState)"
+              >
+                {{ getDeploymentStateOutputText(environment.deploymentState) }}
+              </p>
+            }
+          </div>
+          <mat-divider></mat-divider>
+        }
+      </div>
+    }
   }
 </mat-dialog-content>
 
