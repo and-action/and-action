@@ -48,6 +48,9 @@ interface CheckSuiteNode {
   app: {
     name: string;
   };
+  branch: {
+    name: string;
+  } | null;
   workflowRun?: {
     workflow: {
       name: string;
@@ -218,6 +221,9 @@ const commitStateQuery = gql`
             app {
               name
             }
+            branch {
+              name
+            }
             workflowRun {
               workflow {
                 name
@@ -372,7 +378,11 @@ export class GithubDataService {
       );
   }
 
-  loadCommitState(id: string, andActionConfig: AndActionConfig) {
+  loadCommitState(
+    id: string,
+    branchName: string,
+    andActionConfig: AndActionConfig,
+  ) {
     return this.apollo
       .query<CommitStateQueryResult>({
         query: commitStateQuery,
@@ -385,6 +395,7 @@ export class GithubDataService {
         map((queryResult) =>
           queryResult.data.node.checkSuites.nodes.filter(
             (checkSuite) =>
+              checkSuite.branch?.name === branchName &&
               !andActionConfig.deployment?.['excluded-workflows']?.includes(
                 checkSuite.workflowRun?.workflow.name ?? checkSuite.app.name,
               ),
@@ -393,14 +404,20 @@ export class GithubDataService {
       );
   }
 
-  isCommitStateSuccessful(id: string, andActionConfig: AndActionConfig) {
-    return this.loadCommitState(id, andActionConfig).pipe(
-      map((checkSuites) =>
-        checkSuites.every(
-          (node) =>
-            node.status === CheckStatusState.COMPLETED &&
-            node.conclusion === CheckConclusionState.SUCCESS,
-        ),
+  isCommitStateSuccessful(
+    id: string,
+    branchName: string,
+    andActionConfig: AndActionConfig,
+  ) {
+    return this.loadCommitState(id, branchName, andActionConfig).pipe(
+      map(
+        (checkSuites) =>
+          checkSuites.length > 0 &&
+          checkSuites.every(
+            (node) =>
+              node.status === CheckStatusState.COMPLETED &&
+              node.conclusion === CheckConclusionState.SUCCESS,
+          ),
       ),
     );
   }

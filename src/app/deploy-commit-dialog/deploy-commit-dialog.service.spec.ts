@@ -495,6 +495,14 @@ describe('DeployCommitDialogService', () => {
         'Deployment status checks failed. Commit cannot be deployed.',
       ));
 
+    it('should return failed commit state correctly if no checks are present', () =>
+      checkDeployCommitState(
+        undefined,
+        undefined,
+        StatusWithTextStatus.FAILED,
+        'Commit has no status checks. Commit cannot be deployed.',
+      ));
+
     it('should return pending commit state correctly', () =>
       checkDeployCommitState(
         CheckStatusState.PENDING,
@@ -504,64 +512,76 @@ describe('DeployCommitDialogService', () => {
       ));
 
     function checkDeployCommitState(
-      checkStatusState: CheckStatusState,
+      checkStatusState: CheckStatusState | undefined,
       checkConclusionState: CheckConclusionState | undefined,
       expectedStatus: StatusWithTextStatus,
       expectedText: string,
     ) {
       const githubDataService = TestBed.inject(GithubDataService);
       spyOn(githubDataService, 'loadCommitState').and.returnValue(
-        of([
-          {
-            app: {
-              name: 'GitHub Actions',
-            },
-            workflowRun: {
-              workflow: {
-                name: 'CI',
-              },
-              url: 'https://github.com/organisation/repository-name/actions/runs/1',
-            },
-            status: checkStatusState,
-            conclusion: checkConclusionState,
-          },
-          {
-            app: {
-              name: 'GitHub Actions',
-            },
-            workflowRun: {
-              workflow: {
-                name: 'Merge Checks',
-              },
-              url: 'https://github.com/organisation/repository-name/actions/runs/2',
-            },
-            status: CheckStatusState.COMPLETED,
-            conclusion: CheckConclusionState.SUCCESS,
-          },
-        ]),
+        of(
+          !checkStatusState
+            ? []
+            : [
+                {
+                  app: {
+                    name: 'GitHub Actions',
+                  },
+                  branch: {
+                    name: 'main',
+                  },
+                  workflowRun: {
+                    workflow: {
+                      name: 'CI',
+                    },
+                    url: 'https://github.com/organisation/repository-name/actions/runs/1',
+                  },
+                  status: checkStatusState,
+                  conclusion: checkConclusionState,
+                },
+                {
+                  app: {
+                    name: 'GitHub Actions',
+                  },
+                  branch: {
+                    name: 'main',
+                  },
+                  workflowRun: {
+                    workflow: {
+                      name: 'Merge Checks',
+                    },
+                    url: 'https://github.com/organisation/repository-name/actions/runs/2',
+                  },
+                  status: CheckStatusState.COMPLETED,
+                  conclusion: CheckConclusionState.SUCCESS,
+                },
+              ],
+        ),
       );
 
       let commitState!: CommitState | null;
       service
-        .getDeployCommitState('testOwner', 'testRepo', commitToDeploy)
+        .getDeployCommitState('testOwner', 'testRepo', commitToDeploy, 'main')
         .subscribe((result) => (commitState = result));
 
       const expectedCommitState: CommitState = {
         status: expectedStatus,
         text: expectedText,
         url: 'https://github.com/organisation/repository-name/commit/200000',
-        checkSuites: [
-          {
-            status: expectedStatus,
-            text: 'CI',
-            url: 'https://github.com/organisation/repository-name/actions/runs/1',
-          },
-          {
-            status: StatusWithTextStatus.SUCCESS,
-            text: 'Merge Checks',
-            url: 'https://github.com/organisation/repository-name/actions/runs/2',
-          },
-        ],
+        checkSuites: !checkStatusState
+          ? []
+          : [
+              {
+                status: expectedStatus,
+                text: 'CI',
+                url: 'https://github.com/organisation/repository-name/actions/runs/1',
+              },
+              {
+                status: StatusWithTextStatus.SUCCESS,
+                text: 'Merge Checks',
+                url: 'https://github.com/organisation/repository-name/actions/runs/2',
+              },
+            ],
       };
 
       expect(commitState).toEqual(expectedCommitState);
