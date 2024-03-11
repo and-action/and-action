@@ -85,13 +85,18 @@ export class DeployCommitDialogService {
     repositoryOwner: string,
     repositoryName: string,
     commitToDeploy: Commit,
+    defaultBranchName: string,
   ) {
     const { id: commitId } = commitToDeploy;
     return this.githubDataService
       .loadAndActionConfigs(repositoryOwner, repositoryName)
       .pipe(
         mergeMap((andActionConfig) =>
-          this.githubDataService.loadCommitState(commitId, andActionConfig),
+          this.githubDataService.loadCommitState(
+            commitId,
+            defaultBranchName,
+            andActionConfig,
+          ),
         ),
         map((checkSuites): StatusWithText[] =>
           checkSuites.map((checkSuite) => {
@@ -120,25 +125,32 @@ export class DeployCommitDialogService {
           }),
         ),
         map((checkSuites): CommitState | null => {
-          const [status, text] = checkSuites.some(
-            (checkSuite) => checkSuite.status === StatusWithTextStatus.FAILED,
-          )
-            ? [
-                StatusWithTextStatus.FAILED,
-                'Deployment status checks failed. Commit cannot be deployed.',
-              ]
-            : checkSuites.some(
-                  (checkSuite) =>
-                    checkSuite.status === StatusWithTextStatus.PENDING,
-                )
+          const [status, text] =
+            checkSuites.length === 0
               ? [
-                  StatusWithTextStatus.PENDING,
-                  'Deployment status checks pending. Commit cannot be deployed.',
+                  StatusWithTextStatus.FAILED,
+                  'Commit has no status checks. Commit cannot be deployed.',
                 ]
-              : [
-                  StatusWithTextStatus.SUCCESS,
-                  'Deployment status checks are successful. Commit can be deployed.',
-                ];
+              : checkSuites.some(
+                    (checkSuite) =>
+                      checkSuite.status === StatusWithTextStatus.FAILED,
+                  )
+                ? [
+                    StatusWithTextStatus.FAILED,
+                    'Deployment status checks failed. Commit cannot be deployed.',
+                  ]
+                : checkSuites.some(
+                      (checkSuite) =>
+                        checkSuite.status === StatusWithTextStatus.PENDING,
+                    )
+                  ? [
+                      StatusWithTextStatus.PENDING,
+                      'Deployment status checks pending. Commit cannot be deployed.',
+                    ]
+                  : [
+                      StatusWithTextStatus.SUCCESS,
+                      'Deployment status checks are successful. Commit can be deployed.',
+                    ];
 
           return {
             status,
@@ -153,6 +165,7 @@ export class DeployCommitDialogService {
   deployToEnvironment(
     repositoryOwner: string,
     repositoryName: string,
+    defaultBranchName: string,
     commitToDeploy: Commit,
     environmentName: string,
     environments: DeployCommitEnvironment[],
@@ -188,6 +201,7 @@ export class DeployCommitDialogService {
           mergeMap((andActionConfig) =>
             this.githubDataService.isCommitStateSuccessful(
               commitId,
+              defaultBranchName,
               andActionConfig,
             ),
           ),

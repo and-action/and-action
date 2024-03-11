@@ -140,7 +140,7 @@ A deployment to an environment is possible, when:
 
 * Deployments to previous environments are finished successfully.
 * There is no deployment in progress for the selected environment, even not for other commits.
-* The commit that should be deployed is in a successful state.
+* The commit that should be deployed is in a successful state, i.e. GitHub check suites for the default branch that are not contained in the list of [excluded-workflows](#excluded-workflows) are all completed successfully.
 * The commit history is the current state. Otherwise, you need to reload the view first.
 
 

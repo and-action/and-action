@@ -79,6 +79,7 @@ export class DeployCommitDialogComponent implements OnInit {
       this.dialogData.repository.owner,
       this.dialogData.repository.name,
       this.dialogData.commitToDeploy,
+      this.dialogData.repository.defaultBranchRef.name,
     ),
     { initialValue: null },
   );
@@ -140,11 +141,16 @@ export class DeployCommitDialogComponent implements OnInit {
     environments: DeployCommitEnvironment[],
   ) {
     this.isLoading = true;
-    const { owner, name } = this.dialogData.repository;
+    const {
+      owner,
+      name,
+      defaultBranchRef: { name: defaultBranchName },
+    } = this.dialogData.repository;
     this.deployCommitDialogService
       .deployToEnvironment(
         owner,
         name,
+        defaultBranchName,
         this.dialogData.commitToDeploy,
         environment.name,
         environments,
