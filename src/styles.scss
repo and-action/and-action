@@ -201,3 +201,39 @@ ul {
   text-align: center;
   font-size: $font-size-l;
 }
+
+.u-state-tag {
+  font-size: $font-size-xs;
+  padding: 0 $space-xs;
+  color: $color-neutral;
+  border: 1px solid $color-neutral;
+  border-radius: 14px;
+  // TODO: margin bottom for p tags should be set globally to 0.
+  margin: 0 !important;
+
+  &--active {
+    color: $color-success;
+    border-color: $color-success;
+  }
+
+  &--error,
+  &--failure {
+    color: $color-error;
+    border-color: $color-error;
+  }
+
+  &--in_progress,
+  &--pending,
+  &--queued,
+  &--waiting {
+    color: $color-in-progress;
+    border-color: $color-in-progress;
+  }
+
+  &--inactive,
+  &--abandoned,
+  &--destroyed {
+    color: $color-neutral;
+    border-color: $color-neutral;
+  }
+}

@@ -124,7 +124,7 @@ export class DeployCommitDialogComponent implements OnInit {
 
   getStateTagCssClass(deploymentState?: DeploymentState) {
     return deploymentState
-      ? `environment__state-tag--${deploymentState.toLowerCase()}`
+      ? `u-state-tag--${deploymentState.toLowerCase()}`
       : '';
   }
 

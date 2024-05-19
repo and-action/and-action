@@ -105,7 +105,7 @@
           <div class="environment__state">
             @if (environment.deploymentState) {
               <p
-                class="environment__state-tag"
+                class="u-state-tag"
                 [ngClass]="getStateTagCssClass(environment.deploymentState)"
               >
                 {{ getDeploymentStateOutputText(environment.deploymentState) }}
