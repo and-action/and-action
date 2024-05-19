@@ -128,7 +128,7 @@ If the log url is set for the environment's deployment, the tag is a link to tha
 
 #### Trigger a Deployment
 
-To trigger a deployment for a commit, you have to click on the deploy button (the rocket on the right of the commit info in the tree view). Using the deploy dialog is only possible if deploy environments are configured.
+To trigger a deployment for a commit, you have to click on the deploy button (the rocket on the right of the commit info in the tree view). Using the deployment dialog is only possible if deploy environments are configured and the repository is not archived.
 
 Let's assume for now that you have configured three environments for deployments, namely `dev`, `test` and `live`.
 

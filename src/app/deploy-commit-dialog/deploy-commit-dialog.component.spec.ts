@@ -58,6 +58,7 @@ const getRepository = (): RepositoryWithCommits => ({
   owner: 'and-action',
   defaultBranchRef: { name: 'master' },
   url: 'https://github.com/and-action/and-action',
+  isArchived: false,
   commits: [],
 });
 

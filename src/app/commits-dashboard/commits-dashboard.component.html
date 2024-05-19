@@ -13,12 +13,17 @@
       track repositoriesTrackBy($index, repository)
     ) {
       <div [id]="repository.name" class="repository">
-        <div class="repository__head">
-          <h2>
-            <a [href]="repository.url" target="_blank" rel="noopener">
-              {{ repository.name }}
-            </a>
-          </h2>
+        <div class="repository-head">
+          <div class="repository-head__title">
+            <h2 class="repository-head__title-text">
+              <a [href]="repository.url" target="_blank" rel="noopener">
+                {{ repository.name }}
+              </a>
+            </h2>
+            @if (repository.isArchived) {
+              <p class="u-state-tag">Archived</p>
+            }
+          </div>
           <a
             [href]="repository.url"
             target="_blank"

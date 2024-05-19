@@ -99,6 +99,7 @@ const repositoriesQuery = gql`
           nameWithOwner
           description
           isPrivate
+          isArchived
           defaultBranchRef {
             name
           }
@@ -128,6 +129,7 @@ const repositoriesQuery = gql`
               nameWithOwner
               description
               isPrivate
+              isArchived
               defaultBranchRef {
                 name
               }
@@ -149,6 +151,7 @@ const repositoryCommitsQuery = gql`
     repository(owner: $owner, name: $name) {
       id
       url
+      isArchived
       defaultBranchRef {
         name
         target {
@@ -606,6 +609,7 @@ export class GithubDataService {
         name: queryResult.data.repository.defaultBranchRef.name,
       },
       url: queryResult.data.repository.url,
+      isArchived: queryResult.data.repository.isArchived,
       commits,
     };
     return repository;

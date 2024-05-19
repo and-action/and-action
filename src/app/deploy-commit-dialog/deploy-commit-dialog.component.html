@@ -10,111 +10,129 @@
   >
   </ana-commit-info>
 
-  @if (environments$ | async; as environments) {
-    @if (environments.length === 0) {
-      <p class="u-text-placeholder">No environment configuration found.</p>
-      <p class="u-text-placeholder">
-        Please make sure that you have a .github/andaction.yml file either in
-        your repository or in your organization's .github repository containing
-        the key "environments".
-      </p>
-      <p class="u-text-placeholder">
-        For more information, please see the documentation about
-        <a
-          class="text-link"
-          href="https://github.com/and-action/and-action/tree/master#commits--deployments"
-          target="_blank"
-          rel="noopener"
-        >
-          Commits & Deployments
-        </a>
-        and
-        <a
-          class="text-link"
-          href="https://github.com/and-action/and-action/tree/master#configuration"
-          target="_blank"
-          rel="noopener"
-        >
-          Configuration
-        </a>
-        .
-      </p>
-    } @else {
-      @if (commitState(); as commitState) {
-        <div class="commit-status u-margin-bottom-m">
-          <ana-status-with-text
-            [status]="commitState.status"
-            [text]="commitState.text"
-            [link]="commitState.url"
-            class="u-text-bold u-margin-bottom-xxs"
-          />
-
-          @for (checkSuite of commitState.checkSuites; track checkSuite) {
+  @if (dialogData.repository.isArchived) {
+    <p class="u-text-placeholder">The repository is archived.</p>
+    <p class="u-text-placeholder">
+      Deployments are only allowed for active repositories. For more
+      information, please see the documentation about
+      <a
+        class="text-link"
+        href="https://github.com/and-action/and-action/tree/master#commits--deployments"
+        target="_blank"
+        rel="noopener"
+      >
+        Commits & Deployments
+      </a>
+    </p>
+  } @else {
+    @if (environments$ | async; as environments) {
+      @if (environments.length === 0) {
+        <p class="u-text-placeholder">No environment configuration found.</p>
+        <p class="u-text-placeholder">
+          Please make sure that you have a .github/andaction.yml file either in
+          your repository or in your organization's .github repository
+          containing the key "environments".
+        </p>
+        <p class="u-text-placeholder">
+          For more information, please see the documentation about
+          <a
+            class="text-link"
+            href="https://github.com/and-action/and-action/tree/master#commits--deployments"
+            target="_blank"
+            rel="noopener"
+          >
+            Commits & Deployments
+          </a>
+          and
+          <a
+            class="text-link"
+            href="https://github.com/and-action/and-action/tree/master#configuration"
+            target="_blank"
+            rel="noopener"
+          >
+            Configuration
+          </a>
+          .
+        </p>
+      } @else {
+        @if (commitState(); as commitState) {
+          <div class="commit-status u-margin-bottom-m">
             <ana-status-with-text
-              class="commit-status__check-suite"
-              [status]="checkSuite.status"
-              [text]="checkSuite.text"
-              [link]="checkSuite.url"
+              [status]="commitState.status"
+              [text]="commitState.text"
+              [link]="commitState.url"
+              class="u-text-bold u-margin-bottom-xxs"
             />
+
+            @for (checkSuite of commitState.checkSuites; track checkSuite) {
+              <ana-status-with-text
+                class="commit-status__check-suite"
+                [status]="checkSuite.status"
+                [text]="checkSuite.text"
+                [link]="checkSuite.url"
+              />
+            }
+          </div>
+        }
+
+        <div class="environment-list">
+          @for (
+            environment of environments;
+            track environment;
+            let index = $index
+          ) {
+            <p
+              [style]="{
+                'background-color': environmentColorMapping[environment.name]
+              }"
+              class="environment__tag"
+            >
+              {{ environment.name }}
+            </p>
+
+            <button
+              mat-flat-button
+              color="primary"
+              type="button"
+              class="environment__action"
+              (click)="deployToEnvironment(environment, environments)"
+              [disabled]="!canBeDeployed(environment)"
+            >
+              {{ getDeployButtonLabel(environment.deploymentType) }}
+            </button>
+
+            <div class="environment__text">
+              @if (environment.deploymentDate) {
+                <p>
+                  Deploy triggered on
+                  {{ environment.deploymentDate | date: dateFormat }} at
+                  {{ environment.deploymentDate | date: 'H:mm:ss' }}
+                </p>
+              }
+              @if (!environment.canBeDeployed.value) {
+                <p
+                  class="u-text-placeholder"
+                  [innerHTML]="environment.canBeDeployed.reason"
+                ></p>
+              }
+            </div>
+
+            <div class="environment__state">
+              @if (environment.deploymentState) {
+                <p
+                  class="u-state-tag"
+                  [ngClass]="getStateTagCssClass(environment.deploymentState)"
+                >
+                  {{
+                    getDeploymentStateOutputText(environment.deploymentState)
+                  }}
+                </p>
+              }
+            </div>
+            <mat-divider></mat-divider>
           }
         </div>
       }
-
-      <div class="environment-list">
-        @for (
-          environment of environments;
-          track environment;
-          let index = $index
-        ) {
-          <p
-            [style]="{
-              'background-color': environmentColorMapping[environment.name]
-            }"
-            class="environment__tag"
-          >
-            {{ environment.name }}
-          </p>
-
-          <button
-            mat-flat-button
-            color="primary"
-            type="button"
-            class="environment__action"
-            (click)="deployToEnvironment(environment, environments)"
-            [disabled]="!canBeDeployed(environment)"
-          >
-            {{ getDeployButtonLabel(environment.deploymentType) }}
-          </button>
-
-          <div class="environment__text">
-            @if (environment.deploymentDate) {
-              <p>
-                Deploy triggered on
-                {{ environment.deploymentDate | date: dateFormat }} at
-                {{ environment.deploymentDate | date: 'H:mm:ss' }}
-              </p>
-            }
-            @if (!environment.canBeDeployed.value) {
-              <p
-                class="u-text-placeholder"
-                [innerHTML]="environment.canBeDeployed.reason"
-              ></p>
-            }
-          </div>
-
-          <div class="environment__state">
-            @if (environment.deploymentState) {
-              <p
-                class="u-state-tag"
-                [ngClass]="getStateTagCssClass(environment.deploymentState)"
-              >
-                {{ getDeploymentStateOutputText(environment.deploymentState) }}
-              </p>
-            }
-          </div>
-          <mat-divider></mat-divider>
-        }
-      </div>
     }
   }
 </mat-dialog-content>

@@ -1,11 +1,16 @@
-<h3 class="title">
-  <a
-    [routerLink]="['/', appRouting.COMMITS]"
-    [queryParams]="{ repository: repository?.name }"
-  >
-    {{ repository?.name }}
-  </a>
-</h3>
+<div class="repository-head">
+  <h3 class="repository-head__title">
+    <a
+      [routerLink]="['/', appRouting.COMMITS]"
+      [queryParams]="{ repository: repository?.name }"
+    >
+      {{ repository?.name }}
+    </a>
+  </h3>
+  @if (repository?.isArchived) {
+    <p class="u-state-tag">Archived</p>
+  }
+</div>
 @if (repository && repository.workflowsWithWorkflowRuns) {
   @if (repository.workflowsWithWorkflowRuns.length > 0) {
     <a

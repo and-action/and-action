@@ -37,15 +37,14 @@
   border-bottom: 1px solid $default-border-color;
 
   &__label {
-    margin-left: $space-xs;
     display: flex;
+    gap: $space-xs;
     align-items: center;
   }
 
   &__icon {
     width: $space-m;
     height: $space-m;
-    margin-right: $space-xs;
   }
 
   &__name {
