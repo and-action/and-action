@@ -32,18 +32,6 @@
   box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
   width: 460px;
   flex: 0 0 auto;
-
-  &__branch-name {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  &__branch-icon {
-    fill: $default-text-color;
-    width: $space-s;
-    height: $space-s;
-    margin-right: $space-xxs;
-  }
 }
 
 .repository-head {
@@ -63,6 +51,18 @@
 
   &__title-text {
     margin-bottom: 0;
+  }
+}
+
+.branch {
+  display: inline-flex;
+  align-items: center;
+
+  &__icon {
+    fill: $default-text-color;
+    width: $space-s;
+    height: $space-s;
+    margin-right: $space-xxs;
   }
 }
 
