@@ -211,7 +211,6 @@ describe('DeployCommitDialogComponent', () => {
 
       checkEnvironment(
         'dev',
-        'Deploy',
         !isCommitStatusSuccess,
         `Deploy triggered on ${datePipe.transform(
           deploymentDate,
@@ -219,24 +218,22 @@ describe('DeployCommitDialogComponent', () => {
         )} at ${datePipe.transform(deploymentDate, 'H:mm:ss')}`,
         'Active',
       );
-      checkEnvironment('test', 'Deploy', !isCommitStatusSuccess);
+      checkEnvironment('test', !isCommitStatusSuccess);
       checkEnvironment(
         'live',
-        'Deploy',
         true,
         'Deploy is not possible before test is deployed.',
       );
 
       function checkEnvironment(
         environmentName: string,
-        expectedButtonLabel: string,
         expectedDisabled: boolean,
         expectedText?: string,
         expectedState?: string,
       ) {
         cy.contains('.environment__tag', environmentName)
           .next('button.environment__action')
-          .should('contain', expectedButtonLabel)
+          .should('contain', 'Deploy')
           .and(expectedDisabled ? 'be.disabled' : 'not.be.disabled')
           .next('.environment__text')
           .should('contain', expectedText ?? '')
