@@ -17,6 +17,7 @@ describe('ActionsDashboardItemComponent', () => {
     nameWithOwner: 'owner/repo',
     description: '',
     isPrivate: false,
+    isArchived: false,
     defaultBranchRef: { name: '' },
     url: 'https://github.com/owner/repo',
     parent: null,

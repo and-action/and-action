@@ -32,23 +32,33 @@
   box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
   width: 460px;
   flex: 0 0 auto;
+}
 
-  &__head {
-    position: sticky;
-    top: 0;
-    padding-top: $space-m;
-    padding-bottom: $space-m;
-    margin-bottom: $space-s;
-    background-color: rgba(255, 255, 255, 0.95);
-    z-index: 100;
-  }
+.repository-head {
+  position: sticky;
+  top: 0;
+  padding-top: $space-m;
+  padding-bottom: $space-m;
+  margin-bottom: $space-s;
+  background-color: rgba(255, 255, 255, 0.95);
+  z-index: 100;
 
-  &__branch-name {
-    display: inline-flex;
+  &__title {
+    display: flex;
     align-items: center;
+    gap: $space-xs;
   }
 
-  &__branch-icon {
+  &__title-text {
+    margin-bottom: 0;
+  }
+}
+
+.branch {
+  display: inline-flex;
+  align-items: center;
+
+  &__icon {
     fill: $default-text-color;
     width: $space-s;
     height: $space-s;

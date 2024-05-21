@@ -7,6 +7,7 @@ export interface Repository {
   nameWithOwner: string;
   description: string;
   isPrivate: boolean;
+  isArchived: boolean;
   defaultBranchRef: Ref;
   parent: ParentRepository | null;
   url: string;

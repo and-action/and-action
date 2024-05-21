@@ -29,6 +29,7 @@ describe('DeployCommitDialogComponent', () => {
     name: 'and-action',
     owner: 'and-action',
     defaultBranchRef: { name: 'main' },
+    isArchived: false,
     url: 'https://github.com/and-action/and-action',
     commits,
   };
@@ -78,6 +79,7 @@ describe('DeployCommitDialogComponent', () => {
   function mountComponent(
     getEnvironments: () => Observable<DeployCommitEnvironment[]>,
     commitState: CommitState,
+    isArchived: boolean,
   ) {
     cy.mount(DeployCommitDialogComponent, {
       imports: [
@@ -103,7 +105,10 @@ describe('DeployCommitDialogComponent', () => {
         },
         {
           provide: MAT_DIALOG_DATA,
-          useValue: dialogData,
+          useValue: {
+            ...dialogData,
+            repository: { ...dialogData.repository, isArchived },
+          },
         },
       ],
       componentProperties: {},
@@ -117,6 +122,7 @@ describe('DeployCommitDialogComponent', () => {
       mountComponent(
         () => throwError(() => new NoEnvironmentConfigFoundError()),
         commitStateSuccess,
+        false,
       ),
     );
 
@@ -127,6 +133,7 @@ describe('DeployCommitDialogComponent', () => {
       cy.contains('p', 'No environment configuration found.');
       cy.contains('a', 'Commits & Deployments');
       cy.contains('a', 'Configuration');
+      cy.get('button.environment__action').should('not.exist');
     });
   });
 
@@ -158,15 +165,23 @@ describe('DeployCommitDialogComponent', () => {
       ]);
 
     it('should show commit state and buttons correctly for successful commit state', () => {
-      mountComponent(getEnvironments, commitStateSuccess);
+      mountComponent(getEnvironments, commitStateSuccess, false);
       checkCommitStates(commitStateSuccess);
       checkEnvironments(true);
     });
 
     it('should show commit state and buttons correctly for failed commit state', () => {
-      mountComponent(getEnvironments, commitStateFailed);
+      mountComponent(getEnvironments, commitStateFailed, false);
       checkCommitStates(commitStateFailed);
       checkEnvironments(false);
+    });
+
+    it('should show placeholder texts for archived repository', () => {
+      mountComponent(getEnvironments, commitStateSuccess, true);
+      cy.contains('h2', `Deploy to ${repository.name}`);
+      cy.contains('p', 'The repository is archived.');
+      cy.contains('a', 'Commits & Deployments');
+      cy.get('button.environment__action').should('not.exist');
     });
 
     function checkCommitStates(commitState: CommitState) {
@@ -196,7 +211,6 @@ describe('DeployCommitDialogComponent', () => {
 
       checkEnvironment(
         'dev',
-        'Deploy',
         !isCommitStatusSuccess,
         `Deploy triggered on ${datePipe.transform(
           deploymentDate,
@@ -204,24 +218,22 @@ describe('DeployCommitDialogComponent', () => {
         )} at ${datePipe.transform(deploymentDate, 'H:mm:ss')}`,
         'Active',
       );
-      checkEnvironment('test', 'Deploy', !isCommitStatusSuccess);
+      checkEnvironment('test', !isCommitStatusSuccess);
       checkEnvironment(
         'live',
-        'Deploy',
         true,
         'Deploy is not possible before test is deployed.',
       );
 
       function checkEnvironment(
         environmentName: string,
-        expectedButtonLabel: string,
         expectedDisabled: boolean,
         expectedText?: string,
         expectedState?: string,
       ) {
         cy.contains('.environment__tag', environmentName)
           .next('button.environment__action')
-          .should('contain', expectedButtonLabel)
+          .should('contain', 'Deploy')
           .and(expectedDisabled ? 'be.disabled' : 'not.be.disabled')
           .next('.environment__text')
           .should('contain', expectedText ?? '')

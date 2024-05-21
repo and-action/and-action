@@ -51,6 +51,9 @@
                         </p>
                       }
                     </div>
+                    @if (repository.isArchived) {
+                      <p class="u-state-tag u-margin-right">Archived</p>
+                    }
                   </div>
                 </mat-checkbox>
                 <!--          <input-->

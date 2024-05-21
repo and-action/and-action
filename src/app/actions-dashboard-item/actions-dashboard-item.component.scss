@@ -9,9 +9,16 @@
   border-radius: $default-border-radius;
 }
 
-.title {
-  text-wrap: normal;
+.repository-head {
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
   margin-bottom: $space-xs;
+
+  &__title {
+    text-wrap: normal;
+    margin-bottom: 0;
+  }
 }
 
 .branch-title {

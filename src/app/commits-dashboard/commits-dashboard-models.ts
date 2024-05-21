@@ -6,6 +6,7 @@ export interface RepositoryWithCommits {
   owner: string;
   defaultBranchRef: Ref;
   url: string;
+  isArchived: boolean;
   commits: Commit[];
 }
 
