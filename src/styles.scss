@@ -20,15 +20,15 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$and-action-primary: mat.define-palette(mat.$green-palette, 800, 700, 900);
-$and-action-accent: mat.define-palette(mat.$brown-palette, A200, A100, A400);
+$and-action-primary: mat.m2-define-palette(mat.$m2-green-palette, 800, 700, 900);
+$and-action-accent: mat.m2-define-palette(mat.$m2-brown-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$and-action-warn: mat.define-palette(mat.$red-palette);
+$and-action-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$and-action-theme: mat.define-light-theme(
+$and-action-theme: mat.m2-define-light-theme(
   (
     color: (
       primary: $and-action-primary,
@@ -77,15 +77,15 @@ a:not([class*='mdc-button']) {
 }
 
 a.text-link {
-  color: mat.get-color-from-palette($and-action-primary);
+  color: mat.m2-get-color-from-palette($and-action-primary);
 
   &:hover {
     text-decoration: underline;
-    color: mat.get-color-from-palette($and-action-primary, 900);
+    color: mat.m2-get-color-from-palette($and-action-primary, 900);
   }
 
   &:active {
-    color: mat.get-color-from-palette($and-action-primary, 900);
+    color: mat.m2-get-color-from-palette($and-action-primary, 900);
   }
 }
 
@@ -170,7 +170,7 @@ ul {
 }
 
 .form-error {
-  color: mat.get-color-from-palette($and-action-warn, 800);
+  color: mat.m2-get-color-from-palette($and-action-warn, 800);
 }
 
 .u-flex {
