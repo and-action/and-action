@@ -10,9 +10,13 @@ import {
   DeploymentState,
   RepositoryWithCommits,
 } from '../commits-dashboard/commits-dashboard-models';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { GraphQLModule } from '../graphql.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 
 const getCommit = (): Commit => ({
   id: 'C_idOfCommit',
@@ -74,13 +78,15 @@ describe('DeployCommitDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GraphQLModule, HttpClientTestingModule, MatSnackBarModule],
+      imports: [GraphQLModule, MatSnackBarModule],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         {
           provide: MAT_DIALOG_DATA,
           useValue: getDialogData(),
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
