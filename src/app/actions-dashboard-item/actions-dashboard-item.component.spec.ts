@@ -2,9 +2,10 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ActionsDashboardItemComponent } from './actions-dashboard-item.component';
 import { ApolloTestingModule } from 'apollo-angular/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Repository } from '../core/repository';
 import { RouterTestingModule } from '@angular/router/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ActionsDashboardItemComponent', () => {
   let component: ActionsDashboardItemComponent;
@@ -26,12 +27,10 @@ describe('ActionsDashboardItemComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ApolloTestingModule,
-        HttpClientTestingModule,
-        RouterTestingModule,
-      ],
-    }).compileComponents();
+    imports: [ApolloTestingModule,
+        RouterTestingModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   }));
 
   beforeEach(() => {

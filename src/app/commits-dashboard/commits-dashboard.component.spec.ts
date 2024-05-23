@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CommitsDashboardComponent } from './commits-dashboard.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { FormsModule } from '@angular/forms';
 import { GraphQLModule } from '../graphql.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CommitsDashboardComponent', () => {
   let component: CommitsDashboardComponent;
@@ -15,14 +16,12 @@ describe('CommitsDashboardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        GraphQLModule,
+    imports: [GraphQLModule,
         FormsModule,
-        HttpClientTestingModule,
         MatSnackBarModule,
-        RouterTestingModule,
-      ],
-    }).compileComponents();
+        RouterTestingModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   }));
 
   beforeEach(() => {
