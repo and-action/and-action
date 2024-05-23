@@ -5,7 +5,10 @@ import { ApolloTestingModule } from 'apollo-angular/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Repository } from '../core/repository';
 import { RouterTestingModule } from '@angular/router/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 
 describe('ActionsDashboardItemComponent', () => {
   let component: ActionsDashboardItemComponent;
@@ -27,10 +30,12 @@ describe('ActionsDashboardItemComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [ApolloTestingModule,
-        RouterTestingModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
+      imports: [ApolloTestingModule, RouterTestingModule],
+      providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

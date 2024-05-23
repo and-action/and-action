@@ -16,7 +16,10 @@ import { CheckStatusState } from '../core/check-status-state';
 import { CheckConclusionState } from '../core/check-conclusion-state';
 import { CommitState } from '../core/commit-state';
 import { StatusWithTextStatus } from '../core/status-with-text';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 
 describe('DeployCommitDialogService', () => {
   let service: DeployCommitDialogService;
@@ -27,9 +30,12 @@ describe('DeployCommitDialogService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [GraphQLModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      imports: [GraphQLModule],
+      providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    });
     service = TestBed.inject(DeployCommitDialogService);
   });
 
