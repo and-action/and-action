@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@use '../m3-theme' as m3;
+
 @import '../colors';
 @import '../variables';
 
@@ -13,6 +16,8 @@
 }
 
 .toolbar {
+  background-color: mat.get-theme-color(m3.$light-theme, primary, 50);
+  @include mat.elevation(2);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -29,6 +34,7 @@
   }
 
   &__filter-icon {
+    color: white;
     padding: 0 0 0 4px;
   }
 
@@ -60,6 +66,7 @@
   }
 
   &__title {
+    color: white;
     margin-right: $space-xxl;
   }
 
