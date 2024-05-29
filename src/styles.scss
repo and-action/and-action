@@ -3,7 +3,18 @@
 
 html {
   @include mat.core();
-  @include mat.all-component-themes(m3.$light-theme);
+
+  @include mat.button-theme(m3.$light-theme);
+  @include mat.checkbox-theme(m3.$light-theme);
+  @include mat.dialog-theme(m3.$light-theme);
+  @include mat.divider-theme(m3.$light-theme);
+  @include mat.icon-theme(m3.$light-theme);
+  @include mat.progress-bar-theme(m3.$light-theme);
+  @include mat.progress-spinner-theme(m3.$light-theme);
+  @include mat.sidenav-theme(m3.$light-theme);
+  @include mat.snack-bar-theme(m3.$light-theme);
+  @include mat.toolbar-theme(m3.$light-theme);
+
   @include mat.all-component-typographies();
 }
 
