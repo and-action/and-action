@@ -1,7 +1,7 @@
 @import '../../colors';
 @import '../../variables';
 
-$border-radius: 12px;
+$border-radius: 4px;
 
 :host {
   display: inline-block;
@@ -26,7 +26,7 @@ $border-radius: 12px;
 
   &__name {
     display: block;
-    padding: 1px 6px 1px $space-xs;
+    padding: 1px 6px;
 
     &:last-child {
       padding-right: $space-xs;
@@ -38,7 +38,7 @@ $border-radius: 12px;
     align-items: center;
     background-color: $default-background-color;
     padding: 2px;
-    border-radius: $border-radius;
+    border-radius: 0 $border-radius $border-radius 0;
   }
 
   &__status-icon {
@@ -74,14 +74,14 @@ $border-radius: 12px;
 }
 
 @media (max-width: $max-width-mobile) {
-  $border-radius: 10px;
+  $border-radius: 4px;
   .tag {
     font-size: $font-size-xxs;
     border-radius: $border-radius;
     height: 16px;
 
     &__name {
-      padding: 1px 4px 1px 6px;
+      padding: 1px 4px;
 
       &:last-child {
         padding-right: 6px;
@@ -90,7 +90,7 @@ $border-radius: 12px;
 
     &__status {
       padding: 2px;
-      border-radius: $border-radius;
+      border-radius: 0 $border-radius $border-radius 0;
     }
 
     &__status-icon {
