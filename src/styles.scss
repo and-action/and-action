@@ -1,57 +1,22 @@
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
+@use 'm3-theme' as m3;
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
-//  The following line adds:
-//    1. Default typography styles for all components
-//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
-//  If you specify typography styles for the components you use elsewhere, you should delete this line.
-//  If you don't need the default component typographies but still want the hierarchy styles,
-//  you can delete this line and instead use:
-//    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
-@include mat.all-component-typographies();
-@include mat.core();
+html {
+  @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$and-action-primary: mat.m2-define-palette(
-  mat.$m2-green-palette,
-  800,
-  700,
-  900
-);
-$and-action-accent: mat.m2-define-palette(
-  mat.$m2-brown-palette,
-  A200,
-  A100,
-  A400
-);
+  @include mat.button-theme(m3.$light-theme);
+  @include mat.checkbox-theme(m3.$light-theme);
+  @include mat.dialog-theme(m3.$light-theme);
+  @include mat.divider-theme(m3.$light-theme);
+  @include mat.icon-theme(m3.$light-theme);
+  @include mat.progress-bar-theme(m3.$light-theme);
+  @include mat.progress-spinner-theme(m3.$light-theme);
+  @include mat.sidenav-theme(m3.$light-theme);
+  @include mat.snack-bar-theme(m3.$light-theme);
+  @include mat.toolbar-theme(m3.$light-theme);
 
-// The warn palette is optional (defaults to red).
-$and-action-warn: mat.m2-define-palette(mat.$m2-red-palette);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$and-action-theme: mat.m2-define-light-theme(
-  (
-    color: (
-      primary: $and-action-primary,
-      accent: $and-action-accent,
-      warn: $and-action-warn,
-    ),
-  )
-);
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($and-action-theme);
+  @include mat.all-component-typographies();
+}
 
 @import 'colors';
 @import 'variables';
@@ -87,15 +52,15 @@ a:not([class*='mdc-button']) {
 }
 
 a.text-link {
-  color: mat.m2-get-color-from-palette($and-action-primary);
+  color: mat.get-theme-color(m3.$light-theme, primary, 50);
 
   &:hover {
     text-decoration: underline;
-    color: mat.m2-get-color-from-palette($and-action-primary, 900);
+    color: mat.get-theme-color(m3.$light-theme, primary, 60);
   }
 
   &:active {
-    color: mat.m2-get-color-from-palette($and-action-primary, 900);
+    color: mat.get-theme-color(m3.$light-theme, primary, 40);
   }
 }
 
@@ -180,7 +145,7 @@ ul {
 }
 
 .form-error {
-  color: mat.m2-get-color-from-palette($and-action-warn, 800);
+  color: mat.get-theme-color(m3.$light-theme, error, 40);
 }
 
 .u-flex {
@@ -217,7 +182,7 @@ ul {
   padding: 0 $space-xs;
   color: $color-neutral;
   border: 1px solid $color-neutral;
-  border-radius: 14px;
+  border-radius: 4px;
   // TODO: margin bottom for p tags should be set globally to 0.
   margin: 0 !important;
 
