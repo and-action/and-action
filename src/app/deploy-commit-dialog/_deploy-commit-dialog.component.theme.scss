@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  ana-deploy-commit-dialog {
+    .commit-status {
+      background-color: mat.get-theme-color($theme, surface-container-high);
+    }
+
+    .dialog-progress {
+      background-color: rgba(
+        $color: mat.get-theme-color($theme, surface-container-high),
+        $alpha: 0.8
+      );
+    }
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}

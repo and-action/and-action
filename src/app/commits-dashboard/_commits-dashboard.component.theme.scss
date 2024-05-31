@@ -1,0 +1,28 @@
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  ana-commits-dashboard {
+    .repository {
+      background-color: mat.get-theme-color($theme, surface-container-lowest);
+    }
+
+    .repository-head {
+      background-color: rgba(
+        $color: mat.get-theme-color($theme, surface-container-lowest),
+        $alpha: 0.9
+      );
+    }
+
+    .branch {
+      &__icon {
+        fill: mat.get-theme-color($theme, on-surface);
+      }
+    }
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}

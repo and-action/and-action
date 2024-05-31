@@ -4,7 +4,6 @@
 :host {
   display: block;
   padding: $space-s;
-  background-color: $white;
   min-height: 100vh;
 }
 
@@ -34,7 +33,6 @@
   align-items: center;
   font-size: $font-size-l;
   padding: $space-s;
-  border-bottom: 1px solid $default-border-color;
 
   &__label {
     display: flex;
@@ -53,7 +51,6 @@
 
   &__fork-info {
     font-size: $font-size-s;
-    color: $secondary-text-color;
     margin-bottom: 0;
   }
 }

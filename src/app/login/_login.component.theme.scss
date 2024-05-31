@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  ana-login {
+    .login-box {
+      background-color: mat.get-theme-color($theme, surface-container-lowest);
+    }
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}

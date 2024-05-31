@@ -1,5 +1,4 @@
 @use '@angular/material' as mat;
-@use '../m3-theme' as m3;
 
 @import '../colors';
 @import '../variables';
@@ -12,29 +11,24 @@
 }
 
 .main-content {
-  background-color: $default-background-color;
 }
 
 .toolbar {
-  background-color: mat.get-theme-color(m3.$light-theme, primary, 50);
   @include mat.elevation(2);
+
   position: sticky;
   top: 0;
   z-index: 100;
-  .mat-mdc-button {
-    color: white;
-  }
 
   &__filter {
     display: flex;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 2px 6px 2px 2px;
+    border-radius: 4px;
+    padding: 2px 2px 2px 0;
   }
 
   &__filter-icon {
-    color: white;
     padding: 0 0 0 4px;
   }
 
@@ -57,7 +51,6 @@
     cursor: pointer;
     height: 24px;
     padding: 0;
-    color: white;
   }
 
   &__icon {
@@ -66,7 +59,6 @@
   }
 
   &__title {
-    color: white;
     margin-right: $space-xxl;
   }
 

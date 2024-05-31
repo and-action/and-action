@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  ana-status-tag {
+    .tag {
+      color: mat.get-theme-color($theme, inverse-on-surface);
+
+      &:hover {
+        color: mat.get-theme-color($theme, inverse-on-surface);
+      }
+
+      &:active {
+        color: mat.get-theme-color($theme, inverse-on-surface);
+      }
+
+      &__status {
+        background-color: mat.get-theme-color($theme, surface-variant);
+      }
+    }
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}

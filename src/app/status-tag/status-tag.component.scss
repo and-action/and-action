@@ -9,20 +9,11 @@ $border-radius: 4px;
 
 .tag {
   font-size: $font-size-xs;
-  color: $white;
   display: flex;
   align-items: center;
   border-radius: $border-radius;
   margin: 0;
   height: 20px;
-
-  &:hover {
-    color: $white;
-  }
-
-  &:active {
-    color: $white;
-  }
 
   &__name {
     display: block;
@@ -36,7 +27,6 @@ $border-radius: 4px;
   &__status {
     display: flex;
     align-items: center;
-    background-color: $default-background-color;
     padding: 2px;
     border-radius: 0 $border-radius $border-radius 0;
   }

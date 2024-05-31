@@ -1,0 +1,58 @@
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  background-color: mat.get-theme-color($theme, background);
+
+  a:not([class*='mdc-button']) {
+    text-decoration: none;
+    color: mat.get-theme-color($theme, on-surface);
+
+    &:hover {
+      text-decoration: underline;
+      color: mat.get-theme-color($theme, on-surface-variant);
+    }
+
+    &:active {
+      color: mat.get-theme-color($theme, on-surface-variant);
+    }
+  }
+
+  a.text-link {
+    color: mat.get-theme-color($theme, primary);
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:active {
+    }
+  }
+
+  .tooltip {
+    background-color: mat.get-theme-color($theme, inverse-surface);
+    color: mat.get-theme-color($theme, inverse-on-surface);
+  }
+
+  .view-placeholder {
+    color: mat.get-theme-color($theme, on-surface-variant);
+  }
+
+  .u-state-tag {
+    color: mat.get-theme-color($theme, on-surface-variant);
+    border: 1px solid mat.get-theme-color($theme, on-surface-variant);
+  }
+
+  .u-text-placeholder {
+    color: mat.get-theme-color($theme, on-surface-variant);
+  }
+
+  .u-text-secondary {
+    color: mat.get-theme-color($theme, on-surface-variant);
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}

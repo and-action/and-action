@@ -26,7 +26,6 @@
 
 .repository {
   box-sizing: border-box;
-  background-color: $white;
   padding: 0 $space-m $space-m $space-m;
   border-radius: $default-border-radius;
   box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
@@ -40,7 +39,6 @@
   padding-top: $space-m;
   padding-bottom: $space-m;
   margin-bottom: $space-s;
-  background-color: rgba(255, 255, 255, 0.95);
   z-index: 100;
 
   &__title {
@@ -59,7 +57,6 @@
   align-items: center;
 
   &__icon {
-    fill: $default-text-color;
     width: $space-s;
     height: $space-s;
     margin-right: $space-xxs;
