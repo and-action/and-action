@@ -40,7 +40,7 @@
     "@primer/octicons": "19.9.0",
     "@sentry/browser": "8.7.0",
     "@sentry/node": "8.7.0",
-    "@types/node": "20.12.13",
+    "@types/node": "20.14.0",
     "apollo-angular": "7.0.2",
     "core-js": "3.37.1",
     "d3-path": "3.1.0",
@@ -50,7 +50,7 @@
     "lodash-es": "4.17.21",
     "rxjs": "7.8.1",
     "tslib": "2.6.2",
-    "yaml": "2.4.2",
+    "yaml": "2.4.3",
     "zone.js": "0.14.6"
   },
   "devDependencies": {
@@ -99,7 +99,7 @@
     "karma-jasmine": "5.1.0",
     "karma-jasmine-html-reporter": "2.1.0",
     "mocha": "10.4.0",
-    "prettier": "3.2.5",
+    "prettier": "3.3.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "storybook": "8.1.5",
