@@ -70,12 +70,6 @@ mat-sidenav-container {
     flex: 1;
   }
 
-  &__config-button {
-    .mat-icon {
-      margin-right: 0;
-    }
-  }
-
   &__filter-toggle-button {
     display: none;
 
@@ -89,7 +83,7 @@ mat-sidenav-container {
   }
 
   &__menu-button {
-    display: none;
+    display: inline-flex;
     .mat-icon {
       margin-right: 0;
     }
@@ -97,10 +91,6 @@ mat-sidenav-container {
 
   &__second-row {
     display: none;
-
-    &--visible {
-      display: flex;
-    }
   }
 }
 
@@ -123,6 +113,11 @@ mat-sidenav-container {
 
   .mat-divider {
     margin: $space-s 0;
+  }
+
+  .nav-button,
+  .nav-button-divider {
+    display: none;
   }
 }
 
@@ -152,18 +147,26 @@ mat-sidenav-container {
 
 @media (max-width: $max-width-mobile-landscape) {
   .toolbar {
-    &__config-button {
-      display: none;
+    &__filter-toggle-button {
+      display: inline-flex;
     }
 
-    &__filter-toggle-button,
-    &__menu-button {
-      display: inline-flex;
+    &__second-row {
+      &--visible {
+        display: flex;
+      }
     }
 
     .toolbar__first-row .toolbar__filter,
     .nav-button {
       display: none;
+    }
+  }
+
+  .mat-sidenav {
+    .nav-button,
+    .nav-button-divider {
+      display: flex;
     }
   }
 }
