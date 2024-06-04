@@ -386,6 +386,7 @@ describe('DeployCommitDialogService', () => {
         timestamp: deploymentDate,
         creator: { name: 'testuser', login: 'testuser' },
         state,
+	description: 'Deployed via AndAction',
         logUrl: null,
       };
     }
