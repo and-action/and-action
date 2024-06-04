@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { LoginService } from './core/login.service';
 import { AppRouting } from './app-routing';
 import { RepositoryFilterService } from './repository-filter.service';
@@ -13,6 +13,11 @@ import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { map } from 'rxjs/operators';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {
+  AndActionDataService,
+  AndActionTheme,
+} from './core/and-action-data.service';
 
 @Component({
   standalone: true,
@@ -20,6 +25,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     CommonModule,
     FormsModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatDividerModule,
     MatIconModule,
     MatSidenavModule,
@@ -42,13 +48,27 @@ export class AppComponent implements OnInit {
     ),
   );
 
-  private loginService = inject(LoginService);
+  protected andActionThemeEnum = AndActionTheme;
+  protected andActionDataService = inject(AndActionDataService);
   protected repositoryFilter = inject(RepositoryFilterService);
+
+  protected selectedTheme = this.andActionDataService.selectedTheme;
+  protected selectedThemeChange(theme: AndActionTheme) {
+    this.renderer.removeClass(document.body, this.selectedTheme);
+    this.selectedTheme = theme;
+    this.andActionDataService.selectedTheme = theme;
+    this.renderer.addClass(document.body, this.selectedTheme);
+  }
+
+  private loginService = inject(LoginService);
+  private renderer = inject(Renderer2);
 
   constructor(router: Router) {
     router.events
       .pipe(filter((event) => event instanceof NavigationStart))
       .subscribe(() => this.sideNav?.close());
+
+    this.renderer.addClass(document.body, this.selectedTheme);
   }
 
   ngOnInit() {

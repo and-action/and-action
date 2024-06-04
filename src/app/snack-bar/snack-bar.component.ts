@@ -28,6 +28,7 @@ export class SnackBarComponent {
   }
 
   getIconColor(type: SnackBarType) {
-    return type === SnackBarType.ERROR ? 'warn' : 'primary';
+    // TODO: use variables or find a better solution than setting hex values.
+    return type === SnackBarType.ERROR ? '#cf222e' : '#2da44e';
   }
 }

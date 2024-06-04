@@ -1,0 +1,33 @@
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  ana-root {
+    .toolbar {
+      --mat-toolbar-container-text-color: white;
+
+      &__filter-button {
+        color: white;
+      }
+
+      @if mat.get-theme-type($theme) == dark {
+        background-color: mat.get-theme-color($theme, background);
+        .toolbar__menu-button,
+        .nav-button {
+          color: var(--mdc-text-button-label-text-color);
+        }
+      } @else {
+        .toolbar__menu-button,
+        .nav-button {
+          color: white;
+        }
+        background-color: mat.get-theme-color($theme, primary, 40);
+      }
+    }
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}

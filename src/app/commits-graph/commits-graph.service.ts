@@ -160,8 +160,7 @@ export class CommitsGraphService {
         .append('circle')
         .attr('cx', commit.indentationLevel * BRANCH_WIDTH + BRANCH_WIDTH / 2)
         .attr('cy', index * COMMIT_HEIGHT + COMMIT_HEIGHT / 2)
-        .attr('r', COMMIT_CIRCLE_RADIUS)
-        .style('fill', 'gray');
+        .attr('r', COMMIT_CIRCLE_RADIUS);
     });
   }
 
@@ -289,10 +288,7 @@ export class CommitsGraphService {
       .append('path')
       /* eslint @typescript-eslint/ban-ts-comment: off */
       // @ts-ignore
-      .attr('d', p)
-      .style('stroke', 'gray')
-      .style('fill', 'transparent')
-      .style('stroke-width', 2);
+      .attr('d', p);
   }
 
   createCommitsGraphSvg(commits: Commit[]) {

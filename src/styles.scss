@@ -1,21 +1,89 @@
 @use '@angular/material' as mat;
 @use 'm3-theme' as m3;
 
+@use './theme-styles' as theme-styles;
+@use 'app/actions-dashboard-config/actions-dashboard-config.component.theme' as
+  actions-dashboard-config;
+@use 'app/actions-dashboard-item/actions-dashboard-item.component.theme' as
+  actions-dashboard-item;
+@use 'app/app.component-theme' as app;
+@use 'app/commits-dashboard/commits-dashboard.component.theme' as
+  commits-dashboard;
+@use 'app/commits-graph/commits-graph.component.theme' as commits-graph;
+@use 'app/deploy-commit-dialog/deploy-commit-dialog.component.theme' as
+  deploy-commit-dialog;
+@use 'app/login/login.component.theme' as login;
+@use 'app/polling-progress/polling-progess.component.theme' as polling-progress;
+@use 'app/status-tag/status-tag.component.theme' as status-tag;
+
+@mixin component-themes($theme) {
+  @include mat.button-theme($theme);
+  @include mat.button-toggle-theme($theme);
+  @include mat.checkbox-theme($theme);
+  @include mat.dialog-theme($theme);
+  @include mat.divider-theme($theme);
+  @include mat.icon-button-theme($theme);
+  @include mat.icon-theme($theme);
+  @include mat.progress-bar-theme($theme);
+  @include mat.progress-spinner-theme($theme);
+  @include mat.sidenav-theme($theme);
+  @include mat.snack-bar-theme($theme);
+  @include mat.toolbar-theme($theme);
+
+  @include theme-styles.theme($theme);
+  @include actions-dashboard-config.theme($theme);
+  @include actions-dashboard-item.theme($theme);
+  @include app.theme($theme);
+  @include commits-dashboard.theme($theme);
+  @include commits-graph.theme($theme);
+  @include deploy-commit-dialog.theme($theme);
+  @include login.theme($theme);
+  @include polling-progress.theme($theme);
+  @include status-tag.theme($theme);
+}
+
+@mixin component-colors($theme) {
+  @include mat.button-color($theme);
+  @include mat.button-toggle-color($theme);
+  @include mat.checkbox-color($theme);
+  @include mat.dialog-color($theme);
+  @include mat.divider-color($theme);
+  @include mat.icon-button-color($theme);
+  @include mat.icon-color($theme);
+  @include mat.progress-bar-color($theme);
+  @include mat.progress-spinner-color($theme);
+  @include mat.sidenav-color($theme);
+  @include mat.snack-bar-color($theme);
+  @include mat.toolbar-color($theme);
+
+  @include theme-styles.color($theme);
+  @include actions-dashboard-config.color($theme);
+  @include actions-dashboard-item.color($theme);
+  @include app.color($theme);
+  @include commits-dashboard.color($theme);
+  @include commits-graph.color($theme);
+  @include deploy-commit-dialog.color($theme);
+  @include login.color($theme);
+  @include polling-progress.color($theme);
+  @include status-tag.color($theme);
+}
+
 html {
   @include mat.core();
-
-  @include mat.button-theme(m3.$light-theme);
-  @include mat.checkbox-theme(m3.$light-theme);
-  @include mat.dialog-theme(m3.$light-theme);
-  @include mat.divider-theme(m3.$light-theme);
-  @include mat.icon-theme(m3.$light-theme);
-  @include mat.progress-bar-theme(m3.$light-theme);
-  @include mat.progress-spinner-theme(m3.$light-theme);
-  @include mat.sidenav-theme(m3.$light-theme);
-  @include mat.snack-bar-theme(m3.$light-theme);
-  @include mat.toolbar-theme(m3.$light-theme);
-
+  @include component-themes(m3.$light-theme);
   @include mat.all-component-typographies();
+
+  @media (prefers-color-scheme: dark) {
+    @include component-colors(m3.$dark-theme);
+  }
+}
+
+.light-theme {
+  @include component-colors(m3.$light-theme);
+}
+
+.dark-theme {
+  @include component-colors(m3.$dark-theme);
 }
 
 @import 'colors';
@@ -23,7 +91,6 @@ html {
 
 .mat-mdc-dialog-container {
   --mdc-dialog-supporting-text-size: 14px;
-  --mdc-dialog-supporting-text-color: $default-text-color;
 }
 
 html,
@@ -33,35 +100,6 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
-  color: $default-text-color;
-  background-color: $default-background-color;
-}
-
-a:not([class*='mdc-button']) {
-  text-decoration: none;
-  color: $default-text-color;
-
-  &:hover {
-    text-decoration: underline;
-    color: $default-text-color-hover;
-  }
-
-  &:active {
-    color: $default-text-color-active;
-  }
-}
-
-a.text-link {
-  color: mat.get-theme-color(m3.$light-theme, primary, 50);
-
-  &:hover {
-    text-decoration: underline;
-    color: mat.get-theme-color(m3.$light-theme, primary, 60);
-  }
-
-  &:active {
-    color: mat.get-theme-color(m3.$light-theme, primary, 40);
-  }
 }
 
 ul {
@@ -128,14 +166,6 @@ ul {
   }
 }
 
-.u-text-placeholder {
-  color: $secondary-text-color;
-}
-
-.u-text-secondary {
-  color: $secondary-text-color;
-}
-
 .u-nowrap {
   white-space: nowrap;
 }
@@ -154,8 +184,6 @@ ul {
 
 .tooltip {
   font-size: $font-size-s;
-  background-color: $background-color-dark;
-  color: $white;
   padding: $space-xxs $space-xs;
   border-radius: $default-border-radius;
   opacity: 0.9;
@@ -171,7 +199,6 @@ ul {
 }
 
 .view-placeholder {
-  color: $secondary-text-color;
   margin-top: 80px;
   text-align: center;
   font-size: $font-size-l;
@@ -180,8 +207,6 @@ ul {
 .u-state-tag {
   font-size: $font-size-xs;
   padding: 0 $space-xs;
-  color: $color-neutral;
-  border: 1px solid $color-neutral;
   border-radius: 4px;
   // TODO: margin bottom for p tags should be set globally to 0.
   margin: 0 !important;
@@ -208,7 +233,6 @@ ul {
   &--inactive,
   &--abandoned,
   &--destroyed {
-    color: $color-neutral;
-    border-color: $color-neutral;
+    // on-surface-variant, like default style
   }
 }

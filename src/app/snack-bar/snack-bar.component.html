@@ -1,7 +1,5 @@
-<mat-icon class="u-margin-right-s" [color]="getIconColor(data.type)">
+<mat-icon class="u-margin-right-s" [style.color]="getIconColor(data.type)">
   {{ getIcon(data.type) }}
 </mat-icon>
 <p class="snack-bar__text">{{ data.message }}</p>
-<button type="button" mat-button color="accent" (click)="dismiss()">
-  Close
-</button>
+<button type="button" mat-button (click)="dismiss()">Close</button>

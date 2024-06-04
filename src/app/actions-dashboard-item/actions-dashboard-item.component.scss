@@ -4,7 +4,6 @@
 :host {
   display: block;
   box-sizing: border-box;
-  background-color: $white;
   padding: $space-s;
   border-radius: $default-border-radius;
 }
@@ -27,7 +26,6 @@
   margin-bottom: $space-xs;
 
   &__icon {
-    fill: $default-text-color;
     width: $space-s;
     height: $space-s;
     margin-right: $space-xxs;
@@ -44,6 +42,6 @@
   }
 
   &__item-link {
-    color: $white;
+    color: white;
   }
 }
