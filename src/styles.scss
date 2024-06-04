@@ -18,6 +18,7 @@
 
 @mixin component-themes($theme) {
   @include mat.button-theme($theme);
+  @include mat.button-toggle-theme($theme);
   @include mat.checkbox-theme($theme);
   @include mat.dialog-theme($theme);
   @include mat.divider-theme($theme);
@@ -43,6 +44,7 @@
 
 @mixin component-colors($theme) {
   @include mat.button-color($theme);
+  @include mat.button-toggle-color($theme);
   @include mat.checkbox-color($theme);
   @include mat.dialog-color($theme);
   @include mat.divider-color($theme);

@@ -89,8 +89,10 @@ bootstrapApplication(AppComponent, {
     },
     {
       provide: APP_INITIALIZER,
-      useFactory: (andActionDataService: AndActionDataService) => () =>
-        andActionDataService.initActionsDashboardConfig(),
+      useFactory: (andActionDataService: AndActionDataService) => () => {
+        andActionDataService.initSelectedTheme();
+        andActionDataService.initActionsDashboardConfig();
+      },
       deps: [AndActionDataService],
       multi: true,
     },
