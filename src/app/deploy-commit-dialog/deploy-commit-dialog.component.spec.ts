@@ -48,6 +48,7 @@ const getCommit = (): Commit => ({
       },
       environment: 'dev',
       state: DeploymentState.ACTIVE,
+      description: 'Deployed via AndAction',
       timestamp: new Date('2022-03-15T10:51:31.000Z'),
       logUrl: null,
     },

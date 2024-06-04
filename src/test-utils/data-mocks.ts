@@ -31,6 +31,7 @@ export const getCommitMock = (): Commit => ({
         name: '',
       },
       state: DeploymentState.INACTIVE,
+      description: 'Deployed via AndAction',
       logUrl: null,
     },
   ],

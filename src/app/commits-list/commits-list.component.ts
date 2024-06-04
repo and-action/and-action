@@ -83,7 +83,8 @@ export class CommitsListComponent {
       DATE_TIME_FORMAT_WITH_TIMEZONE,
     )}
     ${deployment.creator.login}${creatorName}
-    ${deploymentStateOutputTextMapping[deployment.state]}`;
+    ${deploymentStateOutputTextMapping[deployment.state]}
+    ${deployment.description}`;
   }
 
   isDeploymentActive(deployment: Deployment) {

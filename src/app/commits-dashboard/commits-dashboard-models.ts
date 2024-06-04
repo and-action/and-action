@@ -60,5 +60,6 @@ export interface Deployment {
   timestamp: Date;
   creator: { name: string; login: string };
   state: DeploymentState;
+  description: string;
   logUrl: string | null;
 }
