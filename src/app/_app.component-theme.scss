@@ -11,11 +11,13 @@
 
       @if mat.get-theme-type($theme) == dark {
         background-color: mat.get-theme-color($theme, background);
+        .toolbar__filter-toggle-button,
         .toolbar__menu-button,
         .nav-button {
           color: var(--mdc-text-button-label-text-color);
         }
       } @else {
+        .toolbar__filter-toggle-button,
         .toolbar__menu-button,
         .nav-button {
           color: white;
