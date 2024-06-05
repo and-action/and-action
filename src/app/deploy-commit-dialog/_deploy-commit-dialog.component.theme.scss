@@ -6,6 +6,12 @@
       background-color: mat.get-theme-color($theme, surface-container-high);
     }
 
+    .environment {
+      &__tag {
+        color: mat.get-theme-color($theme, inverse-on-surface);
+      }
+    }
+
     .dialog-progress {
       background-color: rgba(
         $color: mat.get-theme-color($theme, surface-container-high),
