@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, Signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
@@ -11,7 +11,7 @@ export class RepositoryFilterService {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  value = toSignal(
+  value: Signal<string> = toSignal(
     this.route.queryParams.pipe(
       map((queryParams) => queryParams[QueryParamName.REPOSITORY_FILTER] ?? ''),
     ),
@@ -24,4 +24,10 @@ export class RepositoryFilterService {
       : delete queryParams[QueryParamName.REPOSITORY_FILTER];
     this.router.navigate([], { queryParams });
   }
+
+  splitValue = computed(() =>
+    this.value()
+      .split(',')
+      .filter((value) => value.trim() !== ''),
+  );
 }

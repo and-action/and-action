@@ -50,7 +50,7 @@ export class CommitsDashboardComponent {
   constructor() {
     const router = inject(Router);
     const document = inject(DOCUMENT);
-    const filterValue = inject(RepositoryFilterService).value;
+    const filterValue = inject(RepositoryFilterService).splitValue;
 
     this.repositories$ = this.githubDataService
       .loadOrganizationsWithSelectedRepositories()
@@ -80,10 +80,10 @@ export class CommitsDashboardComponent {
     this.filteredRepositories = computed<RepositoryWithCommits[]>(() =>
       this.repositories().filter(
         (repository) =>
-          !filterValue() ||
-          repository.name
-            .toLowerCase()
-            .includes(filterValue()?.toLowerCase() ?? ''),
+          filterValue().length === 0 ||
+          filterValue().some((value) =>
+            repository.name.toLowerCase().includes(value.toLowerCase().trim()),
+          ),
       ),
     );
 

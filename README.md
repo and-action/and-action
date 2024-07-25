@@ -60,7 +60,7 @@ A tag can have one of the following states:
 * Waiting
 * Skipped
 
-To find repositories even quicker, one can use the repository filter in the toolbar. It filters all repositories containing the entered text somewhere in the repository name. The filter is case-insensitive.
+To find repositories even quicker, one can use the repository filter in the toolbar. It filters all repositories containing the entered text somewhere in the repository name. The filter is case-insensitive. You can even have multiple filter values separated by ",", e.g. if you filter for "one,two" you get all repositories that contain "one" or "two" within its name.
 
 #### Configuration options
 
