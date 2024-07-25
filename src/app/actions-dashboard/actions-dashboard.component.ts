@@ -37,7 +37,7 @@ export class ActionsDashboardComponent {
   constructor() {
     const githubDataService = inject(GithubDataService);
     const viewerAndOrganizations = signal<(GithubViewer | Organization)[]>([]);
-    const filterValue = inject(RepositoryFilterService).value;
+    const filterValue = inject(RepositoryFilterService).splitValue;
 
     this.viewerAndOrganizations$ = githubDataService
       .loadOrganizationsWithSelectedRepositories()
@@ -61,10 +61,12 @@ export class ActionsDashboardComponent {
           ...viewerAndOrganization,
           repositories: viewerAndOrganization.repositories.filter(
             (repository) =>
-              !filterValue() ||
-              repository.name
-                .toLowerCase()
-                .includes(filterValue()?.toLowerCase() ?? ''),
+              filterValue().length === 0 ||
+              filterValue().some((value) =>
+                repository.name
+                  .toLowerCase()
+                  .includes(value.toLowerCase().trim()),
+              ),
           ),
         }))
         .filter(

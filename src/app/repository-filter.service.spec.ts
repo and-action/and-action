@@ -71,4 +71,25 @@ describe('RepositoryFilterService', () => {
       expect(service.value()).toEqual('');
     });
   });
+
+  describe('splitValue', () => {
+    it('should return the current query parameter value split on comma', () => {
+      configureTestingModule({
+        [QueryParamName.REPOSITORY_FILTER]: 'test-repo,another filter',
+      });
+      expect(service.splitValue()).toEqual(['test-repo', 'another filter']);
+    });
+
+    it('should return empty array if query parameter is not set', () => {
+      configureTestingModule({});
+      expect(service.splitValue()).toEqual([]);
+    });
+
+    it('should filter empty strings', () => {
+      configureTestingModule({
+        [QueryParamName.REPOSITORY_FILTER]: 'test-repo,,',
+      });
+      expect(service.splitValue()).toEqual(['test-repo']);
+    });
+  });
 });
