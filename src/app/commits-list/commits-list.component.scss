@@ -26,10 +26,7 @@
 
   &__deployment {
     display: inline-block;
-
-    &:not(:last-child) {
-      margin-right: $space-xs;
-    }
+    margin: 0 $space-xs $space-xxs 0;
 
     &--light {
       opacity: 0.2;
