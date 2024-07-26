@@ -20,6 +20,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { LoadingStatus } from '../loading-status';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
 import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   standalone: true,
@@ -29,6 +35,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
     MatDialogModule,
     MatProgressSpinnerModule,
     PollingProgessComponent,
+    CdkDropList,
+    CdkDrag,
   ],
   selector: 'ana-commits-dashboard',
   templateUrl: './commits-dashboard.component.html',
@@ -133,5 +141,13 @@ export class CommitsDashboardComponent {
 
   protected repositoriesTrackBy(_: number, item: RepositoryWithCommits) {
     return item.id;
+  }
+
+  protected drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(
+      this.filteredRepositories(),
+      event.previousIndex,
+      event.currentIndex,
+    );
   }
 }

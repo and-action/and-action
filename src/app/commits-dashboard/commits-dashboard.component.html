@@ -7,12 +7,17 @@
 }
 
 @if (loadingStatus === loadingStatusEnum.FINISHED) {
-  <div class="repositories">
+  <div
+    class="repositories"
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    (cdkDropListDropped)="drop($event)"
+  >
     @for (
       repository of filteredRepositories();
       track repositoriesTrackBy($index, repository)
     ) {
-      <div [id]="repository.name" class="repository">
+      <div [id]="repository.name" class="repository" cdkDrag>
         <div class="repository-head">
           <div class="repository-head__title">
             <h2 class="repository-head__title-text">

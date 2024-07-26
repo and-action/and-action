@@ -1,24 +1,27 @@
 @use '@angular/material' as mat;
 
 @mixin color($theme) {
-  ana-commits-dashboard {
-    .repository {
-      background-color: mat.get-theme-color($theme, surface-container-lowest);
-    }
+  // TODO: nesting breaks styling for dragged element,
+  //  see https://stackoverflow.com/questions/61559834/element-style-doesnt-apply-when-using-cdkdroplist-angluar-cdk-drag-and-drop
+  //  Can it stay like this or is there an even better solution?
+  //ana-commits-dashboard {
+  .repository {
+    background-color: mat.get-theme-color($theme, surface-container-lowest);
+  }
 
-    .repository-head {
-      background-color: rgba(
-        $color: mat.get-theme-color($theme, surface-container-lowest),
-        $alpha: 0.9
-      );
-    }
+  .repository-head {
+    background-color: rgba(
+      $color: mat.get-theme-color($theme, surface-container-lowest),
+      $alpha: 0.9
+    );
+  }
 
-    .branch {
-      &__icon {
-        fill: mat.get-theme-color($theme, on-surface);
-      }
+  .branch {
+    &__icon {
+      fill: mat.get-theme-color($theme, on-surface);
     }
   }
+  //}
 }
 
 @mixin theme($theme) {
