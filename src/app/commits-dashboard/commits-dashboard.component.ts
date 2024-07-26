@@ -25,6 +25,13 @@ import { AddRepositoryComponent } from '../add-repository/add-repository.compone
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDragHandle,
+  CdkDropList,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   imports: [
@@ -36,6 +43,9 @@ import { MatIcon } from '@angular/material/icon';
     AddRepositoryComponent,
     MatIconButton,
     MatIcon,
+    CdkDropList,
+    CdkDrag,
+    CdkDragHandle,
   ],
   selector: 'ana-commits-dashboard',
   templateUrl: './commits-dashboard.component.html',
@@ -178,5 +188,18 @@ export class CommitsDashboardComponent {
     );
     this.repositories.set(undefined); // Make loading spinner appear.
     this.repositories.reload();
+  }
+
+  protected drop(event: CdkDragDrop<string[]>) {
+    // Changing order is only possible when repositories are not filtered.
+    const repositories = [...(this.repositories.value() ?? [])];
+    if (this.filteredRepositories().length !== repositories.length) {
+      return;
+    }
+    moveItemInArray(repositories, event.previousIndex, event.currentIndex);
+    this.repositories.set(repositories);
+    this.andActionDataService.saveActionsDashboardConfig(
+      new ActionsDashboardConfig(this.repositoriesNameWithOwner()),
+    );
   }
 }

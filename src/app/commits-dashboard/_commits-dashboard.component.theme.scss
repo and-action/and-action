@@ -1,32 +1,36 @@
 @use '@angular/material' as mat;
 
 @mixin color($theme) {
-  ana-commits-dashboard {
-    .repository {
-      background-color: mat.get-theme-color($theme, surface-container-lowest);
+  // TODO: nesting breaks styling for dragged element,
+  //  see https://stackoverflow.com/questions/61559834/element-style-doesnt-apply-when-using-cdkdroplist-angluar-cdk-drag-and-drop
+  //  Probably this can be fixed by using CSS custom properties for theming.
+  //ana-commits-dashboard {
+  .repository {
+    background-color: mat.get-theme-color($theme, surface-container-lowest);
 
-      &--add {
-        background-color: mat.get-theme-color($theme, surface-container-high);
-      }
-    }
-
-    .repository-head {
-      background-color: rgba(
-        $color: mat.get-theme-color($theme, surface-container-lowest),
-        $alpha: 0.9
-      );
-
-      &__delete-button {
-        color: mat.get-theme-color($theme, outline);
-      }
-    }
-
-    .branch {
-      &__icon {
-        fill: mat.get-theme-color($theme, on-surface);
-      }
+    &--add {
+      background-color: mat.get-theme-color($theme, surface-container-high);
     }
   }
+
+  .repository-head {
+    background-color: rgba(
+      $color: mat.get-theme-color($theme, surface-container-lowest),
+      $alpha: 0.9
+    );
+
+    &__drag-handle mat-icon,
+    &__delete-button {
+      color: mat.get-theme-color($theme, outline-variant);
+    }
+  }
+
+  .branch {
+    &__icon {
+      fill: mat.get-theme-color($theme, on-surface);
+    }
+  }
+  //}
 }
 
 @mixin theme($theme) {
