@@ -18,15 +18,17 @@ import { AndActionDataService } from './and-action-data.service';
 import YAML from 'yaml';
 import { AndActionConfig } from './and-action-config';
 import { ApolloError, ApolloQueryResult } from '@apollo/client/core';
-import { GraphQLError } from 'graphql/error';
+import { GraphQLFormattedError } from 'graphql/error';
 import { CheckStatusState } from './check-status-state';
 import { CheckConclusionState } from './check-conclusion-state';
 
-interface GraphQLErrorWithType extends GraphQLError {
+interface GraphQLFormattedErrorWithType extends GraphQLFormattedError {
   type: 'FORBIDDEN' | 'NOT_FOUND';
 }
 
-function isGraphQLErrorWithType(x: GraphQLError): x is GraphQLErrorWithType {
+function isGraphQLFormattedErrorWithType(
+  x: GraphQLFormattedError,
+): x is GraphQLFormattedErrorWithType {
   return 'type' in x;
 }
 
@@ -287,7 +289,7 @@ export class GithubDataService {
             !errors ||
             errors.every(
               (error) =>
-                isGraphQLErrorWithType(error) &&
+                isGraphQLFormattedErrorWithType(error) &&
                 error.type === 'FORBIDDEN' &&
                 error.path?.at(-1) === 'repositories' &&
                 data.viewer.organizations.nodes[
@@ -445,7 +447,7 @@ export class GithubDataService {
             !errors ||
             errors.length === 0 ||
             (errors.length === 1 &&
-              isGraphQLErrorWithType(errors[0]) &&
+              isGraphQLFormattedErrorWithType(errors[0]) &&
               errors[0].type === 'NOT_FOUND' &&
               errors[0].path?.at(-1) === 'organisationConfig');
 
