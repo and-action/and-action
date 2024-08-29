@@ -65,7 +65,12 @@ describe('DeployCommitDialogService', () => {
     spyOn(githubDataService, 'loadAndActionConfigs').and.returnValue(
       of({
         deployment: {
-          environments: ['dev', 'test', 'live'],
+          environments: [
+            { name: 'dev' },
+            { name: 'test' },
+            { name: 'staging', requires: ['dev', 'test'] },
+            { name: 'live', requires: ['staging'] },
+          ],
         },
       }),
     );
@@ -80,35 +85,37 @@ describe('DeployCommitDialogService', () => {
     }
 
     it(`
-    should only allow deployment of first environment:
+    should only allow deployment of environments without required environments:
     - commit after
     - commit to deploy
     - commit before
     `, () => {
       checkExpectedEnvironments(
         deployableEnvironment(),
-        nonDeployableEnvironment('dev'),
-        nonDeployableEnvironment('test'),
+        deployableEnvironment(),
+        nonDeployableEnvironment(['dev', 'test']),
+        nonDeployableEnvironment(['staging']),
       );
     });
 
     it(`
-    should allow deployment of second environment if first environment is deployed:
+    should not allow deployment of staging environment if dev is not deployed:
     - commit after
-    - commit to deploy *dev*
+    - commit to deploy *test*
     - commit before
     `, () => {
-      commitToDeploy.deployments = [activeDeployment('dev')];
+      commitToDeploy.deployments = [activeDeployment('test')];
 
       checkExpectedEnvironments(
-        deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(),
-        nonDeployableEnvironment('test'),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        nonDeployableEnvironment(['dev', 'test']),
+        nonDeployableEnvironment(['staging']),
       );
     });
 
     it(`
-    should allow deployment of third environment if second environment is deployed:
+    should allow deployment of staging environment if dev and test are deployed:
     - commit after
     - commit to deploy *dev* *test*
     - commit before
@@ -122,18 +129,40 @@ describe('DeployCommitDialogService', () => {
         deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(),
+        nonDeployableEnvironment(['staging']),
       );
     });
 
     it(`
-    should allow deployment of all environments if all are actively deployed:
+    should allow deployment of live environment if staging environment is deployed:
     - commit after
-    - commit to deploy *dev* *test* *live*
+    - commit to deploy *dev* *test*
     - commit before
     `, () => {
       commitToDeploy.deployments = [
         activeDeployment('dev'),
         activeDeployment('test'),
+        activeDeployment('staging'),
+      ];
+
+      checkExpectedEnvironments(
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(),
+      );
+    });
+
+    it(`
+    should allow deployment of all environments if all are actively deployed:
+    - commit after
+    - commit to deploy *dev* *test* *staging* *live*
+    - commit before
+    `, () => {
+      commitToDeploy.deployments = [
+        activeDeployment('dev'),
+        activeDeployment('test'),
+        activeDeployment('staging'),
         activeDeployment('live'),
       ];
 
@@ -141,58 +170,41 @@ describe('DeployCommitDialogService', () => {
         deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
       );
     });
 
     it(`
-    should only allow deployment of first environment:
+    should only allow deployment of dev and test environments:
     - commit after
     - commit to deploy
-    - commit before *dev* *test* *live*
+    - commit before *dev* *test* *staging* *live*
     `, () => {
       commitBefore.deployments = [
         activeDeployment('dev'),
         activeDeployment('test'),
+        activeDeployment('staging'),
         activeDeployment('live'),
       ];
 
       checkExpectedEnvironments(
         deployableEnvironment(),
-        nonDeployableEnvironment('dev'),
-        nonDeployableEnvironment('test'),
-      );
-    });
-
-    it(`
-    should allow deployment of second environment if first environment is deployed:
-    - commit after
-    - commit to deploy *dev*
-    - commit before dev *test* *live*
-    `, () => {
-      commitBefore.deployments = [
-        inactiveDeployment('dev'),
-        activeDeployment('test'),
-        activeDeployment('live'),
-      ];
-
-      commitToDeploy.deployments = [activeDeployment('dev')];
-
-      checkExpectedEnvironments(
-        deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(),
-        nonDeployableEnvironment('test'),
+        nonDeployableEnvironment(['dev', 'test']),
+        nonDeployableEnvironment(['staging']),
       );
     });
 
     it(`
-    should allow deployment of third environment if second environment is deployed:
+    should allow deployment of staging environment if dev and test are deployed:
     - commit after
     - commit to deploy *dev* *test*
-    - commit before dev test *live*
+    - commit before dev test *staging* *live*
     `, () => {
       commitBefore.deployments = [
         inactiveDeployment('dev'),
         inactiveDeployment('test'),
+        activeDeployment('staging'),
         activeDeployment('live'),
       ];
 
@@ -205,24 +217,54 @@ describe('DeployCommitDialogService', () => {
         deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(),
+        nonDeployableEnvironment(['staging']),
+      );
+    });
+
+    it(`
+    should allow deployment of live environment if staging environment is deployed:
+    - commit after
+    - commit to deploy *dev* *test* *staging*
+    - commit before dev test staging *live*
+    `, () => {
+      commitBefore.deployments = [
+        inactiveDeployment('dev'),
+        inactiveDeployment('test'),
+        inactiveDeployment('staging'),
+        activeDeployment('live'),
+      ];
+
+      commitToDeploy.deployments = [
+        activeDeployment('dev'),
+        activeDeployment('test'),
+        activeDeployment('staging'),
+      ];
+
+      checkExpectedEnvironments(
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(),
       );
     });
 
     it(`
     should allow deployment of all environments if all are actively deployed:
     - commit after
-    - commit to deploy *dev* *test* *live*
-    - commit before dev test live
+    - commit to deploy *dev* *test* *staging* *live*
+    - commit before dev test staging live
     `, () => {
       commitBefore.deployments = [
         inactiveDeployment('dev'),
         inactiveDeployment('test'),
+        inactiveDeployment('staging'),
         inactiveDeployment('live'),
       ];
 
       commitToDeploy.deployments = [
         activeDeployment('dev'),
         activeDeployment('test'),
+        activeDeployment('staging'),
         activeDeployment('live'),
       ];
 
@@ -230,65 +272,86 @@ describe('DeployCommitDialogService', () => {
         deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(DeploymentState.ACTIVE),
+        deployableEnvironment(DeploymentState.ACTIVE),
       );
     });
 
     it(`
-    should only allow rollback deployment of first environment:
-    - commit after *dev* *test* *live*
-    - commit to deploy dev test live
+    should only allow rollback deployment of dev and test environments:
+    - commit after *dev* *test* *staging* *live*
+    - commit to deploy dev test staging live
     - commit before
     `, () => {
       commitToDeploy.deployments = [
         inactiveDeployment('dev'),
         inactiveDeployment('test'),
+        inactiveDeployment('staging'),
         inactiveDeployment('live'),
       ];
 
       commitAfter.deployments = [
         activeDeployment('dev'),
         activeDeployment('test'),
+        activeDeployment('staging'),
         activeDeployment('live'),
       ];
 
       checkExpectedEnvironments(
         deployableRollbackEnvironment(DeploymentState.INACTIVE),
-        nonDeployableRollbackEnvironment('dev', DeploymentState.INACTIVE),
-        nonDeployableRollbackEnvironment('test', DeploymentState.INACTIVE),
+        deployableRollbackEnvironment(DeploymentState.INACTIVE),
+        nonDeployableRollbackEnvironment(
+          ['dev', 'test'],
+          DeploymentState.INACTIVE,
+        ),
+        nonDeployableRollbackEnvironment(['staging'], DeploymentState.INACTIVE),
       );
     });
 
     it(`
-    should disallow deploy for environment if previous environment is inactive NOT having an active deployment on a later commit:
+    should disallow deployment of staging environment if dev and test environments are inactive NOT having an active deployment on a later commit:
     - commit after
-    - commit to deploy dev
-    - commit before *dev*
+    - commit to deploy dev test
+    - commit before *dev* *test*
     `, () => {
-      commitBefore.deployments = [activeDeployment('dev')];
+      commitBefore.deployments = [
+        activeDeployment('dev'),
+        activeDeployment('test'),
+      ];
 
-      commitToDeploy.deployments = [inactiveDeployment('dev')];
+      commitToDeploy.deployments = [
+        inactiveDeployment('dev'),
+        inactiveDeployment('test'),
+      ];
 
       checkExpectedEnvironments(
         deployableEnvironment(DeploymentState.INACTIVE),
-        nonDeployableEnvironment('dev'),
-        nonDeployableEnvironment('test'),
+        deployableEnvironment(DeploymentState.INACTIVE),
+        nonDeployableEnvironment(['dev', 'test']),
+        nonDeployableEnvironment(['staging']),
       );
     });
 
     it(`
-    should allow deploy for environment if previous environment is inactive having an active deployment on a later commit:
-    - commit after *dev*
-    - commit to deploy dev
+    should allow deployment of staging environment if dev and test environments are inactive having an active deployment on a later commit:
+    - commit after *dev* *test*
+    - commit to deploy dev test
     - commit before
     `, () => {
-      commitToDeploy.deployments = [inactiveDeployment('dev')];
+      commitToDeploy.deployments = [
+        inactiveDeployment('dev'),
+        inactiveDeployment('test'),
+      ];
 
-      commitAfter.deployments = [activeDeployment('dev')];
+      commitAfter.deployments = [
+        activeDeployment('dev'),
+        activeDeployment('test'),
+      ];
 
       checkExpectedEnvironments(
         deployableRollbackEnvironment(DeploymentState.INACTIVE),
+        deployableRollbackEnvironment(DeploymentState.INACTIVE),
         deployableEnvironment(),
-        nonDeployableEnvironment('test'),
+        nonDeployableEnvironment(['staging']),
       );
     });
 
@@ -319,32 +382,39 @@ describe('DeployCommitDialogService', () => {
             },
             deploymentType: DeploymentType.FORWARD,
           },
-          nonDeployableEnvironment('dev'),
-          nonDeployableEnvironment('test'),
+          deployableEnvironment(),
+          nonDeployableEnvironment(['dev', 'test']),
+          nonDeployableEnvironment(['staging']),
         );
       });
     });
 
     it(`
     should always allow deployment of active deployment:
-    - commit after *dev* *test*
-    - commit to deploy dev test *live*
+    - commit after *dev* *test* *staging*
+    - commit to deploy dev test staging *live*
     - commit before
     `, () => {
       commitToDeploy.deployments = [
         inactiveDeployment('dev'),
         inactiveDeployment('test'),
+        inactiveDeployment('staging'),
         activeDeployment('live'),
       ];
 
       commitAfter.deployments = [
         activeDeployment('dev'),
         activeDeployment('test'),
+        activeDeployment('staging'),
       ];
 
       checkExpectedEnvironments(
         deployableRollbackEnvironment(DeploymentState.INACTIVE),
-        nonDeployableRollbackEnvironment('dev', DeploymentState.INACTIVE),
+        deployableRollbackEnvironment(DeploymentState.INACTIVE),
+        nonDeployableRollbackEnvironment(
+          ['dev', 'test'],
+          DeploymentState.INACTIVE,
+        ),
         deployableEnvironment(DeploymentState.ACTIVE),
       );
     });
@@ -371,7 +441,8 @@ describe('DeployCommitDialogService', () => {
       checkExpectedEnvironments(
         deployableEnvironment(DeploymentState.ACTIVE),
         deployableEnvironment(),
-        nonDeployableEnvironment('test'),
+        nonDeployableEnvironment(['dev', 'test']),
+        nonDeployableEnvironment(['staging']),
       );
     });
 
@@ -419,12 +490,12 @@ describe('DeployCommitDialogService', () => {
     }
 
     function nonDeployableEnvironment(
-      previousEnvironmentName: string,
+      requiredEnvironmentNames: string[],
     ): ExpectedEnvironment {
       return {
         canBeDeployed: {
           value: false,
-          reason: `Deploy is not possible before <strong>${previousEnvironmentName}</strong> is deployed.`,
+          reason: `Deploy is not possible before ${requiredEnvironmentNamesToString(requiredEnvironmentNames)} is deployed.`,
         },
         deploymentType: DeploymentType.FORWARD,
       };
@@ -442,13 +513,13 @@ describe('DeployCommitDialogService', () => {
     }
 
     function nonDeployableRollbackEnvironment(
-      previousEnvironmentName: string,
+      requiredEnvironmentNames: string[],
       deploymentState?: DeploymentState,
     ): ExpectedEnvironment {
       return {
         canBeDeployed: {
           value: false,
-          reason: `Deploy is not possible before <strong>${previousEnvironmentName}</strong> is deployed.`,
+          reason: `Deploy is not possible before ${requiredEnvironmentNamesToString(requiredEnvironmentNames)} is deployed.`,
         },
         deploymentType: DeploymentType.ROLLBACK,
         deploymentState,
@@ -459,6 +530,7 @@ describe('DeployCommitDialogService', () => {
     function checkExpectedEnvironments(
       dev: ExpectedEnvironment,
       test: ExpectedEnvironment,
+      staging: ExpectedEnvironment,
       live: ExpectedEnvironment,
     ) {
       const createDeployCommitEnvironment = (
@@ -475,6 +547,7 @@ describe('DeployCommitDialogService', () => {
       const expected: DeployCommitEnvironment[] = [
         createDeployCommitEnvironment('dev', dev),
         createDeployCommitEnvironment('test', test),
+        createDeployCommitEnvironment('staging', staging),
         createDeployCommitEnvironment('live', live),
       ];
       service
@@ -484,6 +557,17 @@ describe('DeployCommitDialogService', () => {
           commitAfter,
         ])
         .subscribe((environments) => expect(environments).toEqual(expected));
+    }
+
+    function requiredEnvironmentNamesToString(
+      requiredEnvironmentNames: string[],
+    ) {
+      return requiredEnvironmentNames
+        ?.map(
+          (requiredEnvironmentName) =>
+            `<strong>${requiredEnvironmentName}</strong>`,
+        )
+        .join(', ');
     }
   });
 

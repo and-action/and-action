@@ -22,6 +22,7 @@ import { CheckConclusionState } from '../core/check-conclusion-state';
 import { StatusWithText, StatusWithTextStatus } from '../core/status-with-text';
 import { CommitState } from '../core/commit-state';
 import { assertIsNotUndefinedAndNotNull } from '../assert';
+import { Environment } from '../core/and-action-config';
 
 interface LatestCommitDatePerDeployedEnvironment {
   [environment: string]: Date;
@@ -53,26 +54,25 @@ export class DeployCommitDialogService {
         }),
         map((environments) =>
           environments.map(
-            (environmentName, index): DeployCommitEnvironment => ({
-              name: environmentName,
+            (environment): DeployCommitEnvironment => ({
+              name: environment.name,
               deploymentType: this.getDeploymentType(
-                environmentName,
+                environment.name,
                 commitToDeploy,
                 latestCommitDatePerDeployedEnvironment,
               ),
               deploymentState: this.getDeploymentStateForEnvironment(
-                environmentName,
+                environment.name,
                 commitToDeploy,
               ),
               canBeDeployed: this.canDeployEnvironment(
-                environments,
-                index,
+                environment,
                 commitToDeploy,
                 commits,
                 latestCommitDatePerDeployedEnvironment,
               ),
               deploymentDate: this.getEnvironmentDeploymentDate(
-                environmentName,
+                environment.name,
                 commitToDeploy,
               ),
             }),
@@ -290,14 +290,12 @@ export class DeployCommitDialogService {
   }
 
   private canDeployEnvironment(
-    environmentNames: string[],
-    environmentIndex: number,
+    environment: Environment,
     commitToDeploy: Commit,
     commits: Commit[],
     latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment,
   ): { value: true } | { value: false; reason: string } {
-    const environmentName = environmentNames[environmentIndex];
-    const previousEnvironmentName = environmentNames[environmentIndex - 1];
+    const environmentName = environment.name;
 
     if (this.isDeploymentInProgressForEnvironment(environmentName, commits)) {
       return {
@@ -306,7 +304,7 @@ export class DeployCommitDialogService {
       };
     }
 
-    if (environmentIndex === 0) {
+    if ((environment.requires?.length ?? 0) === 0) {
       return { value: true };
     }
 
@@ -319,49 +317,92 @@ export class DeployCommitDialogService {
     ) {
       case DeploymentType.FORWARD:
         return this.canDeployForwardCommit(
-          previousEnvironmentName,
+          environment,
           commitToDeploy,
           latestCommitDatePerDeployedEnvironment,
         );
-      case DeploymentType.ROLLBACK: {
-        const value =
-          this.getDeploymentStateForEnvironment(
-            previousEnvironmentName,
-            commitToDeploy,
-          ) === DeploymentState.ACTIVE;
-        return value
-          ? { value }
-          : {
-              value,
-              reason: `Deploy is not possible before <strong>${previousEnvironmentName}</strong> is deployed.`,
-            };
-      }
+      case DeploymentType.ROLLBACK:
+        return this.canDeployRollbackCommit(environment, commitToDeploy);
       default:
         return { value: false, reason: 'Unknown deployment type.' };
     }
   }
 
-  private canDeployForwardCommit(
-    previousEnvironmentName: string,
+  private canDeployCommit(
+    environment: Environment,
     commitToDeploy: Commit,
-    latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment,
+    checkRequiredEnvironmentState: (
+      deploymentState: DeploymentState,
+      requiredEnvironmentName: string,
+    ) => boolean,
   ) {
-    const deployment = this.getLatestEnvironmentDeployForCommit(
-      previousEnvironmentName,
-      commitToDeploy.deployments,
-    );
-    const value = deployment
-      ? deployment.state === DeploymentState.ACTIVE ||
-        (deployment.state === DeploymentState.INACTIVE &&
-          latestCommitDatePerDeployedEnvironment[previousEnvironmentName] >
-            commitToDeploy.committedDate)
-      : false;
+    const value =
+      environment.requires
+        ?.map((requiredEnvironmentName) => {
+          const deployment = this.getLatestEnvironmentDeployForCommit(
+            requiredEnvironmentName,
+            commitToDeploy.deployments,
+          );
+
+          return deployment
+            ? checkRequiredEnvironmentState(
+                deployment.state,
+                requiredEnvironmentName,
+              )
+            : false;
+        })
+        .every(
+          (isRequiredEnvironmentDeployed) => isRequiredEnvironmentDeployed,
+        ) ?? true;
+
+    const requiredEnvironmentNames = environment.requires
+      ?.map(
+        (requiredEnvironmentName) =>
+          `<strong>${requiredEnvironmentName}</strong>`,
+      )
+      .join(', ');
+
     return value
       ? { value }
       : {
           value,
-          reason: `Deploy is not possible before <strong>${previousEnvironmentName}</strong> is deployed.`,
+          reason: `Deploy is not possible before ${requiredEnvironmentNames} is deployed.`,
         };
+  }
+
+  private canDeployForwardCommit(
+    environment: Environment,
+    commitToDeploy: Commit,
+    latestCommitDatePerDeployedEnvironment: LatestCommitDatePerDeployedEnvironment,
+  ) {
+    const checkRequiredEnvironmentState = (
+      deploymentState: DeploymentState,
+      requiredEnvironmentName: string,
+    ) =>
+      deploymentState === DeploymentState.ACTIVE ||
+      (deploymentState === DeploymentState.INACTIVE &&
+        latestCommitDatePerDeployedEnvironment[requiredEnvironmentName] >
+          commitToDeploy.committedDate);
+
+    return this.canDeployCommit(
+      environment,
+      commitToDeploy,
+      checkRequiredEnvironmentState,
+    );
+  }
+
+  private canDeployRollbackCommit(
+    environment: Environment,
+    commitToDeploy: Commit,
+  ) {
+    const checkRequiredEnvironmentState = (deploymentState: DeploymentState) =>
+      deploymentState === DeploymentState.ACTIVE;
+
+    return this.canDeployCommit(
+      environment,
+      commitToDeploy,
+      checkRequiredEnvironmentState,
+    );
   }
 
   private getDeploymentStateForEnvironment(

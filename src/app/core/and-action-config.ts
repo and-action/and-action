@@ -2,8 +2,13 @@ export interface AndActionActionsConfig {
   'excluded-workflows'?: string[];
 }
 
+export interface Environment {
+  name: string;
+  requires?: string[];
+}
+
 export interface AndActionDeploymentConfig {
-  environments?: string[];
+  environments?: Environment[];
   'excluded-workflows'?: string[];
 }
 
