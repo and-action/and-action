@@ -215,9 +215,15 @@ Example configuration for `deployment`:
 ```yaml
 deployment:
   environments:
-    - dev
-    - test
-    - live
+    - name: dev
+    - name: test
+    - name: staging
+      requires:
+        - dev
+        - test
+    - name: live
+      requires:
+        - staging
   excluded-workflows:
     - Deploy
     - Manually deploy app
@@ -226,7 +232,7 @@ deployment:
 
 ##### environments
 
-This property contains a list of available environments in the order of deployment. So in the example above, there are three environments and deployments can only be triggered in the order `dev`, `test` and `live`.
+This property contains a list of available environments in the order they appear in the deployment dialog. Each environment has a name and an optional list of required environments that need to be deployed before the environment can be deployed. So in the example above, there are four environments, namely `dev`, `test`, `staging` and `live`. `dev` and `staging` can always be deployed while `staging` can only be deployed after `dev` and `staging` were deployed and `live` can only be deployed after `staging` was deployed.
 
 
 ##### excluded-workflows
@@ -267,9 +273,15 @@ actions:
 
 deployment:
   environments:
-    - dev
-    - test
-    - live
+    - name: dev
+    - name: test
+    - name: staging
+      requires:
+        - dev
+        - test
+    - name: live
+      requires:
+        - staging
   excluded-workflows:
     - Manually deploy app
 ```
@@ -288,9 +300,15 @@ actions:
 
 deployment:
   environments:
-    - dev
-    - test
-    - live
+    - name: dev
+    - name: test
+    - name: staging
+      requires:
+        - dev
+        - test
+    - name: live
+      requires:
+        - staging
   excluded-workflows:
     - Deploy
     - Test checks

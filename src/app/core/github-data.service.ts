@@ -16,7 +16,10 @@ import {
 } from '../commits-dashboard/commits-dashboard-models';
 import { AndActionDataService } from './and-action-data.service';
 import YAML from 'yaml';
-import { AndActionConfig } from './and-action-config';
+import {
+  AndActionConfig,
+  AndActionDeploymentConfig,
+} from './and-action-config';
 import { ApolloError, ApolloQueryResult } from '@apollo/client/core';
 import { GraphQLFormattedError } from 'graphql/error';
 import { CheckStatusState } from './check-status-state';
@@ -472,12 +475,33 @@ export class GithubDataService {
               ...repositoryConfig?.actions,
             },
             deployment: {
-              ...organisationConfig?.deployment,
-              ...repositoryConfig?.deployment,
+              ...this.ensureDeploymentConfig(organisationConfig?.deployment),
+              ...this.ensureDeploymentConfig(repositoryConfig?.deployment),
             },
           };
         }),
       );
+  }
+
+  private ensureDeploymentConfig(
+    deploymentConfig: any,
+  ): AndActionDeploymentConfig {
+    const environments = deploymentConfig?.environments;
+    if (
+      Array.isArray(environments) &&
+      environments.every((environment) => typeof environment === 'string')
+    ) {
+      // Turn legacy format with string list into new environment list of type Environment.
+      return {
+        ...deploymentConfig,
+        environments: environments.map((environment: any, index) => ({
+          name: environment,
+          requires:
+            index > 0 ? [deploymentConfig.environments[index - 1]] : undefined,
+        })),
+      };
+    }
+    return deploymentConfig;
   }
 
   createDeployment(
