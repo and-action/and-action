@@ -38,7 +38,7 @@
     "@angular/router": "18.2.6",
     "@apollo/client": "3.11.8",
     "@primer/octicons": "19.11.0",
-    "@sentry/browser": "8.32.0",
+    "@sentry/browser": "8.33.0",
     "@sentry/node": "8.32.0",
     "@types/node": "20.16.10",
     "apollo-angular": "7.2.0",
