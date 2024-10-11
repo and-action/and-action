@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
+import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Repository } from './repository';
 import { Organization } from './organization';
@@ -24,6 +24,7 @@ import { ApolloError, ApolloQueryResult } from '@apollo/client/core';
 import { GraphQLFormattedError } from 'graphql/error';
 import { CheckStatusState } from './check-status-state';
 import { CheckConclusionState } from './check-conclusion-state';
+import { TRelayPageInfo } from '@apollo/client/utilities/policies/pagination';
 
 interface GraphQLFormattedErrorWithType extends GraphQLFormattedError {
   type: 'FORBIDDEN' | 'NOT_FOUND';
@@ -75,6 +76,12 @@ interface CommitStateQueryResult {
   };
 }
 
+export interface ViewerOrOrganization {
+  login: string;
+  avatarUrl: string;
+  url: string;
+}
+
 interface OrganizationNode {
   login: string;
   avatarUrl: string;
@@ -83,6 +90,73 @@ interface OrganizationNode {
     nodes: Repository[];
   };
 }
+
+const organizationsQuery = gql`
+  query Organizations {
+    viewer {
+      login
+      avatarUrl
+      url
+      organizations(first: 100) {
+        nodes {
+          login
+          avatarUrl
+          url
+        }
+      }
+    }
+  }
+`;
+
+export interface RepositoriesQueryResult {
+  viewer: {
+    repositories: {
+      edges: { node: Repository }[];
+      pageInfo: TRelayPageInfo;
+    };
+  };
+}
+
+export const repositoriesForOwnerQuery = gql`
+  query RepositoriesForOwner($after: String) {
+    viewer {
+      repositories(
+        first: 2
+        after: $after
+        orderBy: { direction: ASC, field: NAME }
+        affiliations: OWNER
+      ) {
+        edges {
+          node {
+            id
+            name
+            owner {
+              login
+            }
+            nameWithOwner
+            description
+            isPrivate
+            isArchived
+            defaultBranchRef {
+              name
+            }
+            parent {
+              nameWithOwner
+              url
+            }
+            url
+          }
+        }
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          startCursor
+          endCursor
+        }
+      }
+    }
+  }
+`;
 
 const repositoriesQuery = gql`
   query Repositories {
@@ -276,6 +350,32 @@ export class GithubDataService {
   private apollo = inject(Apollo);
   private http = inject(HttpClient);
   private andActionDataService = inject(AndActionDataService);
+
+  loadOrganizations() {
+    return this.apollo
+      .watchQuery<{
+        viewer: ViewerOrOrganization & {
+          organizations: { nodes: ViewerOrOrganization[] };
+        };
+      }>({
+        query: organizationsQuery,
+        errorPolicy: 'all',
+      })
+      .valueChanges.pipe(
+        map(({ data }) => {
+          const { organizations, ...viewer } = data.viewer;
+          return [viewer, ...organizations.nodes];
+        }),
+      );
+  }
+
+  loadRepositoriesForOwner(): QueryRef<RepositoriesQueryResult> {
+    return this.apollo.watchQuery<RepositoriesQueryResult>({
+      query: repositoriesForOwnerQuery,
+      variables: { after: null },
+      errorPolicy: 'all',
+    });
+  }
 
   loadViewerAndOrganizations() {
     return this.apollo

@@ -2,12 +2,31 @@ import { NgModule } from '@angular/core';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
+import { relayStylePagination } from '@apollo/client/utilities';
 
 const uri = 'https://api.github.com/graphql';
 export function createApollo(httpLink: HttpLink) {
   return {
     link: httpLink.create({ uri }),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        User: {
+          fields: {
+            repositories: relayStylePagination(),
+            // repositories: {
+            //   keyArgs: false,
+            //   merge(existing, incoming) {
+            //     if (!existing) return incoming;
+            //     return {
+            //       ...incoming,
+            //       nodes: [...existing.nodes, ...incoming.nodes],
+            //     };
+            //   },
+            // },
+          },
+        },
+      },
+    }),
   };
 }
 
