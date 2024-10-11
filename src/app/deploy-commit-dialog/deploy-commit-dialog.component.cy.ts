@@ -27,7 +27,10 @@ describe('DeployCommitDialogComponent', () => {
   const repository: RepositoryWithCommits = {
     id: '1234',
     name: 'and-action',
-    owner: 'and-action',
+    owner: {
+      login: 'and-action',
+      url: 'https://github.com/and-action',
+    },
     defaultBranchRef: { name: 'main' },
     isArchived: false,
     url: 'https://github.com/and-action/and-action',
@@ -127,7 +130,10 @@ describe('DeployCommitDialogComponent', () => {
     );
 
     it('should have correct heading ', () =>
-      cy.contains('h2', `Deploy to ${repository.name}`));
+      cy.contains(
+        'h2',
+        `Deploy to ${repository.owner.login} / ${repository.name}`,
+      ));
 
     it('should show placeholder text', () => {
       cy.contains('p', 'No environment configuration found.');

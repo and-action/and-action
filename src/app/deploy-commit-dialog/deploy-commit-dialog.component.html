@@ -1,6 +1,10 @@
 <h2 class="dialog-title" mat-dialog-title>
   <mat-icon class="dialog-title__icon">rocket_launch</mat-icon>
-  <span>Deploy to {{ dialogData.repository.name }}</span>
+  <span>
+    Deploy to
+    {{ dialogData.repository.owner.login }} /
+    {{ dialogData.repository.name }}
+  </span>
 </h2>
 <mat-dialog-content>
   <ana-commit-info

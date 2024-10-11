@@ -60,7 +60,7 @@ const getCommits = () => [getCommit()];
 const getRepository = (): RepositoryWithCommits => ({
   id: 'R_idOfRepository',
   name: 'and-action',
-  owner: 'and-action',
+  owner: { login: 'and-action', url: 'https://github.com/and-action' },
   defaultBranchRef: { name: 'master' },
   url: 'https://github.com/and-action/and-action',
   isArchived: false,

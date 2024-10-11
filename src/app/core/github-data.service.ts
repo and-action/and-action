@@ -157,6 +157,10 @@ const repositoryCommitsQuery = gql`
       id
       url
       isArchived
+      owner {
+        login
+        url
+      }
       defaultBranchRef {
         name
         target {
@@ -380,7 +384,6 @@ export class GithubDataService {
         map((queryResult) =>
           this.mapRepositoryCommitsQueryResultToRespositoryWithCommits(
             queryResult,
-            owner,
             name,
           ),
         ),
@@ -588,7 +591,6 @@ export class GithubDataService {
 
   private mapRepositoryCommitsQueryResultToRespositoryWithCommits(
     queryResult: ApolloQueryResult<any>,
-    owner: string,
     name: string,
   ) {
     const commits =
@@ -632,7 +634,10 @@ export class GithubDataService {
     const repository: RepositoryWithCommits = {
       id: queryResult.data.repository.id,
       name,
-      owner,
+      owner: {
+        login: queryResult.data.repository.owner.login,
+        url: queryResult.data.repository.owner.url,
+      },
       defaultBranchRef: {
         name: queryResult.data.repository.defaultBranchRef.name,
       },
