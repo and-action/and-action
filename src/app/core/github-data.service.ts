@@ -87,6 +87,7 @@ interface OrganizationNode {
 const repositoriesQuery = gql`
   query Repositories {
     viewer {
+      id
       login
       avatarUrl
       url

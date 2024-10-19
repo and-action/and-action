@@ -16,12 +16,14 @@ import { RepositoryFilterService } from '../repository-filter.service';
 import { ActionsDashboardItemComponent } from '../actions-dashboard-item/actions-dashboard-item.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
+import { AddRepositoryComponent } from '../add-repository/add-repository.component';
 
 @Component({
   imports: [
     ActionsDashboardItemComponent,
     MatProgressSpinnerModule,
     PollingProgessComponent,
+    AddRepositoryComponent,
   ],
   selector: 'ana-actions-dashboard',
   templateUrl: './actions-dashboard.component.html',
