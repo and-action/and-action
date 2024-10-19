@@ -70,19 +70,23 @@
 
 html {
   @include mat.core();
+  @include mat.core-theme(m3.$light-theme);
   @include component-themes(m3.$light-theme);
   @include mat.all-component-typographies();
 
   @media (prefers-color-scheme: dark) {
+    @include mat.core-color(m3.$dark-theme);
     @include component-colors(m3.$dark-theme);
   }
 }
 
 .light-theme {
+  @include mat.core-color(m3.$light-theme);
   @include component-colors(m3.$light-theme);
 }
 
 .dark-theme {
+  @include mat.core-color(m3.$dark-theme);
   @include component-colors(m3.$dark-theme);
 }
 
