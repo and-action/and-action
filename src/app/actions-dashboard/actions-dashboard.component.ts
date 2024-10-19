@@ -10,6 +10,7 @@ import { ActionsDashboardItemComponent } from '../actions-dashboard-item/actions
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingStatus } from '../loading-status';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
+import { AddRepositoryComponent } from '../add-repository/add-repository.component';
 
 @Component({
   standalone: true,
@@ -17,6 +18,7 @@ import { PollingProgessComponent } from '../polling-progress/polling-progess.com
     ActionsDashboardItemComponent,
     MatProgressSpinnerModule,
     PollingProgessComponent,
+    AddRepositoryComponent,
   ],
   selector: 'ana-actions-dashboard',
   templateUrl: './actions-dashboard.component.html',

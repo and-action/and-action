@@ -20,6 +20,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { LoadingStatus } from '../loading-status';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { AddRepositoryComponent } from '../add-repository/add-repository.component';
 
 @Component({
   standalone: true,
@@ -29,6 +30,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     MatDialogModule,
     MatProgressSpinnerModule,
     PollingProgessComponent,
+    AddRepositoryComponent,
   ],
   selector: 'ana-commits-dashboard',
   templateUrl: './commits-dashboard.component.html',
