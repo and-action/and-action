@@ -27,8 +27,10 @@
   @include mat.checkbox-theme($theme);
   @include mat.dialog-theme($theme);
   @include mat.divider-theme($theme);
+  @include mat.form-field-theme($theme);
   @include mat.icon-button-theme($theme);
   @include mat.icon-theme($theme);
+  @include mat.input-theme($theme);
   @include mat.progress-bar-theme($theme);
   @include mat.progress-spinner-theme($theme);
   @include mat.sidenav-theme($theme);
@@ -54,8 +56,10 @@
   @include mat.checkbox-color($theme);
   @include mat.dialog-color($theme);
   @include mat.divider-color($theme);
+  @include mat.form-field-color($theme);
   @include mat.icon-button-color($theme);
   @include mat.icon-color($theme);
+  @include mat.input-color($theme);
   @include mat.progress-bar-color($theme);
   @include mat.progress-spinner-color($theme);
   @include mat.sidenav-color($theme);
