@@ -3,6 +3,7 @@ import { Ref } from '../core/repository';
 export interface RepositoryWithCommits {
   id: string;
   name: string;
+  nameWithOwner: string;
   owner: {
     login: string;
     url: string;

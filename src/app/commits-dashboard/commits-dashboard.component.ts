@@ -21,6 +21,8 @@ import { LoadingStatus } from '../loading-status';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AddRepositoryComponent } from '../add-repository/add-repository.component';
+import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
+import { AndActionDataService } from '../core/and-action-data.service';
 
 @Component({
   imports: [
@@ -39,6 +41,9 @@ export class CommitsDashboardComponent {
   protected repositories$?: Observable<RepositoryWithCommits[]>;
 
   protected repositories = signal<RepositoryWithCommits[]>([]);
+  protected repositoriesNameWithOwner = computed(() =>
+    this.repositories().map((repository) => repository.nameWithOwner),
+  );
   protected filteredRepositories: Signal<RepositoryWithCommits[]>;
 
   protected loadingStatus = LoadingStatus.LOADING;
@@ -47,6 +52,7 @@ export class CommitsDashboardComponent {
 
   private queryParams = toSignal(inject(ActivatedRoute).queryParams);
   private githubDataService = inject(GithubDataService);
+  private andActionDataService = inject(AndActionDataService);
 
   constructor() {
     const router = inject(Router);
@@ -134,5 +140,14 @@ export class CommitsDashboardComponent {
 
   protected repositoriesTrackBy(_: number, item: RepositoryWithCommits) {
     return item.id;
+  }
+
+  protected addRepositories(repositories: string[]) {
+    this.andActionDataService.saveActionsDashboardConfig(
+      new ActionsDashboardConfig([
+        ...this.repositoriesNameWithOwner(),
+        ...repositories,
+      ]),
+    );
   }
 }

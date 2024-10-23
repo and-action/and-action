@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,9 +11,26 @@ import { AddRepositoryModalComponent } from './add-repository-modal/add-reposito
   templateUrl: './add-repository.component.html',
 })
 export class AddRepositoryComponent {
+  ignoredRepositoriesNameWithOwner = input.required<string[]>();
+  addRepositories = output<string[]>();
   private dialog = inject(MatDialog);
 
   protected onAddButtonClick() {
-    this.dialog.open(AddRepositoryModalComponent).afterClosed().subscribe();
+    this.dialog
+      .open(AddRepositoryModalComponent, {
+        height: '80vh',
+        width: '560px',
+        maxWidth: '100vw',
+        data: {
+          ignoredRepositoriesNameWithOwner:
+            this.ignoredRepositoriesNameWithOwner(),
+        },
+      })
+      .afterClosed()
+      .subscribe((repositoriesToAdd) => {
+        if (repositoriesToAdd) {
+          this.addRepositories.emit(repositoriesToAdd);
+        }
+      });
   }
 }

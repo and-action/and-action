@@ -50,7 +50,12 @@
         </div>
       </div>
     }
-    <div class="repository repository--add"><ana-add-repository /></div>
+    <div class="repository repository--add">
+      <ana-add-repository
+        [ignoredRepositoriesNameWithOwner]="repositoriesNameWithOwner()"
+        (addRepositories)="addRepositories($event)"
+      />
+    </div>
   </div>
 }
 
