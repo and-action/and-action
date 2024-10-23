@@ -22,6 +22,9 @@ import { PollingProgessComponent } from '../polling-progress/polling-progess.com
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { AddRepositoryComponent } from '../add-repository/add-repository.component';
+import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   imports: [
@@ -31,6 +34,8 @@ import { AddRepositoryComponent } from '../add-repository/add-repository.compone
     MatProgressSpinnerModule,
     PollingProgessComponent,
     AddRepositoryComponent,
+    MatIconButton,
+    MatIcon,
   ],
   selector: 'ana-commits-dashboard',
   templateUrl: './commits-dashboard.component.html',
@@ -38,6 +43,12 @@ import { AddRepositoryComponent } from '../add-repository/add-repository.compone
 })
 export class CommitsDashboardComponent {
   protected repositories: ResourceRef<RepositoryWithCommits[]>;
+  protected repositoriesNameWithOwner = computed(
+    () =>
+      this.repositories
+        .value()
+        ?.map((repository) => repository.nameWithOwner) ?? [],
+  );
   protected filteredRepositories: Signal<RepositoryWithCommits[]>;
 
   protected updateIntervalInSeconds = 60;
@@ -144,5 +155,31 @@ export class CommitsDashboardComponent {
 
   protected repositoriesTrackBy(_: number, item: RepositoryWithCommits) {
     return item.id;
+  }
+
+  protected deleteRepository(repository: RepositoryWithCommits) {
+    const repositories = this.repositories.value();
+
+    if (repositories) {
+      const newRepositories = repositories.filter(
+        (curr) => curr.nameWithOwner !== repository.nameWithOwner,
+      );
+
+      this.repositories.set(newRepositories);
+      this.andActionDataService.saveActionsDashboardConfig(
+        new ActionsDashboardConfig(this.repositoriesNameWithOwner()),
+      );
+    }
+  }
+
+  protected addRepositories(repositories: string[]) {
+    this.andActionDataService.saveActionsDashboardConfig(
+      new ActionsDashboardConfig([
+        ...this.repositoriesNameWithOwner(),
+        ...repositories,
+      ]),
+    );
+    this.repositories.set(undefined); // Make loading spinner appear.
+    this.repositories.reload();
   }
 }

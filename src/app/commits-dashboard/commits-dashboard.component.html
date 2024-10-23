@@ -4,7 +4,7 @@
   class="polling-progress"
 ></ana-polling-progress>
 
-@if (repositories.hasValue()) {
+@if (repositories.value()) {
   <div class="repositories">
     @for (
       repository of filteredRepositories();
@@ -37,6 +37,14 @@
 
             <span>{{ repository.defaultBranchRef.name }}</span>
           </a>
+          <button
+            class="repository-head__delete-button"
+            type="button"
+            mat-icon-button
+            (click)="deleteRepository(repository)"
+          >
+            <mat-icon>delete_forever</mat-icon>
+          </button>
         </div>
 
         <div class="u-flex">
@@ -48,11 +56,16 @@
         </div>
       </div>
     }
-    <div class="repository repository--add"><ana-add-repository /></div>
+    <div class="repository repository--add">
+      <ana-add-repository
+        [ignoredRepositoriesNameWithOwner]="repositoriesNameWithOwner()"
+        (addRepositories)="addRepositories($event)"
+      />
+    </div>
   </div>
 }
 
-@if (!repositories.hasValue()) {
+@if (!repositories.value()) {
   <mat-progress-spinner class="progress-spinner" mode="indeterminate">
   </mat-progress-spinner>
 }

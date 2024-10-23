@@ -1,0 +1,19 @@
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  ana-actions-dashboard {
+    .repository-list {
+      &__item {
+        &--add {
+          background-color: mat.get-theme-color($theme, surface-container-high);
+        }
+      }
+    }
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}

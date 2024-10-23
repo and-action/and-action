@@ -1,12 +1,13 @@
 <div class="repository-head">
-  <h3 class="repository-head__title">
+  <div class="repository-head__title">
     <a
       [routerLink]="['/', appRouting.COMMITS]"
       [queryParams]="{ repository: repository?.name }"
     >
-      {{ repository?.name }}
+      <span>{{ repository?.owner?.login }} /</span><br />
+      <h2>{{ repository?.name }}</h2>
     </a>
-  </h3>
+  </div>
   @if (repository?.isArchived) {
     <p class="u-state-tag">Archived</p>
   }

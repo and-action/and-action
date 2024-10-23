@@ -162,6 +162,8 @@ const repositoryCommitsQuery = gql`
       id
       url
       isArchived
+      name
+      nameWithOwner
       owner {
         login
         url
@@ -355,9 +357,9 @@ export class GithubDataService {
     );
   }
 
-  loadRepositoryWorkflowsWithWorkflowRuns(organization: Organization) {
+  loadRepositoryWorkflowsWithWorkflowRuns(repositories: Repository[]) {
     return forkJoin(
-      organization.repositories.map((repository) =>
+      repositories.map((repository) =>
         this.loadAndActionConfigs(repository.owner.login, repository.name).pipe(
           mergeMap((andActionConfig) =>
             this.loadDefaultBranchWorkflowRuns(
@@ -394,7 +396,6 @@ export class GithubDataService {
         map((queryResult) =>
           this.mapRepositoryCommitsQueryResultToRespositoryWithCommits(
             queryResult,
-            name,
           ),
         ),
       );
@@ -540,17 +541,8 @@ export class GithubDataService {
     );
   }
 
-  loadWorkflowRuns(organizations: Organization[]) {
-    return forkJoin(
-      organizations.map((organization) =>
-        this.loadRepositoryWorkflowsWithWorkflowRuns(organization).pipe(
-          map((repositories) => ({
-            ...organization,
-            repositories,
-          })),
-        ),
-      ),
-    );
+  loadWorkflowRuns(repositories: Repository[]) {
+    return this.loadRepositoryWorkflowsWithWorkflowRuns(repositories);
   }
 
   private loadDefaultBranchWorkflowRuns(
@@ -601,7 +593,6 @@ export class GithubDataService {
 
   private mapRepositoryCommitsQueryResultToRespositoryWithCommits(
     queryResult: ApolloQueryResult<any>,
-    name: string,
   ) {
     const commits =
       queryResult.data.repository.defaultBranchRef.target.history.edges.map(
@@ -643,7 +634,8 @@ export class GithubDataService {
 
     const repository: RepositoryWithCommits = {
       id: queryResult.data.repository.id,
-      name,
+      name: queryResult.data.repository.name,
+      nameWithOwner: queryResult.data.repository.nameWithOwner,
       owner: {
         login: queryResult.data.repository.owner.login,
         url: queryResult.data.repository.owner.url,

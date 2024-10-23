@@ -34,7 +34,7 @@
 }
 
 .repository--add {
-  padding: $space-m;
+  padding: variables.$space-m;
   width: auto;
 }
 
@@ -55,6 +55,12 @@
 
   &__title-text {
     margin-bottom: 0;
+  }
+
+  &__delete-button {
+    position: absolute;
+    top: variables.$space-m;
+    right: 0;
   }
 }
 

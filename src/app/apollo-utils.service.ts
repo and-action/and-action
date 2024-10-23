@@ -29,15 +29,18 @@ export class ApolloUtilsService {
 
     const queryValueChanges = toSignal(queryRef.valueChanges);
 
-    return computed<ReturnType[]>(() => {
-      if (!queryValueChanges()) return [];
+    return computed<{ value: ReturnType[]; isLoading: boolean }>(() => {
+      if (!queryValueChanges()) return { value: [], isLoading: true };
       const pageInfo = getPageInfo(queryValueChanges());
       if (pageInfo?.hasNextPage) {
         queryRef.fetchMore({
           variables: { after: pageInfo.endCursor },
         });
       }
-      return getReturn(queryValueChanges()) ?? [];
+      return {
+        value: getReturn(queryValueChanges()) ?? [],
+        isLoading: !!pageInfo?.hasNextPage,
+      };
     });
   }
 }
