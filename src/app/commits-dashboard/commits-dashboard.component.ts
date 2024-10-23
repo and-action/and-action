@@ -136,4 +136,8 @@ export class CommitsDashboardComponent {
   protected repositoriesTrackBy(_: number, item: RepositoryWithCommits) {
     return item.id;
   }
+
+  protected addRepositories(repositories: string[]) {
+    console.log(repositories);
+  }
 }
