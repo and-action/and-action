@@ -27,6 +27,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { DEFAULT_DATE_TIME_FORMAT } from './app/constants';
+import { HttpGithubNoCacheInterceptor } from './app/http-github-no-cache-interceptor';
 
 if (environment.isEnableProdMode) {
   enableProdMode();
@@ -86,6 +87,11 @@ bootstrapApplication(AppComponent, {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpGithubAuthorizationInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpGithubNoCacheInterceptor,
       multi: true,
     },
     provideAppInitializer(() => {
