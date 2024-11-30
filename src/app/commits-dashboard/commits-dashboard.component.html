@@ -14,6 +14,9 @@
     ) {
       <div [id]="repository.name" class="repository">
         <div class="repository-head">
+          <a [href]="repository.owner.url" target="_blank" rel="noopener"
+            >{{ repository.owner.login }} /</a
+          >
           <div class="repository-head__title">
             <h2 class="repository-head__title-text">
               <a [href]="repository.url" target="_blank" rel="noopener">

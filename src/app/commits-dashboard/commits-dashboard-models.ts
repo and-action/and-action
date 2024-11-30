@@ -3,7 +3,10 @@ import { Ref } from '../core/repository';
 export interface RepositoryWithCommits {
   id: string;
   name: string;
-  owner: string;
+  owner: {
+    login: string;
+    url: string;
+  };
   defaultBranchRef: Ref;
   url: string;
   isArchived: boolean;

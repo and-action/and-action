@@ -108,7 +108,7 @@ export class CommitsDashboardComponent {
 
   protected reloadCommitsForRepository(repository: RepositoryWithCommits) {
     this.githubDataService
-      .loadRepositoryCommits(repository.owner, repository.name)
+      .loadRepositoryCommits(repository.owner.login, repository.name)
       .pipe(delay(3000))
       .subscribe((repositoryWithCommits) => {
         const indexToUpdate = this.repositories().findIndex(

@@ -76,7 +76,7 @@ export class DeployCommitDialogComponent implements OnInit {
 
   protected commitState: Signal<CommitState | null> = toSignal(
     this.deployCommitDialogService.getDeployCommitState(
-      this.dialogData.repository.owner,
+      this.dialogData.repository.owner.login,
       this.dialogData.repository.name,
       this.dialogData.commitToDeploy,
       this.dialogData.repository.defaultBranchRef.name,
@@ -87,7 +87,7 @@ export class DeployCommitDialogComponent implements OnInit {
   ngOnInit() {
     this.environments$ = this.deployCommitDialogService
       .getEnvironments(
-        this.dialogData.repository.owner,
+        this.dialogData.repository.owner.login,
         this.dialogData.repository.name,
         this.dialogData.commitToDeploy,
         this.dialogData.commits,
@@ -148,7 +148,7 @@ export class DeployCommitDialogComponent implements OnInit {
     } = this.dialogData.repository;
     this.deployCommitDialogService
       .deployToEnvironment(
-        owner,
+        owner.login,
         name,
         defaultBranchName,
         this.dialogData.commitToDeploy,
