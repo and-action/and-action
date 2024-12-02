@@ -71,27 +71,19 @@
 html {
   @include mat.elevation-classes();
   @include mat.app-background();
-  @include mat.elevation-classes();
-  @include mat.app-background();
   @include component-themes(m3.$light-theme);
   @include mat.all-component-typographies();
 
   @media (prefers-color-scheme: dark) {
-    @include mat.elevation-classes();
-    @include mat.app-background();
     @include component-colors(m3.$dark-theme);
   }
 }
 
 .light-theme {
-  @include mat.elevation-classes();
-  @include mat.app-background();
   @include component-colors(m3.$light-theme);
 }
 
 .dark-theme {
-  @include mat.elevation-classes();
-  @include mat.app-background();
   @include component-colors(m3.$dark-theme);
 }
 
