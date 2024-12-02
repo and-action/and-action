@@ -1,9 +1,9 @@
-@import '../../variables';
-@import '../../colors';
+@use '../../variables';
+@use '../../colors';
 
 :host {
   display: block;
-  padding: $space-s;
+  padding: variables.$space-s;
   min-height: 100vh;
 }
 
@@ -21,28 +21,28 @@
   }
 
   &__avatar {
-    width: $space-xl;
-    height: $space-xl;
-    border-radius: $default-border-radius;
-    margin-right: $space-s;
+    width: variables.$space-xl;
+    height: variables.$space-xl;
+    border-radius: variables.$default-border-radius;
+    margin-right: variables.$space-s;
   }
 }
 
 .repository-list-item {
   display: flex;
   align-items: center;
-  font-size: $font-size-l;
-  padding: $space-s;
+  font-size: variables.$font-size-l;
+  padding: variables.$space-s;
 
   &__label {
     display: flex;
-    gap: $space-xs;
+    gap: variables.$space-xs;
     align-items: center;
   }
 
   &__icon {
-    width: $space-m;
-    height: $space-m;
+    width: variables.$space-m;
+    height: variables.$space-m;
   }
 
   &__name {
@@ -50,7 +50,7 @@
   }
 
   &__fork-info {
-    font-size: $font-size-s;
+    font-size: variables.$font-size-s;
     margin-bottom: 0;
   }
 }

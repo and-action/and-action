@@ -1,5 +1,5 @@
-@import '../../colors';
-@import '../../variables';
+@use '../../colors';
+@use '../../variables';
 
 :host {
   height: 100%;
@@ -11,16 +11,16 @@
 .polling-progress {
   align-self: flex-end;
   display: inline-block;
-  padding: $space-xs $space-s;
+  padding: variables.$space-xs variables.$space-s;
 }
 
 .organization-list {
   height: 100%;
-  padding: 0 $space-s $space-s $space-s;
+  padding: 0 variables.$space-s variables.$space-s variables.$space-s;
 
   &__item {
     &:not(:last-child) {
-      margin-bottom: $space-xxl;
+      margin-bottom: variables.$space-xxl;
     }
   }
 }
@@ -34,17 +34,17 @@
   }
 
   &__avatar {
-    width: $space-xl;
-    height: $space-xl;
-    border-radius: $default-border-radius;
-    margin-right: $space-s;
+    width: variables.$space-xl;
+    height: variables.$space-xl;
+    border-radius: variables.$default-border-radius;
+    margin-right: variables.$space-s;
   }
 }
 
 .repository-list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: $space-m $space-m;
+  grid-gap: variables.$space-m variables.$space-m;
   align-items: stretch;
 
   &__item {
@@ -57,19 +57,19 @@
   }
 }
 
-@media (max-width: $max-width-desktop) {
+@media (max-width: variables.$max-width-desktop) {
   .repository-list {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
-@media (max-width: $max-width-tablet) {
+@media (max-width: variables.$max-width-tablet) {
   .repository-list {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-@media (max-width: $max-width-mobile) {
+@media (max-width: variables.$max-width-mobile) {
   .repository-list {
     grid-template-columns: 1fr;
   }

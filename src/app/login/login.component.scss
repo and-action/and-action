@@ -1,15 +1,15 @@
-@import '../../colors';
-@import '../../variables';
+@use '../../colors';
+@use '../../variables';
 
 :host {
   display: flex;
-  margin-top: $space-xxl;
+  margin-top: variables.$space-xxl;
 }
 
 .login-box {
   margin: auto;
-  padding: $space-m;
-  border-radius: $default-border-radius;
+  padding: variables.$space-m;
+  border-radius: variables.$default-border-radius;
   display: flex;
   flex-direction: column;
   align-items: center;

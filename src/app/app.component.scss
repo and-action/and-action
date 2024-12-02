@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 
-@import '../colors';
-@import '../variables';
+@use '../colors';
+@use '../variables';
 
 :host {
   display: flex;
@@ -59,11 +59,11 @@ mat-sidenav-container {
 
   &__icon {
     font-size: 32px;
-    margin-right: $space-s;
+    margin-right: variables.$space-s;
   }
 
   &__title {
-    margin-right: $space-xxl;
+    margin-right: variables.$space-xxl;
   }
 
   &__gap {
@@ -101,7 +101,7 @@ mat-sidenav-container {
 }
 
 .mat-sidenav {
-  padding: $space-xs;
+  padding: variables.$space-xs;
   .mat-mdc-button {
     display: flex;
     justify-content: flex-start;
@@ -112,7 +112,7 @@ mat-sidenav-container {
   }
 
   .mat-divider {
-    margin: $space-s 0;
+    margin: variables.$space-s 0;
   }
 
   .nav-button,
@@ -139,13 +139,13 @@ mat-sidenav-container {
     0px 1px 18px 0px rgba(0, 0, 0, 0.12);
 }
 
-@media (max-width: $max-width-tablet) {
+@media (max-width: variables.$max-width-tablet) {
   .offline-info {
     bottom: 0;
   }
 }
 
-@media (max-width: $max-width-mobile-landscape) {
+@media (max-width: variables.$max-width-mobile-landscape) {
   .toolbar {
     &__filter-toggle-button {
       display: inline-flex;

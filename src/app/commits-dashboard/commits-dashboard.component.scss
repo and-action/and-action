@@ -1,5 +1,5 @@
-@import '../../colors';
-@import '../../variables';
+@use '../../colors';
+@use '../../variables';
 
 :host {
   height: 100%;
@@ -11,7 +11,7 @@
 .polling-progress {
   align-self: flex-end;
   display: inline-block;
-  padding: $space-xs $space-s;
+  padding: variables.$space-xs variables.$space-s;
 }
 
 .repositories {
@@ -20,14 +20,14 @@
   display: flex;
   align-items: flex-start;
   overflow-x: auto;
-  gap: $space-s;
-  padding: 0 $space-s $space-s $space-s;
+  gap: variables.$space-s;
+  padding: 0 variables.$space-s variables.$space-s variables.$space-s;
 }
 
 .repository {
   box-sizing: border-box;
-  padding: 0 $space-m $space-m $space-m;
-  border-radius: $default-border-radius;
+  padding: 0 variables.$space-m variables.$space-m variables.$space-m;
+  border-radius: variables.$default-border-radius;
   box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
   width: 460px;
   flex: 0 0 auto;
@@ -36,16 +36,16 @@
 .repository-head {
   position: sticky;
   top: 0;
-  padding-top: $space-s;
-  padding-bottom: $space-s;
-  margin-bottom: $space-s;
+  padding-top: variables.$space-s;
+  padding-bottom: variables.$space-s;
+  margin-bottom: variables.$space-s;
   z-index: 100;
 
   &__title {
     display: flex;
     align-items: center;
-    gap: $space-xs;
-    margin-bottom: $space-s;
+    gap: variables.$space-xs;
+    margin-bottom: variables.$space-s;
   }
 
   &__title-text {
@@ -58,20 +58,20 @@
   align-items: center;
 
   &__icon {
-    width: $space-s;
-    height: $space-s;
-    margin-right: $space-xxs;
+    width: variables.$space-s;
+    height: variables.$space-s;
+    margin-right: variables.$space-xxs;
   }
 }
 
-@media (max-width: $max-width-mobile) {
+@media (max-width: variables.$max-width-mobile) {
   .repositories {
     scroll-snap-type: x mandatory;
   }
 
   .repository {
-    padding: 0 $space-s $space-s $space-s;
-    width: calc(100% - #{$space-s});
+    padding: 0 variables.$space-s variables.$space-s variables.$space-s;
+    width: calc(100% - #{variables.$space-s});
     scroll-snap-align: center;
   }
 }

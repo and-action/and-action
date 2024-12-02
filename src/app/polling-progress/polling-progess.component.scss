@@ -1,11 +1,11 @@
-@import '../../colors';
-@import '../../variables';
+@use '../../colors';
+@use '../../variables';
 
 .status {
   white-space: nowrap;
 
   &__last-subscription {
-    font-size: $font-size-xs;
+    font-size: variables.$font-size-xs;
     margin: 0;
   }
 

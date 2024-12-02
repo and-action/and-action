@@ -1,5 +1,5 @@
-@import '../../colors';
-@import '../../variables';
+@use '../../colors';
+@use '../../variables';
 
 $border-radius: 4px;
 
@@ -8,7 +8,7 @@ $border-radius: 4px;
 }
 
 .tag {
-  font-size: $font-size-xs;
+  font-size: variables.$font-size-xs;
   display: flex;
   align-items: center;
   border-radius: $border-radius;
@@ -20,7 +20,7 @@ $border-radius: 4px;
     padding: 1px 6px;
 
     &:last-child {
-      padding-right: $space-xs;
+      padding-right: variables.$space-xs;
     }
   }
 
@@ -32,11 +32,11 @@ $border-radius: 4px;
   }
 
   &__status-icon {
-    width: $space-s;
-    height: $space-s;
+    width: variables.$space-s;
+    height: variables.$space-s;
 
     &--success {
-      fill: $color-success;
+      fill: colors.$color-success;
     }
 
     &--error {
@@ -63,10 +63,10 @@ $border-radius: 4px;
   }
 }
 
-@media (max-width: $max-width-mobile) {
+@media (max-width: variables.$max-width-mobile) {
   $border-radius: 4px;
   .tag {
-    font-size: $font-size-xxs;
+    font-size: variables.$font-size-xxs;
     border-radius: $border-radius;
     height: 16px;
 

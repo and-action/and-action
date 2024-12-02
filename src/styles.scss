@@ -16,7 +16,12 @@
 @use 'app/polling-progress/polling-progess.component.theme' as polling-progress;
 @use 'app/status-tag/status-tag.component.theme' as status-tag;
 
+@use 'colors';
+@use 'variables';
+
 @mixin component-themes($theme) {
+  @include theme-styles.theme($theme);
+
   @include mat.button-theme($theme);
   @include mat.button-toggle-theme($theme);
   @include mat.checkbox-theme($theme);
@@ -30,7 +35,6 @@
   @include mat.snack-bar-theme($theme);
   @include mat.toolbar-theme($theme);
 
-  @include theme-styles.theme($theme);
   @include actions-dashboard-config.theme($theme);
   @include actions-dashboard-item.theme($theme);
   @include app.theme($theme);
@@ -43,6 +47,8 @@
 }
 
 @mixin component-colors($theme) {
+  @include theme-styles.color($theme);
+
   @include mat.button-color($theme);
   @include mat.button-toggle-color($theme);
   @include mat.checkbox-color($theme);
@@ -56,7 +62,6 @@
   @include mat.snack-bar-color($theme);
   @include mat.toolbar-color($theme);
 
-  @include theme-styles.color($theme);
   @include actions-dashboard-config.color($theme);
   @include actions-dashboard-item.color($theme);
   @include app.color($theme);
@@ -87,9 +92,6 @@ html {
   @include component-colors(m3.$dark-theme);
 }
 
-@import 'colors';
-@import 'variables';
-
 .mat-mdc-dialog-container {
   --mdc-dialog-supporting-text-size: 14px;
 }
@@ -115,55 +117,55 @@ ul {
 
   a,
   button {
-    margin-left: $space-s;
+    margin-left: variables.$space-s;
   }
 }
 
 .u-margin-right {
   &-xxs {
-    margin-right: $space-xxs;
+    margin-right: variables.$space-xxs;
   }
   &-xs {
-    margin-right: $space-xs;
+    margin-right: variables.$space-xs;
   }
   &-s {
-    margin-right: $space-s;
+    margin-right: variables.$space-s;
   }
   &-m {
-    margin-right: $space-m;
+    margin-right: variables.$space-m;
   }
   &-l {
-    margin-right: $space-l;
+    margin-right: variables.$space-l;
   }
   &-xl {
-    margin-right: $space-xl;
+    margin-right: variables.$space-xl;
   }
   &-xxl {
-    margin-right: $space-xxl;
+    margin-right: variables.$space-xxl;
   }
 }
 
 .u-margin-bottom {
   &-xxs {
-    margin-bottom: $space-xxs;
+    margin-bottom: variables.$space-xxs;
   }
   &-xs {
-    margin-bottom: $space-xs;
+    margin-bottom: variables.$space-xs;
   }
   &-s {
-    margin-bottom: $space-s;
+    margin-bottom: variables.$space-s;
   }
   &-m {
-    margin-bottom: $space-m;
+    margin-bottom: variables.$space-m;
   }
   &-l {
-    margin-bottom: $space-l;
+    margin-bottom: variables.$space-l;
   }
   &-xl {
-    margin-bottom: $space-xl;
+    margin-bottom: variables.$space-xl;
   }
   &-xxl {
-    margin-bottom: $space-xxl;
+    margin-bottom: variables.$space-xxl;
   }
 }
 
@@ -184,9 +186,9 @@ ul {
 }
 
 .tooltip {
-  font-size: $font-size-s;
-  padding: $space-xxs $space-xs;
-  border-radius: $default-border-radius;
+  font-size: variables.$font-size-s;
+  padding: variables.$space-xxs variables.$space-xs;
+  border-radius: variables.$default-border-radius;
   opacity: 0.9;
   z-index: 2000;
 
@@ -202,33 +204,33 @@ ul {
 .view-placeholder {
   margin-top: 80px;
   text-align: center;
-  font-size: $font-size-l;
+  font-size: variables.$font-size-l;
 }
 
 .u-state-tag {
-  font-size: $font-size-xs;
-  padding: 0 $space-xs;
+  font-size: variables.$font-size-xs;
+  padding: 0 variables.$space-xs;
   border-radius: 4px;
   // TODO: margin bottom for p tags should be set globally to 0.
   margin: 0 !important;
 
   &--active {
-    color: $color-success;
-    border-color: $color-success;
+    color: colors.$color-success;
+    border-color: colors.$color-success;
   }
 
   &--error,
   &--failure {
-    color: $color-error;
-    border-color: $color-error;
+    color: colors.$color-error;
+    border-color: colors.$color-error;
   }
 
   &--in_progress,
   &--pending,
   &--queued,
   &--waiting {
-    color: $color-in-progress;
-    border-color: $color-in-progress;
+    color: colors.$color-in-progress;
+    border-color: colors.$color-in-progress;
   }
 
   &--inactive,

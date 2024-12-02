@@ -1,18 +1,18 @@
-@import '../../colors';
-@import '../../variables';
+@use '../../colors';
+@use '../../variables';
 
 :host {
   display: block;
   box-sizing: border-box;
-  padding: $space-s;
-  border-radius: $default-border-radius;
+  padding: variables.$space-s;
+  border-radius: variables.$default-border-radius;
 }
 
 .repository-head {
   display: flex;
   align-items: center;
-  gap: $space-xs;
-  margin-bottom: $space-xs;
+  gap: variables.$space-xs;
+  margin-bottom: variables.$space-xs;
 
   &__title {
     text-wrap: normal;
@@ -23,12 +23,12 @@
 .branch-title {
   display: inline-flex;
   align-items: center;
-  margin-bottom: $space-xs;
+  margin-bottom: variables.$space-xs;
 
   &__icon {
-    width: $space-s;
-    height: $space-s;
-    margin-right: $space-xxs;
+    width: variables.$space-s;
+    height: variables.$space-s;
+    margin-right: variables.$space-xxs;
   }
 }
 
@@ -37,8 +37,8 @@
   flex-wrap: wrap;
 
   &__item {
-    margin-top: $space-xs;
-    margin-right: $space-xs;
+    margin-top: variables.$space-xs;
+    margin-right: variables.$space-xs;
   }
 
   &__item-link {
