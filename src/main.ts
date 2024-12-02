@@ -1,8 +1,9 @@
 import {
-  APP_INITIALIZER,
   enableProdMode,
   ErrorHandler,
   importProvidersFrom,
+  inject,
+  provideAppInitializer,
 } from '@angular/core';
 
 import { environment } from './environments/environment';
@@ -87,15 +88,15 @@ bootstrapApplication(AppComponent, {
       useClass: HttpGithubAuthorizationInterceptor,
       multi: true,
     },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (andActionDataService: AndActionDataService) => () => {
-        andActionDataService.initSelectedTheme();
-        andActionDataService.initActionsDashboardConfig();
-      },
-      deps: [AndActionDataService],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      const initializerFn = (
+        (andActionDataService: AndActionDataService) => () => {
+          andActionDataService.initSelectedTheme();
+          andActionDataService.initActionsDashboardConfig();
+        }
+      )(inject(AndActionDataService));
+      return initializerFn();
+    }),
     provideAnimations(),
     importProvidersFrom([
       GraphQLModule,

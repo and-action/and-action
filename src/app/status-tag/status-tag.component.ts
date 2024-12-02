@@ -4,7 +4,6 @@ import { StatusTagStatus } from './status-tag-status';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  standalone: true,
   imports: [CommonModule],
   selector: 'ana-status-tag',
   templateUrl: './status-tag.component.html',

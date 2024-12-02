@@ -25,7 +25,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
  * The given observable itself should do additional individual error handling if needed.
  */
 @Component({
-  standalone: true,
   imports: [CommonModule, MatProgressBarModule, MatSnackBarModule],
   selector: 'ana-polling-progress',
   templateUrl: './polling-progess.component.html',

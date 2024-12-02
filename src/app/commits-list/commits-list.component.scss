@@ -1,11 +1,11 @@
-@import '../../colors';
-@import '../../variables';
+@use '../../colors';
+@use '../../variables';
 
 .repository {
   &__commit {
     height: 80px;
-    font-size: $font-size-xs;
-    line-height: $line-height-xs;
+    font-size: variables.$font-size-xs;
+    line-height: variables.$line-height-xs;
     display: flex;
     align-items: center;
 
@@ -26,19 +26,19 @@
 
   &__deployment {
     display: inline-block;
-    margin: 0 $space-xs $space-xxs 0;
+    margin: 0 variables.$space-xs variables.$space-xxs 0;
 
     &--light {
       opacity: 0.2;
     }
   }
 }
-@media (max-width: $max-width-mobile) {
+@media (max-width: variables.$max-width-mobile) {
   .repository {
     &__commit {
       height: 80px;
-      font-size: $font-size-xxs;
-      line-height: $line-height-xxs;
+      font-size: variables.$font-size-xxs;
+      line-height: variables.$line-height-xxs;
     }
   }
 }

@@ -22,7 +22,6 @@ import { PollingProgessComponent } from '../polling-progress/polling-progess.com
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-  standalone: true,
   imports: [
     CommitsGraphComponent,
     CommitsListComponent,

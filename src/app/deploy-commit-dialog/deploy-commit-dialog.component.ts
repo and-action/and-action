@@ -44,7 +44,6 @@ export interface DialogData {
 }
 
 @Component({
-  standalone: true,
   imports: [
     CommonModule,
     CommitInfoComponent,

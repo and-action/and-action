@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  standalone: true,
   imports: [MatButtonModule, MatIconModule],
   selector: 'ana-snack-bar',
   templateUrl: './snack-bar.component.html',

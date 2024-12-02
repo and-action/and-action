@@ -3,7 +3,6 @@ import { StatusWithTextStatus } from '../core/status-with-text';
 
 @Component({
   selector: 'ana-status-with-text',
-  standalone: true,
   imports: [],
   templateUrl: './status-with-text.component.html',
   styleUrl: './status-with-text.component.scss',

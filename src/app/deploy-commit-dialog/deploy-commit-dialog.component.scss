@@ -1,5 +1,5 @@
-@import '../../colors';
-@import '../../variables';
+@use '../../colors';
+@use '../../variables';
 
 :host {
   display: block;
@@ -17,11 +17,11 @@
 }
 
 .commit-status {
-  padding: $space-xs;
-  border-radius: $default-border-radius;
+  padding: variables.$space-xs;
+  border-radius: variables.$default-border-radius;
 
   &__check-suite {
-    margin-left: $space-l;
+    margin-left: variables.$space-l;
   }
 }
 
@@ -30,7 +30,7 @@
   grid-template-columns: repeat(4, auto);
   align-items: center;
   justify-items: start;
-  gap: $space-m $space-s;
+  gap: variables.$space-m variables.$space-s;
 
   .mat-divider {
     grid-column: 1 / span 4;
@@ -52,8 +52,8 @@
 .environment {
   &__tag {
     border-radius: 4px;
-    font-size: $font-size-l;
-    padding: $space-xs $space-s;
+    font-size: variables.$font-size-l;
+    padding: variables.$space-xs variables.$space-s;
     margin: 0;
     justify-self: stretch;
     text-align: center;
@@ -75,7 +75,7 @@
   }
 }
 
-@media (max-width: $max-width-mobile) {
+@media (max-width: variables.$max-width-mobile) {
   .environment-list {
     grid-template-rows: auto;
     grid-template-columns: auto auto auto;

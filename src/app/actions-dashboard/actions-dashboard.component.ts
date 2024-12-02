@@ -12,7 +12,6 @@ import { LoadingStatus } from '../loading-status';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
 
 @Component({
-  standalone: true,
   imports: [
     ActionsDashboardItemComponent,
     MatProgressSpinnerModule,
