@@ -7,7 +7,6 @@ import { TooltipDirective } from '../tooltip.directive';
 export const maxCommitMessageLength = 100;
 
 @Component({
-  standalone: true,
   imports: [CommonModule, TooltipDirective],
   selector: 'ana-commit-info',
   templateUrl: './commit-info.component.html',

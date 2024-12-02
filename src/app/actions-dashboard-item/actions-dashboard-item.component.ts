@@ -11,7 +11,6 @@ import { RouterModule } from '@angular/router';
 import { StatusTagComponent } from '../status-tag/status-tag.component';
 
 @Component({
-  standalone: true,
   imports: [RouterModule, StatusTagComponent],
   selector: 'ana-actions-dashboard-item',
   templateUrl: './actions-dashboard-item.component.html',

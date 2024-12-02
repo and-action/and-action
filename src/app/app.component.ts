@@ -20,7 +20,6 @@ import {
 } from './core/and-action-data.service';
 
 @Component({
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

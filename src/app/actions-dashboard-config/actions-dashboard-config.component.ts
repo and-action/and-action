@@ -15,7 +15,6 @@ import { LoadingStatus } from '../loading-status';
 import { tap } from 'rxjs';
 
 @Component({
-  standalone: true,
   imports: [
     FormsModule,
     MatButtonModule,
