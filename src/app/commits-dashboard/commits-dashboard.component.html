@@ -1,12 +1,10 @@
-@if (repositories$) {
-  <ana-polling-progress
-    [observable]="repositories$"
-    [pollIntervalInSeconds]="updateIntervalInSeconds"
-    class="polling-progress"
-  ></ana-polling-progress>
-}
+<ana-polling-progress
+  [resource]="repositories"
+  [pollIntervalInSeconds]="updateIntervalInSeconds"
+  class="polling-progress"
+></ana-polling-progress>
 
-@if (loadingStatus === loadingStatusEnum.FINISHED) {
+@if (repositories.hasValue()) {
   <div class="repositories">
     @for (
       repository of filteredRepositories();
@@ -53,12 +51,12 @@
   </div>
 }
 
-@if (loadingStatus === loadingStatusEnum.LOADING) {
+@if (!repositories.hasValue()) {
   <mat-progress-spinner class="progress-spinner" mode="indeterminate">
   </mat-progress-spinner>
 }
 
-@if (loadingStatus === loadingStatusEnum.FAILED) {
+@if (repositories.error()) {
   <div class="view-placeholder">
     <p>Repositories could not be loaded.</p>
   </div>

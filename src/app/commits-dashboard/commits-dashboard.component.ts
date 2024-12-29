@@ -3,11 +3,12 @@ import {
   computed,
   effect,
   inject,
+  resource,
+  ResourceRef,
   Signal,
-  signal,
 } from '@angular/core';
 import { GithubDataService } from '../core/github-data.service';
-import { combineLatest, Observable, tap } from 'rxjs';
+import { combineLatest, firstValueFrom } from 'rxjs';
 import { RepositoryWithCommits } from './commits-dashboard-models';
 import { delay, map, mergeMap } from 'rxjs/operators';
 import { RepositoryFilterService } from '../repository-filter.service';
@@ -17,7 +18,6 @@ import { CommitsGraphComponent } from '../commits-graph/commits-graph.component'
 import { CommitsListComponent } from '../commits-list/commits-list.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
-import { LoadingStatus } from '../loading-status';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -34,13 +34,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
   styleUrl: './commits-dashboard.component.scss',
 })
 export class CommitsDashboardComponent {
-  protected repositories$?: Observable<RepositoryWithCommits[]>;
-
-  protected repositories = signal<RepositoryWithCommits[]>([]);
+  protected repositories: ResourceRef<RepositoryWithCommits[]>;
   protected filteredRepositories: Signal<RepositoryWithCommits[]>;
 
-  protected loadingStatus = LoadingStatus.LOADING;
-  protected loadingStatusEnum = LoadingStatus;
   protected updateIntervalInSeconds = 60;
 
   private queryParams = toSignal(inject(ActivatedRoute).queryParams);
@@ -50,40 +46,44 @@ export class CommitsDashboardComponent {
     const router = inject(Router);
     const document = inject(DOCUMENT);
     const filterValue = inject(RepositoryFilterService).splitValue;
-
-    this.repositories$ = this.githubDataService
-      .loadOrganizationsWithSelectedRepositories()
-      .pipe(
-        map((organizations) =>
-          organizations.flatMap((organization) => organization.repositories),
-        ),
-        mergeMap((repositories) =>
-          combineLatest(
-            repositories.map((repository) =>
-              this.githubDataService.loadRepositoryCommits(
-                repository.owner.login,
-                repository.name,
+    this.repositories = resource({
+      loader: () =>
+        firstValueFrom(
+          this.githubDataService
+            .loadOrganizationsWithSelectedRepositories()
+            .pipe(
+              map((organizations) =>
+                organizations.flatMap(
+                  (organization) => organization.repositories,
+                ),
+              ),
+              mergeMap((repositories) =>
+                combineLatest(
+                  repositories.map((repository) =>
+                    this.githubDataService.loadRepositoryCommits(
+                      repository.owner.login,
+                      repository.name,
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
         ),
-        tap({
-          next: (repositories) => {
-            this.repositories.set(repositories);
-            this.loadingStatus = LoadingStatus.FINISHED;
-          },
-          error: () => (this.loadingStatus = LoadingStatus.FAILED),
-        }),
-      );
+    });
 
-    this.filteredRepositories = computed<RepositoryWithCommits[]>(() =>
-      this.repositories().filter(
-        (repository) =>
-          filterValue().length === 0 ||
-          filterValue().some((value) =>
-            repository.name.toLowerCase().includes(value.toLowerCase().trim()),
-          ),
-      ),
+    this.filteredRepositories = computed<RepositoryWithCommits[]>(
+      () =>
+        this.repositories
+          .value()
+          ?.filter(
+            (repository) =>
+              filterValue().length === 0 ||
+              filterValue().some((value) =>
+                repository.name
+                  .toLowerCase()
+                  .includes(value.toLowerCase().trim()),
+              ),
+          ) ?? [],
     );
 
     effect(() => {
@@ -110,19 +110,21 @@ export class CommitsDashboardComponent {
       .loadRepositoryCommits(repository.owner.login, repository.name)
       .pipe(delay(3000))
       .subscribe((repositoryWithCommits) => {
-        const indexToUpdate = this.repositories().findIndex(
-          (repo) =>
-            repo.owner === repositoryWithCommits.owner &&
-            repo.name === repositoryWithCommits.name,
-        );
+        const indexToUpdate = this.repositories
+          .value()
+          ?.findIndex(
+            (repo) =>
+              repo.owner === repositoryWithCommits.owner &&
+              repo.name === repositoryWithCommits.name,
+          );
 
         if (
           indexToUpdate !== undefined &&
           indexToUpdate !== -1 &&
-          this.repositories()[indexToUpdate]
+          this.repositories.value()?.[indexToUpdate]
         ) {
           this.repositories.update((repositories) =>
-            repositories.map((value, index) =>
+            repositories?.map((value, index) =>
               index === indexToUpdate ? repositoryWithCommits : value,
             ),
           );
