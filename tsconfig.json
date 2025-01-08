@@ -16,7 +16,7 @@
     "strict": true,
     "target": "ES2022",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2022", "dom", "esnext.asynciterable"],
+    "lib": ["es2023", "dom", "esnext.asynciterable"],
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
