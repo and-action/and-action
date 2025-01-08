@@ -1,11 +1,11 @@
 import { StatusTagColor } from './status-tag-color';
 
 export function getDeploymentEnvironmentColors(environmentNames: string[]) {
-  const set = new Set(environmentNames);
+  const set = new Set(environmentNames.toSorted());
   const colors = [
     StatusTagColor.GREEN,
-    StatusTagColor.YELLOW,
     StatusTagColor.BLUE,
+    StatusTagColor.YELLOW,
     StatusTagColor.RED,
     StatusTagColor.GRAY,
   ];
