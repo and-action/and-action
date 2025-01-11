@@ -283,11 +283,11 @@ export class GithubDataService {
 
   loadViewerAndOrganizations() {
     return this.apollo
-      .watchQuery<RepositoryQueryResult>({
+      .query<RepositoryQueryResult>({
         query: repositoriesQuery,
         errorPolicy: 'all',
       })
-      .valueChanges.pipe(
+      .pipe(
         map(({ data, errors }) => {
           // FORBIDDEN can occur if a public member of an organisation has no access to a repository.
           // In this case, the repository's value is `null`.

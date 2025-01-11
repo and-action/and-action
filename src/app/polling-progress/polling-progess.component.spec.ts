@@ -5,7 +5,6 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { of, tap } from 'rxjs';
 
 import { PollingProgessComponent } from './polling-progess.component';
 import { By } from '@angular/platform-browser';
@@ -14,9 +13,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { DEFAULT_DATE_TIME_FORMAT } from '../constants';
+import { resource } from '@angular/core';
 
 describe('PollingProgressComponent', () => {
-  let component: PollingProgessComponent<boolean>;
   let fixture: ComponentFixture<PollingProgessComponent<boolean>>;
   const pollInterval = 60;
   let observableEmitCount = 0;
@@ -35,33 +34,41 @@ describe('PollingProgressComponent', () => {
     });
 
     fixture = TestBed.createComponent(PollingProgessComponent<boolean>);
-    component = fixture.componentInstance;
-    component.pollIntervalInSeconds = pollInterval;
+    fixture.componentRef.setInput('pollIntervalInSeconds', pollInterval);
 
-    fixture.detectChanges();
     await fixture.whenStable();
-
     observableEmitCount = 0;
   });
 
   it('should subscribe to observable in given interval and update ui', fakeAsync(() => {
     jasmine.clock().mockDate(new Date('2023-03-01T08:00:00.000'));
-    component.observable = of(true).pipe(tap(() => ++observableEmitCount));
 
-    checkEmptyLastSubscriptionAndProgressDontExist();
+    TestBed.runInInjectionContext(() => {
+      const testResource = resource({
+        loader: () => {
+          ++observableEmitCount;
+          return Promise.resolve();
+        },
+      });
+      fixture.componentRef.setInput('resource', testResource);
+    });
 
-    component.ngOnChanges();
     fixture.detectChanges();
+    checkEmptyLastSubscriptionAndProgressDontExist();
 
     tickAndCheck(1, '8:00', 0, 1);
     tickAndCheck(15000, '8:00', 25, 1);
     tickAndCheck(15000, '8:00', 50, 1);
     tickAndCheck(15000, '8:00', 75, 1);
-    tickAndCheck(15000, '8:01', 0, 2);
-    tickAndCheck(15000, '8:01', 25, 2);
+
+    tickAndCheck(15000, '8:01', 100, 2);
+    tickAndCheck(1, '8:01', 0, 2);
+
+    tickAndCheck(14999, '8:01', 25, 2);
     tickAndCheck(15000, '8:01', 50, 2);
     tickAndCheck(15000, '8:01', 75, 2);
-    tickAndCheck(15000, '8:02', 0, 3);
+    tickAndCheck(15000, '8:02', 100, 3);
+    tickAndCheck(1, '8:02', 0, 3);
 
     // Async pipes subscribe to timer observables.
     // It seems that there are still timers in the queue that need to be discarded.
@@ -70,23 +77,29 @@ describe('PollingProgressComponent', () => {
 
   it('should keep polling on error without updating timestamp of last update', fakeAsync(() => {
     jasmine.clock().mockDate(new Date('2023-03-01T08:00:00.000'));
-    component.observable = of(true).pipe(
-      tap(() => {
-        ++observableEmitCount;
-        if (observableEmitCount !== 2) {
-          throw new Error('Test');
-        }
-      }),
-    );
-    component.pollIntervalInSeconds = pollInterval;
 
-    component.ngOnChanges();
+    TestBed.runInInjectionContext(() => {
+      const testResource = resource({
+        loader: () => {
+          ++observableEmitCount;
+          if (observableEmitCount !== 2) {
+            // return Promise.reject();
+            throw new Error('Test');
+          }
+          return Promise.resolve();
+        },
+      });
+      fixture.componentRef.setInput('resource', testResource);
+    });
+
     fixture.detectChanges();
 
     tickAndCheck(1, undefined, 0, 1);
     tickAndCheck(30000, undefined, 50, 1);
-    tickAndCheck(60000, '8:01', 50, 2);
-    tickAndCheck(60000, '8:01', 50, 3);
+    tickAndCheck(60000, '8:01', 100, 2);
+    tickAndCheck(30000, '8:01', 50, 2);
+    tickAndCheck(60000, '8:01', 100, 3);
+    tickAndCheck(60000, '8:01', 100, 4);
 
     // Async pipes subscribe to timer observables.
     // It seems that there are still timers in the queue that need to be discarded.
@@ -100,6 +113,7 @@ describe('PollingProgressComponent', () => {
     expectedObservableEmitCount: number,
   ) {
     tick(tickMillis);
+    fixture.detectChanges();
     fixture.detectChanges();
 
     const { lastSubscriptionElement, progressElement } = getElements();
