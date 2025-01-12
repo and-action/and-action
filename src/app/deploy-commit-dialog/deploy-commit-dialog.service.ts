@@ -23,6 +23,7 @@ import { StatusWithText, StatusWithTextStatus } from '../core/status-with-text';
 import { CommitState } from '../core/commit-state';
 import { assertIsNotUndefinedAndNotNull } from '../assert';
 import { Environment } from '../core/and-action-config';
+import { AndActionDataService } from '../core/and-action-data.service';
 
 interface LatestCommitDatePerDeployedEnvironment {
   [environment: string]: Date;
@@ -33,6 +34,7 @@ interface LatestCommitDatePerDeployedEnvironment {
 })
 export class DeployCommitDialogService {
   private githubDataService = inject(GithubDataService);
+  private andActionDataService = inject(AndActionDataService);
 
   getEnvironments(
     repositoryOwner: string,
@@ -172,7 +174,11 @@ export class DeployCommitDialogService {
   ) {
     const { id: commitId, oid: commitOid } = commitToDeploy;
     const isCurrentEnvironments$ = this.githubDataService
-      .loadRepositoryCommits(repositoryOwner, repositoryName)
+      .loadRepositoryCommits(
+        repositoryOwner,
+        repositoryName,
+        this.andActionDataService.commitsDashboardConfig.commitsHistoryCount,
+      )
       .pipe(
         mergeMap((repository) => {
           const refetchedCommitToDeploy = repository.commits.find(

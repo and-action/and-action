@@ -13,12 +13,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { LoadingStatus } from '../loading-status';
 import { tap } from 'rxjs';
+import { MatInputModule } from '@angular/material/input';
+import { CommitsDashboardConfig } from '../core/commits-dashboard-config';
 
 @Component({
   imports: [
     FormsModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatInputModule,
     MatProgressSpinnerModule,
     RouterModule,
   ],
@@ -32,6 +35,9 @@ export class ActionsDashboardConfigComponent implements OnInit {
   protected appRouting = AppRouting;
   protected loadingStatus = LoadingStatus.LOADING;
   protected loadingStatusEnum = LoadingStatus;
+
+  protected commitsHistoryCount =
+    inject(AndActionDataService).commitsDashboardConfig?.commitsHistoryCount;
 
   private githubDataService = inject(GithubDataService);
   private andActionDataService = inject(AndActionDataService);
@@ -77,6 +83,10 @@ export class ActionsDashboardConfigComponent implements OnInit {
 
     const selectedRepositoriesForDashboard = Object.keys(this.model).filter(
       (repositoryNameWithOwner) => this.model[repositoryNameWithOwner],
+    );
+
+    this.andActionDataService.saveCommitsDashboardConfig(
+      new CommitsDashboardConfig(this.commitsHistoryCount),
     );
 
     this.andActionDataService

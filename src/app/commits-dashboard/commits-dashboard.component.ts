@@ -20,6 +20,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { AndActionDataService } from '../core/and-action-data.service';
 
 @Component({
   imports: [
@@ -41,6 +42,7 @@ export class CommitsDashboardComponent {
 
   private queryParams = toSignal(inject(ActivatedRoute).queryParams);
   private githubDataService = inject(GithubDataService);
+  private andActionDataService = inject(AndActionDataService);
 
   constructor() {
     const router = inject(Router);
@@ -63,6 +65,8 @@ export class CommitsDashboardComponent {
                     this.githubDataService.loadRepositoryCommits(
                       repository.owner.login,
                       repository.name,
+                      this.andActionDataService.commitsDashboardConfig
+                        .commitsHistoryCount,
                     ),
                   ),
                 ),
@@ -107,7 +111,11 @@ export class CommitsDashboardComponent {
 
   protected reloadCommitsForRepository(repository: RepositoryWithCommits) {
     this.githubDataService
-      .loadRepositoryCommits(repository.owner.login, repository.name)
+      .loadRepositoryCommits(
+        repository.owner.login,
+        repository.name,
+        this.andActionDataService.commitsDashboardConfig.commitsHistoryCount,
+      )
       .pipe(delay(3000))
       .subscribe((repositoryWithCommits) => {
         const indexToUpdate = this.repositories
