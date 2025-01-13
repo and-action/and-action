@@ -99,6 +99,7 @@ bootstrapApplication(AppComponent, {
         (andActionDataService: AndActionDataService) => () => {
           andActionDataService.initSelectedTheme();
           andActionDataService.initActionsDashboardConfig();
+          andActionDataService.initCommitsDashboardConfig();
         }
       )(inject(AndActionDataService));
       return initializerFn();

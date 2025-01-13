@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ActionsDashboardConfig } from './actions-dashboard-config';
 import { of } from 'rxjs';
+import {
+  CommitsDashboardConfig,
+  DEFAULT_COMMITS_HISTORY_COUNT,
+} from './commits-dashboard-config';
 
 export enum AndActionTheme {
   AUTO_THEME = 'auto-theme',
@@ -10,6 +14,7 @@ export enum AndActionTheme {
 
 const THEME_LOCAL_STORAGE_KEY = 'theme';
 const ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY = 'actions-dashboard-config';
+const COMMITS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY = 'commits-dashboard-config';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +22,7 @@ const ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY = 'actions-dashboard-config';
 export class AndActionDataService {
   private mySelectedTheme: AndActionTheme = AndActionTheme.AUTO_THEME;
   private myActionsDashboardConfig?: ActionsDashboardConfig;
+  private myCommitsDashboardConfig!: CommitsDashboardConfig;
 
   get selectedTheme() {
     return this.mySelectedTheme;
@@ -37,6 +43,10 @@ export class AndActionDataService {
     return this.myActionsDashboardConfig;
   }
 
+  get commitsDashboardConfig() {
+    return this.myCommitsDashboardConfig;
+  }
+
   saveActionsDashboardConfig(actionsDashboardConfig: ActionsDashboardConfig) {
     localStorage.setItem(
       ACTIONS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY,
@@ -53,5 +63,22 @@ export class AndActionDataService {
     this.myActionsDashboardConfig = configString
       ? (JSON.parse(configString) as ActionsDashboardConfig)
       : new ActionsDashboardConfig([]);
+  }
+
+  saveCommitsDashboardConfig(commitsDashboardConfig: CommitsDashboardConfig) {
+    localStorage.setItem(
+      COMMITS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY,
+      JSON.stringify(commitsDashboardConfig),
+    );
+    this.myCommitsDashboardConfig = commitsDashboardConfig;
+  }
+
+  initCommitsDashboardConfig() {
+    const configString = localStorage.getItem(
+      COMMITS_DASHBOARD_CONFIG_LOCAL_STORAGE_KEY,
+    );
+    this.myCommitsDashboardConfig = configString
+      ? (JSON.parse(configString) as CommitsDashboardConfig)
+      : new CommitsDashboardConfig(DEFAULT_COMMITS_HISTORY_COUNT);
   }
 }

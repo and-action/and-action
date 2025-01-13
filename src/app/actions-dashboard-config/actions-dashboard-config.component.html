@@ -1,7 +1,22 @@
 <h1>Settings</h1>
 
 @if (loadingStatus === loadingStatusEnum.FINISHED) {
-  <form class="repositories-form" #form="ngForm">
+  <form class="repositories-form" ngForm>
+    <h2>General</h2>
+
+    <h3>Commits and Deployments</h3>
+
+    <mat-form-field>
+      <mat-label>Commits history count</mat-label>
+      <input
+        matInput
+        type="number"
+        name="commitsHistoryCount"
+        [(ngModel)]="commitsHistoryCount"
+      />
+    </mat-form-field>
+
+    <h2>Repositories</h2>
     <ul class="u-margin-bottom-l">
       @for (
         viewerOrOrganization of viewerAndOrganizations;

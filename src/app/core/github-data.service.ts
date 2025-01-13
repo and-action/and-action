@@ -152,7 +152,11 @@ const repositoriesQuery = gql`
 `;
 
 const repositoryCommitsQuery = gql`
-  query RepositoryCommits($owner: String!, $name: String!) {
+  query RepositoryCommits(
+    $owner: String!
+    $name: String!
+    $commitsHistoryCount: Int!
+  ) {
     repository(owner: $owner, name: $name) {
       id
       url
@@ -168,7 +172,7 @@ const repositoryCommitsQuery = gql`
             id
             oid
             abbreviatedOid
-            history(first: 50) {
+            history(first: $commitsHistoryCount) {
               edges {
                 node {
                   parents(first: 10) {
@@ -370,13 +374,18 @@ export class GithubDataService {
     );
   }
 
-  loadRepositoryCommits(owner: string, name: string) {
+  loadRepositoryCommits(
+    owner: string,
+    name: string,
+    commitsHistoryCount: number,
+  ) {
     return this.apollo
       .query<any>({
         query: repositoryCommitsQuery,
         variables: {
           owner,
           name,
+          commitsHistoryCount,
         },
         fetchPolicy: 'network-only',
       })
