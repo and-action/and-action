@@ -20,6 +20,8 @@
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
+    "strictInjectionParameters": true,
+    "strictStandalone": true,
     "strictTemplates": true
   }
 }
