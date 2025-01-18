@@ -1,0 +1,52 @@
+@use '../../../variables';
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.filter {
+  display: flex;
+  align-items: baseline;
+  gap: variables.$space-s;
+  width: 100%;
+
+  &__input {
+    flex: 1;
+  }
+
+  &__count {
+    width: 64px;
+    text-align: right;
+  }
+}
+
+.repository-list-loading {
+  margin: auto;
+}
+
+.repository-list {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.repository-list-item {
+  display: flex;
+  align-items: center;
+  font-size: variables.$font-size-l;
+
+  &__label {
+    display: flex;
+    gap: variables.$space-xs;
+    align-items: center;
+  }
+
+  &__name {
+    margin-bottom: 0;
+  }
+}
+
+.selected-repositories {
+  cursor: default;
+}
