@@ -11,7 +11,7 @@
 .polling-progress {
   align-self: flex-end;
   display: inline-block;
-  padding: variables.$space-xs variables.$space-s;
+  padding: variables.$space-xs variables.$space-s 0 variables.$space-s;
 }
 
 .repositories {
@@ -21,7 +21,7 @@
   align-items: flex-start;
   overflow-x: auto;
   gap: variables.$space-s;
-  padding: 0 variables.$space-s variables.$space-s variables.$space-s;
+  padding: variables.$space-s;
 }
 
 .repository {
@@ -31,6 +31,11 @@
   box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
   width: 460px;
   flex: 0 0 auto;
+}
+
+.repository--add {
+  padding: variables.$space-m;
+  width: auto;
 }
 
 .repository-head {
@@ -50,6 +55,12 @@
 
   &__title-text {
     margin-bottom: 0;
+  }
+
+  &__delete-button {
+    position: absolute;
+    top: variables.$space-m;
+    right: 0;
   }
 }
 

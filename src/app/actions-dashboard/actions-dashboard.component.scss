@@ -11,37 +11,12 @@
 .polling-progress {
   align-self: flex-end;
   display: inline-block;
-  padding: variables.$space-xs variables.$space-s;
-}
-
-.organization-list {
-  height: 100%;
-  padding: 0 variables.$space-s variables.$space-s variables.$space-s;
-
-  &__item {
-    &:not(:last-child) {
-      margin-bottom: variables.$space-xxl;
-    }
-  }
-}
-
-.viewer-or-organization {
-  display: inline-block;
-
-  &__link {
-    display: flex;
-    align-items: center;
-  }
-
-  &__avatar {
-    width: variables.$space-xl;
-    height: variables.$space-xl;
-    border-radius: variables.$default-border-radius;
-    margin-right: variables.$space-s;
-  }
+  padding: variables.$space-xs variables.$space-s 0 variables.$space-s;
 }
 
 .repository-list {
+  padding: variables.$space-s;
+
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: variables.$space-m variables.$space-m;
@@ -50,6 +25,13 @@
   &__item {
     display: block;
     box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
+
+    &--add {
+      align-self: start;
+      border-radius: variables.$default-border-radius;
+      padding: variables.$space-m;
+      width: auto;
+    }
   }
 
   &__item-content {

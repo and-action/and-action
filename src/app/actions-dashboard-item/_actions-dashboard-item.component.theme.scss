@@ -9,6 +9,10 @@
         fill: mat.get-theme-color($theme, on-surface);
       }
     }
+
+    &__delete-button {
+      color: mat.get-theme-color($theme, outline);
+    }
   }
 }
 

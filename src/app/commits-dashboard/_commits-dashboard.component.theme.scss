@@ -4,6 +4,10 @@
   ana-commits-dashboard {
     .repository {
       background-color: mat.get-theme-color($theme, surface-container-lowest);
+
+      &--add {
+        background-color: mat.get-theme-color($theme, surface-container-high);
+      }
     }
 
     .repository-head {
@@ -11,6 +15,10 @@
         $color: mat.get-theme-color($theme, surface-container-lowest),
         $alpha: 0.9
       );
+
+      &__delete-button {
+        color: mat.get-theme-color($theme, outline);
+      }
     }
 
     .branch {
