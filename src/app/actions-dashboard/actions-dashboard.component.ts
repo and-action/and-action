@@ -18,6 +18,12 @@ import { Repository } from '../core/repository';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { AddRepositoryComponent } from '../add-repository/add-repository.component';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   imports: [
@@ -25,6 +31,8 @@ import { AddRepositoryComponent } from '../add-repository/add-repository.compone
     MatProgressSpinnerModule,
     PollingProgessComponent,
     AddRepositoryComponent,
+    CdkDropList,
+    CdkDrag,
   ],
   selector: 'ana-actions-dashboard',
   templateUrl: './actions-dashboard.component.html',
@@ -103,5 +111,18 @@ export class ActionsDashboardComponent {
         new ActionsDashboardConfig(this.repositoriesNameWithOwner()),
       );
     }
+  }
+
+  protected drop(event: CdkDragDrop<string[]>) {
+    // Changing order is only possible when repositories are not filtered.
+    const repositories = [...(this.repositories.value() ?? [])];
+    if (this.filteredRepositories().length !== repositories.length) {
+      return;
+    }
+    moveItemInArray(repositories, event.previousIndex, event.currentIndex);
+    this.repositories.set(repositories);
+    this.andActionDataService.saveActionsDashboardConfig(
+      new ActionsDashboardConfig(this.repositoriesNameWithOwner()),
+    );
   }
 }

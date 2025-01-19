@@ -10,8 +10,9 @@
       }
     }
 
-    &__delete-button {
-      color: mat.get-theme-color($theme, outline);
+    &__delete-button,
+    .repository-drag-handle mat-icon {
+      color: mat.get-theme-color($theme, outline-variant);
     }
   }
 }

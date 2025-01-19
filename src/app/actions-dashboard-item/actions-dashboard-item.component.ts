@@ -1,4 +1,4 @@
-import { Component, Input, output } from '@angular/core';
+import { Component, input, Input, output } from '@angular/core';
 import { Repository } from '../core/repository';
 import { WorkflowRun } from '../core/workflow-run';
 import { WorkflowRunStatus } from '../core/workflow-run-status';
@@ -10,15 +10,25 @@ import { RouterModule } from '@angular/router';
 import { StatusTagComponent } from '../status-tag/status-tag.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
+import { CdkDragHandle } from '@angular/cdk/drag-drop';
+import { NgClass } from '@angular/common';
 
 @Component({
-  imports: [RouterModule, StatusTagComponent, MatIcon, MatIconButton],
+  imports: [
+    RouterModule,
+    StatusTagComponent,
+    MatIcon,
+    MatIconButton,
+    CdkDragHandle,
+    NgClass,
+  ],
   selector: 'ana-actions-dashboard-item',
   templateUrl: './actions-dashboard-item.component.html',
   styleUrl: './actions-dashboard-item.component.scss',
 })
 export class ActionsDashboardItemComponent {
   @Input({ required: true }) repository?: Repository;
+  dragDisabled = input<boolean>(false);
 
   readonly deleteRepository = output();
 

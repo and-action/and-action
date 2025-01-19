@@ -26,6 +26,10 @@
     display: block;
     box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
 
+    &.cdk-drag-placeholder {
+      opacity: 0;
+    }
+
     &--add {
       align-self: start;
       border-radius: variables.$default-border-radius;

@@ -7,12 +7,21 @@
 }
 
 @if (repositories.value()) {
-  <ul class="repository-list">
+  @let dragDisabled =
+    repositories.value()?.length !== filteredRepositories().length;
+  <ul
+    class="repository-list"
+    cdkDropList
+    cdkDropListOrientation="mixed"
+    [cdkDropListDisabled]="dragDisabled"
+    (cdkDropListDropped)="drop($event)"
+  >
     @for (repository of filteredRepositories(); track repository) {
-      <li class="repository-list__item">
+      <li class="repository-list__item" cdkDrag>
         <ana-actions-dashboard-item
           class="repository-list__item-content"
           [repository]="repository"
+          [dragDisabled]="dragDisabled"
           (deleteRepository)="deleteRepository(repository)"
         ></ana-actions-dashboard-item>
       </li>

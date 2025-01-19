@@ -1,3 +1,9 @@
+<div
+  class="repository-drag-handle"
+  [ngClass]="{ 'repository-drag-handle--disabled': dragDisabled() }"
+>
+  <mat-icon cdkDragHandle>drag_handle</mat-icon>
+</div>
 <div class="repository-head">
   <div class="repository-head__title">
     <a
