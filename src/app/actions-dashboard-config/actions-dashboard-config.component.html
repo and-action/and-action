@@ -1,133 +1,34 @@
 <h1>Settings</h1>
 
-@if (loadingStatus === loadingStatusEnum.FINISHED) {
-  <form class="repositories-form" ngForm>
-    <h2>General</h2>
+<form class="config-form" #configForm="ngForm" (ngSubmit)="onSave()">
+  <h2>Commits and Deployments</h2>
 
-    <h3>Commits and Deployments</h3>
-
-    <mat-form-field>
-      <mat-label>Commits history count</mat-label>
-      <input
-        matInput
-        type="number"
-        name="commitsHistoryCount"
-        [(ngModel)]="commitsHistoryCount"
-      />
-    </mat-form-field>
-
-    <h2>Repositories</h2>
-    <ul class="u-margin-bottom-l">
-      @for (
-        viewerOrOrganization of viewerAndOrganizations;
-        track viewerOrOrganization
-      ) {
-        <li>
-          <h2 class="viewer-or-organization">
-            <a
-              class="viewer-or-organization__link"
-              [href]="viewerOrOrganization.url"
-              target="_blank"
-              rel="noopener"
-            >
-              <img
-                class="viewer-or-organization__avatar"
-                [src]="viewerOrOrganization.avatarUrl"
-              />
-              <span>{{ viewerOrOrganization.login }}</span>
-            </a>
-          </h2>
-          <ul class="u-margin-bottom-xxl">
-            @for (
-              repository of viewerOrOrganization.repositories;
-              track repository
-            ) {
-              <li class="repository-list-item">
-                <mat-checkbox
-                  [(ngModel)]="model[repository.nameWithOwner]"
-                  [id]="repository.nameWithOwner"
-                  [name]="repository.nameWithOwner"
-                >
-                  <div class="repository-list-item__label">
-                    <svg class="repository-list-item__icon">
-                      @if (repository.isPrivate) {
-                        <use xlink:href="#icon-git-lock"></use>
-                      } @else {
-                        <use xlink:href="#icon-git-repo"></use>
-                      }
-                    </svg>
-                    <div>
-                      <p class="repository-list-item__name">
-                        {{ repository.name }}
-                      </p>
-                      @if (repository.parent) {
-                        <p class="repository-list-item__fork-info">
-                          Forked from {{ repository.parent.nameWithOwner }}
-                        </p>
-                      }
-                    </div>
-                    @if (repository.isArchived) {
-                      <p class="u-state-tag u-margin-right">Archived</p>
-                    }
-                  </div>
-                </mat-checkbox>
-                <!--          <input-->
-                <!--            type="checkbox"-->
-                <!--            [(ngModel)]="model[repository.nameWithOwner]"-->
-                <!--            [id]="repository.nameWithOwner"-->
-                <!--            [name]="repository.nameWithOwner"-->
-                <!--          />-->
-                <!--          <label-->
-                <!--            class="repository-list-item__label"-->
-                <!--            [for]="repository.nameWithOwner"-->
-                <!--          >-->
-                <!--            <svg class="repository-list-item__icon">-->
-                <!--              <use-->
-                <!--                *ngIf="repository.isPrivate; else gitLock"-->
-                <!--                xlink:href="#icon-git-lock"-->
-                <!--              ></use>-->
-                <!--              <ng-template #gitLock>-->
-                <!--                <use xlink:href="#icon-git-repo"></use>-->
-                <!--              </ng-template>-->
-                <!--            </svg>-->
-                <!--            <div>-->
-                <!--              <p>{{ repository.name }}</p>-->
-                <!--              <p-->
-                <!--                class="repository-list-item__fork-info"-->
-                <!--                *ngIf="repository.parent"-->
-                <!--              >-->
-                <!--                Forked from {{ repository.parent.nameWithOwner }}-->
-                <!--              </p>-->
-                <!--            </div>-->
-                <!--          </label>-->
-              </li>
-            }
-          </ul>
-        </li>
-      }
-    </ul>
-    @if (!isFormValid()) {
-      <p class="form-error">Please select at least one repository.</p>
+  <mat-form-field class="commits-history-count">
+    <mat-label>Commits history count</mat-label>
+    <input
+      #commitsHistoryCountInput="ngModel"
+      matInput
+      type="number"
+      name="commitsHistoryCount"
+      [(ngModel)]="commitsHistoryCount"
+      required
+      min="1"
+      max="100"
+    />
+    @if (commitsHistoryCountInput.invalid) {
+      <mat-error>Enter a value between 1 and 100</mat-error>
     }
+  </mat-form-field>
 
-    <div class="button-list">
-      <a mat-stroked-button [routerLink]="['/', appRouting.DASHBOARD]"
-        >Cancel</a
-      >
-      <button type="button" mat-flat-button color="primary" (click)="onSave()">
-        Save
-      </button>
-    </div>
-  </form>
-}
-
-@if (loadingStatus === loadingStatusEnum.LOADING) {
-  <mat-progress-spinner class="progress-spinner" mode="indeterminate">
-  </mat-progress-spinner>
-}
-
-@if (loadingStatus === loadingStatusEnum.FAILED) {
-  <div class="view-placeholder">
-    <p>Repositories could not be loaded.</p>
+  <div class="button-list">
+    <a mat-stroked-button [routerLink]="['/', appRouting.DASHBOARD]">Cancel</a>
+    <button
+      type="submit"
+      mat-flat-button
+      color="primary"
+      [disabled]="configForm.form.invalid"
+    >
+      Save
+    </button>
   </div>
-}
+</form>

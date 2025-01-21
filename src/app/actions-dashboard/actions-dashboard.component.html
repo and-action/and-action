@@ -1,56 +1,46 @@
-<ana-polling-progress
-  [resource]="viewerAndOrganizations"
-  [pollIntervalInSeconds]="updateIntervalInSeconds"
-  class="polling-progress"
-></ana-polling-progress>
+@if (repositories.value()?.length ?? 0 > 0) {
+  <ana-polling-progress
+    [resource]="repositories"
+    [pollIntervalInSeconds]="updateIntervalInSeconds"
+    class="polling-progress"
+  ></ana-polling-progress>
+}
 
-@if (viewerAndOrganizations.hasValue()) {
-  <ul class="organization-list">
-    @for (
-      viewerOrOrganization of filteredViewerAndOrganizations();
-      track viewerOrOrganization
-    ) {
-      <li class="organization-list__item">
-        @if (viewerOrOrganization.repositories.length > 0) {
-          <h2 class="viewer-or-organization">
-            <a
-              class="viewer-or-organization__link"
-              [href]="viewerOrOrganization.url"
-              target="_blank"
-              rel="noopener"
-            >
-              <img
-                class="viewer-or-organization__avatar"
-                [src]="viewerOrOrganization.avatarUrl"
-              />
-              <span>{{ viewerOrOrganization.login }}</span>
-            </a>
-          </h2>
-          <ul class="repository-list">
-            @for (
-              repository of viewerOrOrganization.repositories;
-              track repository
-            ) {
-              <li class="repository-list__item">
-                <ana-actions-dashboard-item
-                  class="repository-list__item-content"
-                  [repository]="repository"
-                ></ana-actions-dashboard-item>
-              </li>
-            }
-          </ul>
-        }
+@if (repositories.value()) {
+  @let dragDisabled =
+    repositories.value()?.length !== filteredRepositories().length;
+  <ul
+    class="repository-list"
+    cdkDropList
+    cdkDropListOrientation="mixed"
+    [cdkDropListDisabled]="dragDisabled"
+    (cdkDropListDropped)="drop($event)"
+  >
+    @for (repository of filteredRepositories(); track repository) {
+      <li class="repository-list__item" cdkDrag>
+        <ana-actions-dashboard-item
+          class="repository-list__item-content"
+          [repository]="repository"
+          [dragDisabled]="dragDisabled"
+          (deleteRepository)="deleteRepository(repository)"
+        ></ana-actions-dashboard-item>
       </li>
     }
+    <li class="repository-list__item repository-list__item--add">
+      <ana-add-repository
+        [ignoredRepositoriesNameWithOwner]="repositoriesNameWithOwner()"
+        (addRepositories)="addRepositories($event)"
+      />
+    </li>
   </ul>
 }
 
-@if (!viewerAndOrganizations.hasValue()) {
+@if (!repositories.value() && !repositories.error()) {
   <mat-progress-spinner class="progress-spinner" mode="indeterminate">
   </mat-progress-spinner>
 }
 
-@if (viewerAndOrganizations.error()) {
+@if (repositories.error()) {
   <div class="view-placeholder">
     <p>Repositories could not be loaded.</p>
   </div>

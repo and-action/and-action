@@ -3,9 +3,24 @@
 
 :host {
   display: block;
+  position: relative;
   box-sizing: border-box;
   padding: variables.$space-s;
   border-radius: variables.$default-border-radius;
+}
+
+.repository-drag-handle {
+  text-align: center;
+
+  mat-icon {
+    cursor: grab;
+  }
+
+  &--disabled {
+    mat-icon {
+      cursor: not-allowed;
+    }
+  }
 }
 
 .repository-head {
@@ -17,6 +32,12 @@
   &__title {
     text-wrap: normal;
     margin-bottom: 0;
+  }
+
+  &__delete-button {
+    position: absolute;
+    top: variables.$space-xs;
+    right: variables.$space-xs;
   }
 }
 

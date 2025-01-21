@@ -12,7 +12,6 @@ import { AppComponent } from './app/app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AppRouting } from './app/app-routing';
 import { loginGuard } from './app/login.guard';
-import { repositoryConfigGuard } from './app/repository-config.guard';
 import { AndActionErrorHandler } from './app/and-action-error-handler';
 import {
   HTTP_INTERCEPTORS,
@@ -40,7 +39,7 @@ const routes: Routes = [
       import('./app/actions-dashboard/actions-dashboard.component').then(
         (mod) => mod.ActionsDashboardComponent,
       ),
-    canActivate: [loginGuard, repositoryConfigGuard],
+    canActivate: [loginGuard],
   },
   {
     path: AppRouting.DASHBOARD_CONFIG,
@@ -56,7 +55,7 @@ const routes: Routes = [
       import('./app/commits-dashboard/commits-dashboard.component').then(
         (mod) => mod.CommitsDashboardComponent,
       ),
-    canActivate: [loginGuard, repositoryConfigGuard],
+    canActivate: [loginGuard],
   },
   {
     path: AppRouting.LOGIN,

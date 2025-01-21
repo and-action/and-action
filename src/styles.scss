@@ -4,6 +4,8 @@
 @use './theme-styles' as theme-styles;
 @use 'app/actions-dashboard-config/actions-dashboard-config.component.theme' as
   actions-dashboard-config;
+@use 'app/actions-dashboard/actions-dashboard.component.theme' as
+  actions-dashboard;
 @use 'app/actions-dashboard-item/actions-dashboard-item.component.theme' as
   actions-dashboard-item;
 @use 'app/app.component-theme' as app;
@@ -38,6 +40,7 @@
   @include mat.toolbar-theme($theme);
 
   @include actions-dashboard-config.theme($theme);
+  @include actions-dashboard.theme($theme);
   @include actions-dashboard-item.theme($theme);
   @include app.theme($theme);
   @include commits-dashboard.theme($theme);
@@ -67,6 +70,7 @@
   @include mat.toolbar-color($theme);
 
   @include actions-dashboard-config.color($theme);
+  @include actions-dashboard.color($theme);
   @include actions-dashboard-item.color($theme);
   @include app.color($theme);
   @include commits-dashboard.color($theme);

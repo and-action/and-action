@@ -7,50 +7,11 @@
   min-height: 100vh;
 }
 
-.repositories-form {
+.config-form {
   max-width: 768px;
   margin: auto;
 }
 
-.viewer-or-organization {
-  display: inline-block;
-
-  &__link {
-    display: flex;
-    align-items: center;
-  }
-
-  &__avatar {
-    width: variables.$space-xl;
-    height: variables.$space-xl;
-    border-radius: variables.$default-border-radius;
-    margin-right: variables.$space-s;
-  }
-}
-
-.repository-list-item {
-  display: flex;
-  align-items: center;
-  font-size: variables.$font-size-l;
-  padding: variables.$space-s;
-
-  &__label {
-    display: flex;
-    gap: variables.$space-xs;
-    align-items: center;
-  }
-
-  &__icon {
-    width: variables.$space-m;
-    height: variables.$space-m;
-  }
-
-  &__name {
-    margin-bottom: 0;
-  }
-
-  &__fork-info {
-    font-size: variables.$font-size-s;
-    margin-bottom: 0;
-  }
+.commits-history-count {
+  width: 220px;
 }

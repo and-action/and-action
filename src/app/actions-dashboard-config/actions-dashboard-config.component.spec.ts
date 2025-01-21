@@ -10,6 +10,7 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ActionsDashboardConfigComponent', () => {
   let component: ActionsDashboardConfigComponent;
@@ -17,7 +18,7 @@ describe('ActionsDashboardConfigComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [GraphQLModule, RouterTestingModule],
+      imports: [GraphQLModule, NoopAnimationsModule, RouterTestingModule],
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

@@ -11,7 +11,7 @@
 .polling-progress {
   align-self: flex-end;
   display: inline-block;
-  padding: variables.$space-xs variables.$space-s;
+  padding: variables.$space-xs variables.$space-s 0 variables.$space-s;
 }
 
 .repositories {
@@ -21,7 +21,7 @@
   align-items: flex-start;
   overflow-x: auto;
   gap: variables.$space-s;
-  padding: 0 variables.$space-s variables.$space-s variables.$space-s;
+  padding: variables.$space-s;
 }
 
 .repository {
@@ -31,6 +31,30 @@
   box-shadow: 0 0 23px -6px rgba(0, 0, 0, 0.1);
   width: 460px;
   flex: 0 0 auto;
+
+  &.cdk-drag-placeholder {
+    opacity: 0;
+  }
+
+  &.cdk-drag-disabled mat-icon {
+    cursor: not-allowed;
+  }
+}
+
+.repositories.cdk-drop-list-dragging .repository:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-preview {
+  box-shadow:
+    0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.repository--add {
+  padding: variables.$space-m;
+  width: auto;
 }
 
 .repository-head {
@@ -41,6 +65,14 @@
   margin-bottom: variables.$space-s;
   z-index: 100;
 
+  &__drag-handle {
+    text-align: center;
+
+    mat-icon {
+      cursor: grab;
+    }
+  }
+
   &__title {
     display: flex;
     align-items: center;
@@ -50,6 +82,12 @@
 
   &__title-text {
     margin-bottom: 0;
+  }
+
+  &__delete-button {
+    position: absolute;
+    top: variables.$space-s;
+    right: 0;
   }
 }
 

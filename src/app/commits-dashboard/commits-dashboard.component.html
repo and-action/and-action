@@ -1,17 +1,30 @@
-<ana-polling-progress
-  [resource]="repositories"
-  [pollIntervalInSeconds]="updateIntervalInSeconds"
-  class="polling-progress"
-></ana-polling-progress>
+@if (repositories.value()?.length ?? 0 > 0) {
+  <ana-polling-progress
+    [resource]="repositories"
+    [pollIntervalInSeconds]="updateIntervalInSeconds"
+    class="polling-progress"
+  ></ana-polling-progress>
+}
 
-@if (repositories.hasValue()) {
-  <div class="repositories">
+@if (repositories.value()) {
+  <div
+    class="repositories"
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    [cdkDropListDisabled]="
+      repositories.value()?.length !== filteredRepositories().length
+    "
+    (cdkDropListDropped)="drop($event)"
+  >
     @for (
       repository of filteredRepositories();
       track repositoriesTrackBy($index, repository)
     ) {
-      <div [id]="repository.name" class="repository">
+      <div [id]="repository.name" class="repository" cdkDrag>
         <div class="repository-head">
+          <div class="repository-head__drag-handle">
+            <mat-icon cdkDragHandle>drag_handle</mat-icon>
+          </div>
           <a [href]="repository.owner.url" target="_blank" rel="noopener"
             >{{ repository.owner.login }} /</a
           >
@@ -37,6 +50,14 @@
 
             <span>{{ repository.defaultBranchRef.name }}</span>
           </a>
+          <button
+            class="repository-head__delete-button"
+            type="button"
+            mat-icon-button
+            (click)="deleteRepository(repository)"
+          >
+            <mat-icon>delete_forever</mat-icon>
+          </button>
         </div>
 
         <div class="u-flex">
@@ -48,10 +69,16 @@
         </div>
       </div>
     }
+    <div class="repository repository--add">
+      <ana-add-repository
+        [ignoredRepositoriesNameWithOwner]="repositoriesNameWithOwner()"
+        (addRepositories)="addRepositories($event)"
+      />
+    </div>
   </div>
 }
 
-@if (!repositories.hasValue()) {
+@if (!repositories.value() && !repositories.error()) {
   <mat-progress-spinner class="progress-spinner" mode="indeterminate">
   </mat-progress-spinner>
 }

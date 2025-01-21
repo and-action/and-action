@@ -1,0 +1,84 @@
+<h2 mat-dialog-title>Add repositories</h2>
+
+<mat-dialog-content class="dialog-content">
+  @if (repositories().isLoading) {
+    <mat-progress-spinner
+      class="repository-list-loading"
+      mode="indeterminate"
+    />
+  } @else {
+    <div class="filter">
+      <mat-form-field class="filter__input">
+        <mat-label>Filter repositories</mat-label>
+        <input
+          matInput
+          [ngModel]="filter()"
+          (ngModelChange)="filter.set($event)"
+        />
+        @if (filter()) {
+          <button
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="filter.set('')"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+
+      <p class="filter__count">
+        {{ filteredRepositories().length }} /
+        {{ repositoriesWithoutIgnored().length }}
+      </p>
+    </div>
+
+    <ul class="repository-list u-margin-bottom-s">
+      @for (repository of filteredRepositories(); track repository.id) {
+        <li class="repository-list-item">
+          <mat-checkbox
+            [id]="repository.nameWithOwner"
+            [name]="repository.nameWithOwner"
+            (change)="checkboxClick(repository.nameWithOwner, $event)"
+          >
+            <div class="repository-list-item__label">
+              <div>
+                <p class="repository-list-item__name">
+                  {{ repository.nameWithOwner }}
+                </p>
+              </div>
+              @if (repository.isPrivate) {
+                <p class="u-state-tag u-margin-right">Private</p>
+              }
+              @if (repository.isArchived) {
+                <p class="u-state-tag u-margin-right">Archived</p>
+              }
+            </div>
+          </mat-checkbox>
+        </li>
+      }
+    </ul>
+
+    <p
+      class="selected-repositories"
+      [anaTooltip]="selectedRepositories.join('\n')"
+    >
+      {{ selectedRepositories.length }} repositores selected
+    </p>
+  }
+</mat-dialog-content>
+
+<div mat-dialog-actions align="end">
+  <button type="button" mat-button mat-dialog-close color="primary">
+    Cancel
+  </button>
+  <button
+    type="button"
+    mat-flat-button
+    color="primary"
+    (click)="onAddClick()"
+    [disabled]="selectedRepositories.length === 0"
+  >
+    Add repositories
+  </button>
+</div>

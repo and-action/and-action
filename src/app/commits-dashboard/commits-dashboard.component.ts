@@ -8,9 +8,9 @@ import {
   Signal,
 } from '@angular/core';
 import { GithubDataService } from '../core/github-data.service';
-import { combineLatest, firstValueFrom } from 'rxjs';
+import { combineLatest, firstValueFrom, of } from 'rxjs';
 import { RepositoryWithCommits } from './commits-dashboard-models';
-import { delay, map, mergeMap } from 'rxjs/operators';
+import { delay, mergeMap } from 'rxjs/operators';
 import { RepositoryFilterService } from '../repository-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
@@ -21,6 +21,17 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { PollingProgessComponent } from '../polling-progress/polling-progess.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AndActionDataService } from '../core/and-action-data.service';
+import { AddRepositoryComponent } from '../add-repository/add-repository.component';
+import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDragHandle,
+  CdkDropList,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   imports: [
@@ -29,20 +40,32 @@ import { AndActionDataService } from '../core/and-action-data.service';
     MatDialogModule,
     MatProgressSpinnerModule,
     PollingProgessComponent,
+    AddRepositoryComponent,
+    MatIconButton,
+    MatIcon,
+    CdkDropList,
+    CdkDrag,
+    CdkDragHandle,
   ],
   selector: 'ana-commits-dashboard',
   templateUrl: './commits-dashboard.component.html',
   styleUrl: './commits-dashboard.component.scss',
 })
 export class CommitsDashboardComponent {
-  protected repositories: ResourceRef<RepositoryWithCommits[]>;
-  protected filteredRepositories: Signal<RepositoryWithCommits[]>;
+  protected readonly repositories: ResourceRef<RepositoryWithCommits[]>;
+  protected readonly repositoriesNameWithOwner = computed(
+    () =>
+      this.repositories
+        .value()
+        ?.map((repository) => repository.nameWithOwner) ?? [],
+  );
+  protected readonly filteredRepositories: Signal<RepositoryWithCommits[]>;
 
-  protected updateIntervalInSeconds = 60;
+  protected readonly updateIntervalInSeconds = 60;
 
-  private queryParams = toSignal(inject(ActivatedRoute).queryParams);
-  private githubDataService = inject(GithubDataService);
-  private andActionDataService = inject(AndActionDataService);
+  private readonly queryParams = toSignal(inject(ActivatedRoute).queryParams);
+  private readonly githubDataService = inject(GithubDataService);
+  private readonly andActionDataService = inject(AndActionDataService);
 
   constructor() {
     const router = inject(Router);
@@ -54,22 +77,19 @@ export class CommitsDashboardComponent {
           this.githubDataService
             .loadOrganizationsWithSelectedRepositories()
             .pipe(
-              map((organizations) =>
-                organizations.flatMap(
-                  (organization) => organization.repositories,
-                ),
-              ),
               mergeMap((repositories) =>
-                combineLatest(
-                  repositories.map((repository) =>
-                    this.githubDataService.loadRepositoryCommits(
-                      repository.owner.login,
-                      repository.name,
-                      this.andActionDataService.commitsDashboardConfig
-                        .commitsHistoryCount,
-                    ),
-                  ),
-                ),
+                repositories.length > 0
+                  ? combineLatest(
+                      repositories.map((repository) =>
+                        this.githubDataService.loadRepositoryCommits(
+                          repository.owner.login,
+                          repository.name,
+                          this.andActionDataService.commitsDashboardConfig
+                            .commitsHistoryCount,
+                        ),
+                      ),
+                    )
+                  : of([]),
               ),
             ),
         ),
@@ -142,5 +162,44 @@ export class CommitsDashboardComponent {
 
   protected repositoriesTrackBy(_: number, item: RepositoryWithCommits) {
     return item.id;
+  }
+
+  protected deleteRepository(repository: RepositoryWithCommits) {
+    const repositories = this.repositories.value();
+
+    if (repositories) {
+      const newRepositories = repositories.filter(
+        (curr) => curr.nameWithOwner !== repository.nameWithOwner,
+      );
+
+      this.repositories.set(newRepositories);
+      this.andActionDataService.saveActionsDashboardConfig(
+        new ActionsDashboardConfig(this.repositoriesNameWithOwner()),
+      );
+    }
+  }
+
+  protected addRepositories(repositories: string[]) {
+    this.andActionDataService.saveActionsDashboardConfig(
+      new ActionsDashboardConfig([
+        ...this.repositoriesNameWithOwner(),
+        ...repositories,
+      ]),
+    );
+    this.repositories.set(undefined); // Make loading spinner appear.
+    this.repositories.reload();
+  }
+
+  protected drop(event: CdkDragDrop<string[]>) {
+    // Changing order is only possible when repositories are not filtered.
+    const repositories = [...(this.repositories.value() ?? [])];
+    if (this.filteredRepositories().length !== repositories.length) {
+      return;
+    }
+    moveItemInArray(repositories, event.previousIndex, event.currentIndex);
+    this.repositories.set(repositories);
+    this.andActionDataService.saveActionsDashboardConfig(
+      new ActionsDashboardConfig(this.repositoriesNameWithOwner()),
+    );
   }
 }

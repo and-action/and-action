@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  // TODO: nesting breaks styling for dragged element,
+  //  see https://stackoverflow.com/questions/61559834/element-style-doesnt-apply-when-using-cdkdroplist-angluar-cdk-drag-and-drop
+  //  Probably this can be fixed by using CSS custom properties for theming.
+  //ana-actions-dashboard {
+  .repository-list {
+    &__item {
+      &--add {
+        background-color: mat.get-theme-color($theme, surface-container-high);
+      }
+    }
+  }
+  //}
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+}
