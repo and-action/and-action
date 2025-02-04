@@ -7,6 +7,7 @@ import {
 } from '../commits-dashboard/commits-dashboard-models';
 import {
   MAT_DIALOG_DATA,
+  MatDialog,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
@@ -36,6 +37,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CommitState } from '../core/commit-state';
 import { StatusWithTextComponent } from '../status-with-text/status-with-text.component';
 import { StatusWithTextStatus } from '../core/status-with-text';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import {
+  ConfirmationDialogComponent,
+  ConfirmationDialogData,
+} from '../confirmation-dialog/confirmation-dialog.component';
+import { TooltipDirective } from '../tooltip.directive';
 
 export interface DialogData {
   repository: RepositoryWithCommits;
@@ -54,6 +62,9 @@ export interface DialogData {
     MatProgressSpinnerModule,
     MatSnackBarModule,
     StatusWithTextComponent,
+    MatSlideToggle,
+    FormsModule,
+    TooltipDirective,
   ],
   selector: 'ana-deploy-commit-dialog',
   templateUrl: './deploy-commit-dialog.component.html',
@@ -65,6 +76,8 @@ export class DeployCommitDialogComponent implements OnInit {
   protected environmentColorMapping: {
     [environment: string]: StatusTagColor;
   } = {};
+
+  protected bypassChecks = false;
   protected deploymentType = DeploymentType;
   protected dateFormat = DEFAULT_DATE_FORMAT;
   protected dialogData = inject<DialogData>(MAT_DIALOG_DATA);
@@ -72,6 +85,8 @@ export class DeployCommitDialogComponent implements OnInit {
   private deployCommitDialogService = inject(DeployCommitDialogService);
   private snackBarService = inject(SnackBarService);
   private dialogRef = inject(MatDialogRef<DeployCommitDialogComponent>);
+
+  private readonly dialog = inject(MatDialog);
 
   protected commitState: Signal<CommitState | null> = toSignal(
     this.deployCommitDialogService.getDeployCommitState(
@@ -153,6 +168,7 @@ export class DeployCommitDialogComponent implements OnInit {
         this.dialogData.commitToDeploy,
         environment.name,
         environments,
+        this.bypassChecks,
       )
       .pipe(
         catchError((error: unknown) => {
@@ -179,5 +195,40 @@ export class DeployCommitDialogComponent implements OnInit {
         this.snackBarService.info('Deployment triggered successfully.');
         this.dialogRef.close(true);
       });
+  }
+
+  protected isDeployButtonEnabled(environment: DeployCommitEnvironment) {
+    return this.canBeDeployed(environment) || this.bypassChecks;
+  }
+
+  protected onDeployButtonClick(
+    environment: DeployCommitEnvironment,
+    environments: DeployCommitEnvironment[],
+  ) {
+    const shouldDeploy$ = this.canBeDeployed(environment)
+      ? of(true)
+      : this.bypassChecks
+        ? this.dialog
+            .open<ConfirmationDialogComponent, ConfirmationDialogData>(
+              ConfirmationDialogComponent,
+              {
+                data: {
+                  title: 'Bypass checks',
+                  text: `Are you sure you want to deploy to environment "${environment.name}" even though the commit's status checks failed or required environments are not deployed yet?`,
+                  confirmButtonLabel: this.getDeployButtonLabel(
+                    environment.deploymentType,
+                  ),
+                  isWarning: true,
+                },
+              },
+            )
+            .afterClosed()
+        : of(false);
+
+    shouldDeploy$.subscribe((shouldDeploy) => {
+      if (shouldDeploy) {
+        this.deployToEnvironment(environment, environments);
+      }
+    });
   }
 }

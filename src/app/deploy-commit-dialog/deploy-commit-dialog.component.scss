@@ -4,6 +4,18 @@
 :host {
   display: block;
   position: relative;
+
+  /* Set styles for slide toggle so it is smaller than usual. */
+  --mdc-switch-selected-icon-size: 8px;
+  --mdc-switch-unselected-icon-size: 8px;
+
+  --mat-switch-selected-handle-size: 14px;
+  --mat-switch-unselected-handle-size: 14px;
+  --mat-switch-pressed-handle-size: 14px;
+  --mat-switch-with-icon-handle-size: 14px;
+
+  --mdc-switch-track-height: 22px;
+  --mdc-switch-track-width: 42px;
 }
 
 .dialog-title {
@@ -73,6 +85,10 @@
   &__state {
     justify-self: center;
   }
+}
+
+.dialog-actions {
+  justify-content: space-between;
 }
 
 @media (max-width: variables.$max-width-mobile) {
