@@ -12,6 +12,8 @@
 @use 'app/commits-dashboard/commits-dashboard.component.theme' as
   commits-dashboard;
 @use 'app/commits-graph/commits-graph.component.theme' as commits-graph;
+@use 'app/confirmation-dialog/confirmation-dialog.component.theme' as
+  confirmation-dialog;
 @use 'app/deploy-commit-dialog/deploy-commit-dialog.component.theme' as
   deploy-commit-dialog;
 @use 'app/login/login.component.theme' as login;
@@ -45,6 +47,7 @@
   @include app.theme($theme);
   @include commits-dashboard.theme($theme);
   @include commits-graph.theme($theme);
+  @include confirmation-dialog.theme($theme);
   @include deploy-commit-dialog.theme($theme);
   @include login.theme($theme);
   @include polling-progress.theme($theme);
@@ -75,6 +78,7 @@
   @include app.color($theme);
   @include commits-dashboard.color($theme);
   @include commits-graph.color($theme);
+  @include confirmation-dialog.color($theme);
   @include deploy-commit-dialog.color($theme);
   @include login.color($theme);
   @include polling-progress.color($theme);
