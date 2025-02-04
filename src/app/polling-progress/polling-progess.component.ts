@@ -1,16 +1,18 @@
 import {
   Component,
-  effect,
   input,
+  linkedSignal,
   ResourceRef,
   ResourceStatus,
-  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { Observable, repeat, Subject, timer } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { repeat, Subject, timer } from 'rxjs';
+import { map, mergeMap, takeUntil, tap } from 'rxjs/operators';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+
+const updateProgressBarInterval = 200;
 
 /**
  * This component reloads the given resource.
@@ -33,51 +35,50 @@ export class PollingProgessComponent<T> {
   resource = input.required<ResourceRef<T>>();
   pollIntervalInSeconds = input.required<number>();
 
-  protected lastUpdate = signal<Date | undefined>(undefined);
+  protected lastUpdate = linkedSignal<ResourceRef<T>, Date | undefined>({
+    source: this.resource,
+    computation: (resource: ResourceRef<T>, previous) => {
+      const result =
+        resource.status() === ResourceStatus.Resolved
+          ? new Date()
+          : previous?.value;
 
-  protected progressBarValue$?: Observable<number>;
-  private resetProgressBar$ = new Subject<void>();
-
-  constructor() {
-    effect(() => {
-      const updateProgressBarInterval = 200;
-      const pollIntervalInSeconds = this.pollIntervalInSeconds();
-
-      this.progressBarValue$ = timer(0, updateProgressBarInterval).pipe(
-        tap((value) => {
-          if (
-            value * updateProgressBarInterval ===
-            pollIntervalInSeconds * 1000
-          ) {
-            this.resource().reload();
-          }
-        }),
-        map(
-          (value) =>
-            ((((value + 1) * 100) / pollIntervalInSeconds) *
-              updateProgressBarInterval) /
-            1000,
-        ),
-        takeUntil(this.resetProgressBar$),
-        repeat(),
-      );
-    });
-
-    effect(() => {
-      // When resource loaded new data successfully, update timestamp of last update.
-      if (this.resource().status() === ResourceStatus.Resolved) {
-        this.lastUpdate.set(new Date());
-      }
-
-      // When loading was finished (either successfully or failed), the progress bar starts over
-      // to show time until next load.
       if (
         [ResourceStatus.Resolved, ResourceStatus.Error].includes(
-          this.resource().status(),
+          resource.status(),
         )
       ) {
+        // When loading was finished (either successfully or failed), the progress bar starts over
+        // to show time until next load.
         this.resetProgressBar$.next();
       }
-    });
-  }
+      return result;
+    },
+  });
+  private resetProgressBar$ = new Subject<void>();
+
+  protected progressBarValue = toSignal(
+    toObservable(this.pollIntervalInSeconds).pipe(
+      mergeMap((pollIntervalInSeconds) =>
+        timer(0, updateProgressBarInterval).pipe(
+          tap((value) => {
+            if (
+              value * updateProgressBarInterval ===
+              pollIntervalInSeconds * 1000
+            ) {
+              this.resource().reload();
+            }
+          }),
+          map(
+            (value) =>
+              ((((value + 1) * 100) / pollIntervalInSeconds) *
+                updateProgressBarInterval) /
+              1000,
+          ),
+        ),
+      ),
+      takeUntil(this.resetProgressBar$),
+      repeat(),
+    ),
+  );
 }
