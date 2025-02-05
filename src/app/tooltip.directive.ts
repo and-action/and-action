@@ -9,6 +9,8 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
+const tooltipDelayMs = 800;
+
 @Directive({
   standalone: true,
   selector: '[anaTooltip]',
@@ -62,7 +64,7 @@ export class TooltipDirective implements OnDestroy {
       this.renderer.setStyle(this.tooltipContainer, 'position', 'fixed');
       this.renderer.setStyle(this.tooltipContainer, 'top', `${top}px`);
       this.renderer.setStyle(this.tooltipContainer, 'left', `${left}px`);
-    });
+    }, tooltipDelayMs);
   }
 
   private hideTooltip() {
