@@ -21,7 +21,8 @@
   align-items: flex-start;
   overflow-x: auto;
   gap: variables.$space-s;
-  padding: variables.$space-s;
+  margin-top: variables.$space-s;
+  padding: 0 variables.$space-s variables.$space-s variables.$space-s;
 }
 
 .repository {
@@ -53,6 +54,8 @@
 }
 
 .repository--add {
+  position: sticky;
+  top: 0;
   padding: variables.$space-m;
   width: auto;
 }
