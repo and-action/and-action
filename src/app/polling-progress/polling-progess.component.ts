@@ -44,19 +44,13 @@ export class PollingProgessComponent<T> {
       const pollIntervalInSeconds = this.pollIntervalInSeconds();
 
       this.progressBarValue$ = timer(0, updateProgressBarInterval).pipe(
-        tap((value) => {
-          if (
-            value * updateProgressBarInterval ===
-            pollIntervalInSeconds * 1000
-          ) {
+        tap(() => {
+          if (this.secondsSinceLastUpdate() >= pollIntervalInSeconds) {
             this.resource().reload();
           }
         }),
         map(
-          (value) =>
-            ((((value + 1) * 100) / pollIntervalInSeconds) *
-              updateProgressBarInterval) /
-            1000,
+          () => (100 / pollIntervalInSeconds) * this.secondsSinceLastUpdate(),
         ),
         takeUntil(this.resetProgressBar$),
         repeat(),
@@ -79,5 +73,12 @@ export class PollingProgessComponent<T> {
         this.resetProgressBar$.next();
       }
     });
+  }
+
+  private secondsSinceLastUpdate() {
+    const lastUpdate = this.lastUpdate();
+    return lastUpdate
+      ? (new Date().getTime() - lastUpdate.getTime()) / 1000
+      : 0;
   }
 }
