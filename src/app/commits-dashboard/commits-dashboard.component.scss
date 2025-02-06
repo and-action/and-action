@@ -33,6 +33,13 @@
   width: 460px;
   flex: 0 0 auto;
 
+  &--add {
+    position: sticky;
+    top: 0;
+    padding: variables.$space-m;
+    width: auto;
+  }
+
   &.cdk-drag-placeholder {
     opacity: 0;
   }
@@ -51,13 +58,6 @@
     0 5px 5px -3px rgba(0, 0, 0, 0.2),
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
     0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
-.repository--add {
-  position: sticky;
-  top: 0;
-  padding: variables.$space-m;
-  width: auto;
 }
 
 .repository-head {
@@ -114,5 +114,9 @@
     padding: 0 variables.$space-s variables.$space-s variables.$space-s;
     width: calc(100% - #{variables.$space-s});
     scroll-snap-align: center;
+
+    &--add {
+      padding: variables.$space-s;
+    }
   }
 }
