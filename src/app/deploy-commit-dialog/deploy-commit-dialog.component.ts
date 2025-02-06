@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import {
   Commit,
   DeploymentState,
@@ -11,7 +11,7 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { EMPTY, Observable, of, tap, throwError } from 'rxjs';
+import { EMPTY, of, tap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { getDeploymentEnvironmentColors } from '../status-tag/status-tag-utils';
 import { StatusTagColor } from '../status-tag/status-tag-color';
@@ -70,25 +70,48 @@ export interface DialogData {
   templateUrl: './deploy-commit-dialog.component.html',
   styleUrl: './deploy-commit-dialog.component.scss',
 })
-export class DeployCommitDialogComponent implements OnInit {
-  protected environments$?: Observable<DeployCommitEnvironment[]>;
+export class DeployCommitDialogComponent {
   protected isLoading = false;
   protected environmentColorMapping: {
     [environment: string]: StatusTagColor;
   } = {};
 
   protected bypassChecks = false;
-  protected deploymentType = DeploymentType;
-  protected dateFormat = DEFAULT_DATE_FORMAT;
-  protected dialogData = inject<DialogData>(MAT_DIALOG_DATA);
+  protected readonly dateFormat = DEFAULT_DATE_FORMAT;
+  protected readonly dialogData = inject<DialogData>(MAT_DIALOG_DATA);
 
-  private deployCommitDialogService = inject(DeployCommitDialogService);
-  private snackBarService = inject(SnackBarService);
-  private dialogRef = inject(MatDialogRef<DeployCommitDialogComponent>);
+  private readonly deployCommitDialogService = inject(
+    DeployCommitDialogService,
+  );
 
+  protected environments$ = this.deployCommitDialogService
+    .getEnvironments(
+      this.dialogData.repository.owner.login,
+      this.dialogData.repository.name,
+      this.dialogData.commitToDeploy,
+      this.dialogData.commits,
+    )
+    .pipe(
+      tap(
+        (environments) =>
+          (this.environmentColorMapping = getDeploymentEnvironmentColors(
+            environments.map((env) => env.name),
+          )),
+      ),
+      catchError((error: unknown) =>
+        error instanceof NoEnvironmentConfigFoundError
+          ? of([])
+          : throwError(() => error),
+      ),
+    );
+
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly dialogRef = inject(
+    MatDialogRef<DeployCommitDialogComponent>,
+  );
   private readonly dialog = inject(MatDialog);
 
-  protected commitState: Signal<CommitState | null> = toSignal(
+  protected readonly commitState: Signal<CommitState | null> = toSignal(
     this.deployCommitDialogService.getDeployCommitState(
       this.dialogData.repository.owner.login,
       this.dialogData.repository.name,
@@ -98,30 +121,7 @@ export class DeployCommitDialogComponent implements OnInit {
     { initialValue: null },
   );
 
-  ngOnInit() {
-    this.environments$ = this.deployCommitDialogService
-      .getEnvironments(
-        this.dialogData.repository.owner.login,
-        this.dialogData.repository.name,
-        this.dialogData.commitToDeploy,
-        this.dialogData.commits,
-      )
-      .pipe(
-        tap(
-          (environments) =>
-            (this.environmentColorMapping = getDeploymentEnvironmentColors(
-              environments.map((env) => env.name),
-            )),
-        ),
-        catchError((error: unknown) =>
-          error instanceof NoEnvironmentConfigFoundError
-            ? of([])
-            : throwError(() => error),
-        ),
-      );
-  }
-
-  getDeployButtonLabel(deploymentType: DeploymentType) {
+  protected getDeployButtonLabel(deploymentType: DeploymentType): string {
     switch (deploymentType) {
       case DeploymentType.FORWARD:
         return 'Deploy';
@@ -130,19 +130,58 @@ export class DeployCommitDialogComponent implements OnInit {
     }
   }
 
-  getDeploymentStateOutputText(deploymentState?: DeploymentState) {
+  protected getDeploymentStateOutputText(
+    deploymentState?: DeploymentState,
+  ): string {
     return deploymentState
       ? deploymentStateOutputTextMapping[deploymentState]
       : '';
   }
 
-  getStateTagCssClass(deploymentState?: DeploymentState) {
+  protected getStateTagCssClass(deploymentState?: DeploymentState): string {
     return deploymentState
       ? `u-state-tag--${deploymentState.toLowerCase()}`
       : '';
   }
 
-  canBeDeployed(environment: DeployCommitEnvironment) {
+  protected isDeployButtonEnabled(
+    environment: DeployCommitEnvironment,
+  ): boolean {
+    return this.canBeDeployed(environment) || this.bypassChecks;
+  }
+
+  protected onDeployButtonClick(
+    environment: DeployCommitEnvironment,
+    environments: DeployCommitEnvironment[],
+  ): void {
+    const shouldDeploy$ = this.canBeDeployed(environment)
+      ? of(true)
+      : this.bypassChecks
+        ? this.dialog
+            .open<ConfirmationDialogComponent, ConfirmationDialogData>(
+              ConfirmationDialogComponent,
+              {
+                data: {
+                  title: 'Bypass checks',
+                  text: `Are you sure you want to deploy to environment "${environment.name}" even though the commit's status checks failed or required environments are not deployed yet?`,
+                  confirmButtonLabel: this.getDeployButtonLabel(
+                    environment.deploymentType,
+                  ),
+                  isWarning: true,
+                },
+              },
+            )
+            .afterClosed()
+        : of(false);
+
+    shouldDeploy$.subscribe((shouldDeploy) => {
+      if (shouldDeploy) {
+        this.deployToEnvironment(environment, environments);
+      }
+    });
+  }
+
+  private canBeDeployed(environment: DeployCommitEnvironment): boolean {
     return (
       environment.canBeDeployed.value &&
       this.commitState()?.status === StatusWithTextStatus.SUCCESS &&
@@ -150,10 +189,10 @@ export class DeployCommitDialogComponent implements OnInit {
     );
   }
 
-  deployToEnvironment(
+  private deployToEnvironment(
     environment: DeployCommitEnvironment,
     environments: DeployCommitEnvironment[],
-  ) {
+  ): void {
     this.isLoading = true;
     const {
       owner,
@@ -195,40 +234,5 @@ export class DeployCommitDialogComponent implements OnInit {
         this.snackBarService.info('Deployment triggered successfully.');
         this.dialogRef.close(true);
       });
-  }
-
-  protected isDeployButtonEnabled(environment: DeployCommitEnvironment) {
-    return this.canBeDeployed(environment) || this.bypassChecks;
-  }
-
-  protected onDeployButtonClick(
-    environment: DeployCommitEnvironment,
-    environments: DeployCommitEnvironment[],
-  ) {
-    const shouldDeploy$ = this.canBeDeployed(environment)
-      ? of(true)
-      : this.bypassChecks
-        ? this.dialog
-            .open<ConfirmationDialogComponent, ConfirmationDialogData>(
-              ConfirmationDialogComponent,
-              {
-                data: {
-                  title: 'Bypass checks',
-                  text: `Are you sure you want to deploy to environment "${environment.name}" even though the commit's status checks failed or required environments are not deployed yet?`,
-                  confirmButtonLabel: this.getDeployButtonLabel(
-                    environment.deploymentType,
-                  ),
-                  isWarning: true,
-                },
-              },
-            )
-            .afterClosed()
-        : of(false);
-
-    shouldDeploy$.subscribe((shouldDeploy) => {
-      if (shouldDeploy) {
-        this.deployToEnvironment(environment, environments);
-      }
-    });
   }
 }
