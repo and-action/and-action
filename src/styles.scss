@@ -12,6 +12,8 @@
 @use 'app/commits-dashboard/commits-dashboard.component.theme' as
   commits-dashboard;
 @use 'app/commits-graph/commits-graph.component.theme' as commits-graph;
+@use 'app/confirmation-dialog/confirmation-dialog.component.theme' as
+  confirmation-dialog;
 @use 'app/deploy-commit-dialog/deploy-commit-dialog.component.theme' as
   deploy-commit-dialog;
 @use 'app/login/login.component.theme' as login;
@@ -36,6 +38,7 @@
   @include mat.progress-bar-theme($theme);
   @include mat.progress-spinner-theme($theme);
   @include mat.sidenav-theme($theme);
+  @include mat.slide-toggle-theme($theme);
   @include mat.snack-bar-theme($theme);
   @include mat.toolbar-theme($theme);
 
@@ -45,6 +48,7 @@
   @include app.theme($theme);
   @include commits-dashboard.theme($theme);
   @include commits-graph.theme($theme);
+  @include confirmation-dialog.theme($theme);
   @include deploy-commit-dialog.theme($theme);
   @include login.theme($theme);
   @include polling-progress.theme($theme);
@@ -66,6 +70,7 @@
   @include mat.progress-bar-color($theme);
   @include mat.progress-spinner-color($theme);
   @include mat.sidenav-color($theme);
+  @include mat.slide-toggle-color($theme);
   @include mat.snack-bar-color($theme);
   @include mat.toolbar-color($theme);
 
@@ -75,6 +80,7 @@
   @include app.color($theme);
   @include commits-dashboard.color($theme);
   @include commits-graph.color($theme);
+  @include confirmation-dialog.color($theme);
   @include deploy-commit-dialog.color($theme);
   @include login.color($theme);
   @include polling-progress.color($theme);

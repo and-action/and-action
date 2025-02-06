@@ -7,7 +7,7 @@ import {
   Deployment,
   DeploymentState,
 } from '../commits-dashboard/commits-dashboard-models';
-import { combineLatest, first, mergeMap, throwError } from 'rxjs';
+import { combineLatest, first, mergeMap, of, throwError } from 'rxjs';
 import isEqual from 'lodash-es/isEqual';
 import {
   CommitDeploymentsNotUpToDateError,
@@ -171,8 +171,43 @@ export class DeployCommitDialogService {
     commitToDeploy: Commit,
     environmentName: string,
     environments: DeployCommitEnvironment[],
+    bypassChecks: boolean,
   ) {
-    const { id: commitId, oid: commitOid } = commitToDeploy;
+    return this.runDeploymentChecks(
+      repositoryOwner,
+      repositoryName,
+      defaultBranchName,
+      commitToDeploy,
+      environments,
+      bypassChecks,
+    ).pipe(
+      mergeMap(() =>
+        this.githubDataService
+          .createDeployment(
+            repositoryOwner,
+            repositoryName,
+            commitToDeploy.oid,
+            environmentName,
+          )
+          .pipe(
+            catchError(() => throwError(() => new CreateDeploymentError())),
+          ),
+      ),
+    );
+  }
+
+  private runDeploymentChecks(
+    repositoryOwner: string,
+    repositoryName: string,
+    defaultBranchName: string,
+    commitToDeploy: Commit,
+    environments: DeployCommitEnvironment[],
+    bypassChecks: boolean,
+  ) {
+    if (bypassChecks) {
+      return of(undefined);
+    }
+
     const isCurrentEnvironments$ = this.githubDataService
       .loadRepositoryCommits(
         repositoryOwner,
@@ -206,7 +241,7 @@ export class DeployCommitDialogService {
         .pipe(
           mergeMap((andActionConfig) =>
             this.githubDataService.isCommitStateSuccessful(
-              commitId,
+              commitToDeploy.id,
               defaultBranchName,
               andActionConfig,
             ),
@@ -215,7 +250,7 @@ export class DeployCommitDialogService {
 
       isCurrentEnvironments$,
     ]).pipe(
-      mergeMap(([isCommitStatusSuccess, isCurrentEnvironments]) => {
+      map(([isCommitStatusSuccess, isCurrentEnvironments]) => {
         if (!isCommitStatusSuccess) {
           throw new CommitStatusNotSuccessfulError();
         }
@@ -223,17 +258,7 @@ export class DeployCommitDialogService {
         if (!isCurrentEnvironments) {
           throw new CommitDeploymentsNotUpToDateError();
         }
-
-        return this.githubDataService
-          .createDeployment(
-            repositoryOwner,
-            repositoryName,
-            commitOid,
-            environmentName,
-          )
-          .pipe(
-            catchError(() => throwError(() => new CreateDeploymentError())),
-          );
+        return undefined;
       }),
       first(), // make observable complete
     );

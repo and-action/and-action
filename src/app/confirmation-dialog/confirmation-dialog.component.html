@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>{{ dialogData.title }}</h2>
+
+<mat-dialog-content>
+  <p
+    class="dialog-content"
+    [ngClass]="{ 'dialog-content--warning': dialogData.isWarning }"
+  >
+    {{ dialogData.text }}
+  </p>
+</mat-dialog-content>
+
+<div mat-dialog-actions align="end">
+  <button type="button" mat-button [mat-dialog-close]="false" color="primary">
+    Cancel
+  </button>
+  <button
+    type="button"
+    mat-flat-button
+    color="primary"
+    [mat-dialog-close]="true"
+  >
+    {{ dialogData.confirmButtonLabel ?? 'Confirm' }}
+  </button>
+</div>

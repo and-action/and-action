@@ -1,0 +1,8 @@
+@use '../../variables';
+
+.dialog-content {
+  &--warning {
+    padding: variables.$space-s variables.$space-m;
+    border-radius: variables.$default-border-radius;
+  }
+}
