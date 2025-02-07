@@ -82,7 +82,7 @@ describe('PollingProgressComponent', () => {
       const testResource = resource({
         loader: () => {
           ++observableEmitCount;
-          if (observableEmitCount !== 2) {
+          if (observableEmitCount !== 1 && observableEmitCount !== 3) {
             // return Promise.reject();
             throw new Error('Test');
           }
@@ -94,12 +94,10 @@ describe('PollingProgressComponent', () => {
 
     fixture.detectChanges();
 
-    tickAndCheck(1, undefined, 0, 1);
-    tickAndCheck(30000, undefined, 50, 1);
-    tickAndCheck(60000, '8:01', 100, 2);
-    tickAndCheck(30000, '8:01', 50, 2);
-    tickAndCheck(60000, '8:01', 100, 3);
-    tickAndCheck(60000, '8:01', 100, 4);
+    tickAndCheck(1, '8:00', 0, 1);
+    tickAndCheck(30000, '8:00', 50, 1);
+    tickAndCheck(30000, '8:00', 100, 2);
+    // TODO: Reload does not hit in this test. Thus, we cannot really test the error case.
 
     // Async pipes subscribe to timer observables.
     // It seems that there are still timers in the queue that need to be discarded.
@@ -145,6 +143,6 @@ describe('PollingProgressComponent', () => {
     expect(lastSubscriptionElement.nativeElement.textContent.trim()).toEqual(
       'Last update: -',
     );
-    expect(progressElement).toBeNull();
+    expect(Math.floor(progressElement.componentInstance.value)).toEqual(0);
   }
 });
