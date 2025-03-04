@@ -39,7 +39,7 @@ import {
   styleUrl: './actions-dashboard.component.scss',
 })
 export class ActionsDashboardComponent {
-  protected readonly repositories: ResourceRef<Repository[]>;
+  protected readonly repositories: ResourceRef<Repository[] | undefined>;
   protected readonly repositoriesNameWithOwner = computed(
     () =>
       this.repositories

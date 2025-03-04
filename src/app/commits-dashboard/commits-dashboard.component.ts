@@ -52,7 +52,9 @@ import {
   styleUrl: './commits-dashboard.component.scss',
 })
 export class CommitsDashboardComponent {
-  protected readonly repositories: ResourceRef<RepositoryWithCommits[]>;
+  protected readonly repositories: ResourceRef<
+    RepositoryWithCommits[] | undefined
+  >;
   protected readonly repositoriesNameWithOwner = computed(
     () =>
       this.repositories
