@@ -39,6 +39,7 @@
           <mat-checkbox
             [id]="repository.nameWithOwner"
             [name]="repository.nameWithOwner"
+            [checked]="selectedRepositories.includes(repository.nameWithOwner)"
             (change)="checkboxClick(repository.nameWithOwner, $event)"
           >
             <div class="repository-list-item__label">
