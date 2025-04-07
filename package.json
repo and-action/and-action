@@ -36,7 +36,7 @@
     "@angular/platform-browser": "19.2.5",
     "@angular/platform-browser-dynamic": "19.2.5",
     "@angular/router": "19.2.5",
-    "@apollo/client": "3.13.6",
+    "@apollo/client": "3.12.11",
     "@primer/octicons": "19.15.1",
     "@sentry/browser": "8.55.0",
     "@sentry/node": "8.55.0",
