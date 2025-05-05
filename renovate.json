@@ -7,13 +7,13 @@
   "packageRules": [
     {
       "groupName": "all",
-      "matchPackagePatterns": ["*"]
+      "matchPackageNames": ["*"]
     },
     {
       "groupName": "disable angular scoped packages (major)",
-      "matchPackagePrefixes": ["@angular", "angular"],
       "matchUpdateTypes": ["major"],
-      "enabled": false
+      "enabled": false,
+      "matchPackageNames": ["@angular{/,}**", "angular{/,}**"]
     }
   ],
   "npmrc": "legacy-peer-deps=true",
