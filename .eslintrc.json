@@ -9,11 +9,11 @@
         "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
-      "plugins": ["@angular-eslint"],
+      "plugins": ["@angular-eslint", "@smarttools/rxjs"],
       "extends": [
         "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:@typescript-eslint/recommended",
-        "plugin:rxjs/recommended",
+        "plugin:@smarttools/rxjs/recommended-legacy",
         "prettier"
       ],
       "rules": {
@@ -61,7 +61,7 @@
         "import/order": "off",
         "max-len": "off",
         "no-shadow": "off",
-        "rxjs/no-unsafe-takeuntil": [
+        "@smarttools/rxjs/no-unsafe-takeuntil": [
           "error",
           {
             "allow": ["repeat"]
