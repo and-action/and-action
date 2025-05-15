@@ -5,12 +5,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AndActionDataService } from '../core/and-action-data.service';
 import { ActionsDashboardConfig } from '../core/actions-dashboard-config';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { GraphQLModule } from '../graphql.module';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAndActionApollo } from '../../provideApollo';
 
 describe('ActionsDashboardConfigComponent', () => {
   let component: ActionsDashboardConfigComponent;
@@ -18,8 +18,9 @@ describe('ActionsDashboardConfigComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [GraphQLModule, NoopAnimationsModule, RouterTestingModule],
+      imports: [NoopAnimationsModule, RouterTestingModule],
       providers: [
+        provideAndActionApollo(),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
