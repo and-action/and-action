@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DeployCommitDialogService } from './deploy-commit-dialog.service';
-import { GraphQLModule } from '../graphql.module';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {
   Commit,
@@ -20,6 +19,7 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import { provideAndActionApollo } from '../../provideApollo';
 
 describe('DeployCommitDialogService', () => {
   let service: DeployCommitDialogService;
@@ -30,8 +30,8 @@ describe('DeployCommitDialogService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [GraphQLModule],
       providers: [
+        provideAndActionApollo(),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

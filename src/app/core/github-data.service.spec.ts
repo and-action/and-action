@@ -2,11 +2,11 @@ import { TestBed } from '@angular/core/testing';
 
 import { GithubDataService } from './github-data.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { GraphQLModule } from '../graphql.module';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import { provideAndActionApollo } from '../../provideApollo';
 
 // TODO: implement unit tests.
 describe('GithubDataService', () => {
@@ -14,8 +14,8 @@ describe('GithubDataService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [GraphQLModule],
       providers: [
+        provideAndActionApollo(),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

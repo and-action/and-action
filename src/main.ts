@@ -21,12 +21,12 @@ import {
 import { HttpUnauthorizedInterceptor } from './app/http-unauthorized-interceptor';
 import { HttpGithubAuthorizationInterceptor } from './app/http-github-authorization-interceptor';
 import { AndActionDataService } from './app/core/and-action-data.service';
-import { GraphQLModule } from './app/graphql.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { DEFAULT_DATE_TIME_FORMAT } from './app/constants';
 import { HttpGithubNoCacheInterceptor } from './app/http-github-no-cache-interceptor';
+import { provideAndActionApollo } from './provideApollo';
 
 if (environment.isEnableProdMode) {
   enableProdMode();
@@ -104,8 +104,8 @@ bootstrapApplication(AppComponent, {
       return initializerFn();
     }),
     provideAnimations(),
+    provideAndActionApollo(),
     importProvidersFrom([
-      GraphQLModule,
       MatSnackBarModule,
       RouterModule.forRoot(routes, { useHash: true }),
     ]),
