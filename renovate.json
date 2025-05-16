@@ -10,6 +10,12 @@
       "matchPackageNames": ["*"]
     },
     {
+      "groupName": "disable express types since they break compilation",
+      "matchUpdateTypes": ["major"],
+      "enabled": false,
+      "matchPackageNames": ["@types/express"]
+    },
+    {
       "groupName": "disable angular scoped packages (major)",
       "matchUpdateTypes": ["major"],
       "enabled": false,
