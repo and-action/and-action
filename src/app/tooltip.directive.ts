@@ -6,8 +6,8 @@ import {
   Input,
   OnDestroy,
   Renderer2,
+  DOCUMENT,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 
 const tooltipDelayMs = 800;
 

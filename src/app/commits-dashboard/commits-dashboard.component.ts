@@ -6,6 +6,7 @@ import {
   resource,
   ResourceRef,
   Signal,
+  DOCUMENT,
 } from '@angular/core';
 import { GithubDataService } from '../core/github-data.service';
 import { combineLatest, firstValueFrom, of } from 'rxjs';
@@ -13,7 +14,7 @@ import { RepositoryWithCommits } from './commits-dashboard-models';
 import { delay, mergeMap } from 'rxjs/operators';
 import { RepositoryFilterService } from '../repository-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DOCUMENT } from '@angular/common';
+
 import { CommitsGraphComponent } from '../commits-graph/commits-graph.component';
 import { CommitsListComponent } from '../commits-list/commits-list.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
