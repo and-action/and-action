@@ -1,11 +1,4 @@
-import {
-  Component,
-  effect,
-  input,
-  ResourceRef,
-  ResourceStatus,
-  signal,
-} from '@angular/core';
+import { Component, effect, input, ResourceRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Observable, repeat, Subject, timer } from 'rxjs';
@@ -59,17 +52,13 @@ export class PollingProgessComponent<T> {
 
     effect(() => {
       // When resource loaded new data successfully, update timestamp of last update.
-      if (this.resource().status() === ResourceStatus.Resolved) {
+      if (this.resource().status() === 'resolved') {
         this.lastUpdate.set(new Date());
       }
 
       // When loading was finished (either successfully or failed), the progress bar starts over
       // to show time until next load.
-      if (
-        [ResourceStatus.Resolved, ResourceStatus.Error].includes(
-          this.resource().status(),
-        )
-      ) {
+      if (['resolved', 'error'].includes(this.resource().status())) {
         this.resetProgressBar$.next();
       }
     });

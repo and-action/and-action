@@ -7,15 +7,15 @@
 
   /* Set styles for slide toggle so it is smaller than usual. */
   --mat-slide-toggle-selected-icon-size: 8px;
-  --mdc-switch-unselected-icon-size: 8px;
+  --mat-slide-toggle-unselected-icon-size: 8px;
 
-  --mat-switch-selected-handle-size: 14px;
-  --mat-switch-unselected-handle-size: 14px;
-  --mat-switch-pressed-handle-size: 14px;
-  --mat-switch-with-icon-handle-size: 14px;
+  --mat-slide-toggle-selected-handle-size: 14px;
+  --mat-slide-toggle-unselected-handle-size: 14px;
+  --mat-slide-toggle-pressed-handle-size: 14px;
+  --mat-slide-toggle-with-icon-handle-size: 14px;
 
-  --mdc-switch-track-height: 22px;
-  --mdc-switch-track-width: 42px;
+  --mat-slide-toggle-track-height: 22px;
+  --mat-slide-toggle-track-width: 42px;
 }
 
 .dialog-title {
