@@ -3,9 +3,9 @@ import { Apollo } from 'apollo-angular';
 import { toSignal } from '@angular/core/rxjs-interop';
 import type { DocumentNode } from 'graphql/index';
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
-import type { EmptyObject } from 'apollo-angular/types';
 import { TRelayPageInfo } from '@apollo/client/utilities/policies/pagination';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { EmptyObject } from 'node_modules/apollo-angular/types';
 
 @Injectable({
   providedIn: 'root',

@@ -23,17 +23,17 @@
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "dependencies": {
-    "@angular/animations": "19.2.14",
-    "@angular/cdk": "19.2.18",
-    "@angular/common": "19.2.14",
-    "@angular/compiler": "19.2.14",
-    "@angular/core": "19.2.14",
-    "@angular/forms": "19.2.14",
-    "@angular/language-service": "19.2.14",
-    "@angular/material": "19.2.18",
-    "@angular/platform-browser": "19.2.14",
-    "@angular/platform-browser-dynamic": "19.2.14",
-    "@angular/router": "19.2.14",
+    "@angular/animations": "20.0.0",
+    "@angular/cdk": "20.0.1",
+    "@angular/common": "20.0.0",
+    "@angular/compiler": "20.0.0",
+    "@angular/core": "20.0.0",
+    "@angular/forms": "20.0.0",
+    "@angular/language-service": "20.0.0",
+    "@angular/material": "20.0.1",
+    "@angular/platform-browser": "20.0.0",
+    "@angular/platform-browser-dynamic": "20.0.0",
+    "@angular/router": "20.0.0",
     "@apollo/client": "3.13.8",
     "@primer/octicons": "19.15.2",
     "@sentry/browser": "9.24.0",
@@ -52,13 +52,14 @@
     "zone.js": "0.15.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "19.2.14",
+    "@angular-devkit/build-angular": "^20.0.0",
     "@angular-eslint/builder": "19.6.0",
     "@angular-eslint/eslint-plugin": "19.6.0",
     "@angular-eslint/eslint-plugin-template": "19.6.0",
     "@angular-eslint/template-parser": "19.6.0",
-    "@angular/cli": "19.2.14",
-    "@angular/compiler-cli": "19.2.14",
+    "@angular/build": "^20.0.0",
+    "@angular/cli": "20.0.0",
+    "@angular/compiler-cli": "20.0.0",
     "@smarttools/eslint-plugin-rxjs": "1.0.19",
     "@types/d3": "7.4.3",
     "@types/d3-path": "3.1.1",
@@ -92,7 +93,7 @@
     "mocha": "11.5.0",
     "prettier": "3.5.3",
     "ts-node": "10.9.2",
-    "typescript": "5.6.3"
+    "typescript": "5.8.3"
   },
   "engines": {
     "node": ">=10.13.0"

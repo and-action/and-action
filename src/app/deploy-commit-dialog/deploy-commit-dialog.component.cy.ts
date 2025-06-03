@@ -31,6 +31,7 @@ describe('DeployCommitDialogComponent', () => {
       login: 'and-action',
       url: 'https://github.com/and-action',
     },
+    nameWithOwner: 'and-action/and-action',
     defaultBranchRef: { name: 'main' },
     isArchived: false,
     url: 'https://github.com/and-action/and-action',
