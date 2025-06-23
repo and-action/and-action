@@ -39,7 +39,7 @@
     "@sentry/browser": "9.30.0",
     "@sentry/node": "9.30.0",
     "@types/node": "22.15.32",
-    "apollo-angular": "10.0.3",
+    "apollo-angular": "11.0.0",
     "core-js": "3.43.0",
     "d3-path": "3.1.0",
     "d3-selection": "3.0.0",
