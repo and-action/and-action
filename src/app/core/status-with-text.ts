@@ -7,5 +7,5 @@ export enum StatusWithTextStatus {
 export interface StatusWithText {
   status: StatusWithTextStatus;
   text: string;
-  url: string;
+  url?: string;
 }

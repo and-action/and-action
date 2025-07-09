@@ -5,8 +5,10 @@ import { StatusWithTextStatus } from '../core/status-with-text';
 import { By } from '@angular/platform-browser';
 
 describe('StatusWithTextComponent', () => {
-  let component: StatusWithTextComponent;
   let fixture: ComponentFixture<StatusWithTextComponent>;
+
+  const text = 'Example text';
+  const link = 'https://example.com';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -14,17 +16,15 @@ describe('StatusWithTextComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(StatusWithTextComponent);
-    component = fixture.componentInstance;
+    const componentRef = fixture.componentRef;
+    componentRef.setInput('status', StatusWithTextStatus.SUCCESS);
+    componentRef.setInput('text', text);
+    componentRef.setInput('link', link);
+
     fixture.detectChanges();
   });
 
   it('should render correctly', async () => {
-    const text = 'Example text';
-    const link = 'https://example.com';
-    component.status = StatusWithTextStatus.SUCCESS;
-    component.text = text;
-    component.link = link;
-
     fixture.detectChanges();
     await fixture.whenStable();
 

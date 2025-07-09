@@ -21,7 +21,6 @@ import { CheckStatusState } from '../core/check-status-state';
 import { CheckConclusionState } from '../core/check-conclusion-state';
 import { StatusWithText, StatusWithTextStatus } from '../core/status-with-text';
 import { CommitState } from '../core/commit-state';
-import { assertIsNotUndefinedAndNotNull } from '../assert';
 import { Environment } from '../core/and-action-config';
 import { AndActionDataService } from '../core/and-action-data.service';
 
@@ -102,7 +101,6 @@ export class DeployCommitDialogService {
         ),
         map((checkSuites): StatusWithText[] =>
           checkSuites.map((checkSuite) => {
-            assertIsNotUndefinedAndNotNull(checkSuite.workflowRun?.url);
             return {
               status:
                 checkSuite.status === CheckStatusState.COMPLETED &&
