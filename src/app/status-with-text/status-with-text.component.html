@@ -16,9 +16,9 @@
   </symbol>
 </svg>
 
-<a class="status" [href]="link" target="_blank" rel="noopener">
-  <svg [class]="'status__icon status__icon--' + status">
-    @switch (status) {
+<ng-template #statusIcon>
+  <svg [class]="'status__icon status__icon--' + status()">
+    @switch (status()) {
       @case (statusWithTextStatus.SUCCESS) {
         <use xlink:href="#check"></use>
       }
@@ -30,7 +30,18 @@
       }
     }
   </svg>
-</a>
-<a class="status-text" [href]="link" target="_blank" rel="noopener">
-  {{ text }}
-</a>
+</ng-template>
+
+@if (link()) {
+  <a class="status" [href]="link()" target="_blank" rel="noopener">
+    <ng-container *ngTemplateOutlet="statusIcon"></ng-container>
+  </a>
+  <a class="status-text" [href]="link()" target="_blank" rel="noopener">
+    {{ text() }}
+  </a>
+} @else {
+  <span class="status">
+    <ng-container *ngTemplateOutlet="statusIcon"></ng-container>
+  </span>
+  <span class="status-text">{{ text() }}</span>
+}
