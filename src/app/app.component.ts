@@ -62,10 +62,13 @@ export class AppComponent implements OnInit {
   private loginService = inject(LoginService);
   private renderer = inject(Renderer2);
 
-  constructor(router: Router) {
+  constructor() {
+    const router = inject(Router);
     router.events
       .pipe(filter((event) => event instanceof NavigationStart))
-      .subscribe(() => this.sideNav?.close());
+      .subscribe(() => {
+        this.sideNav?.close();
+      });
 
     this.renderer.addClass(document.body, this.selectedTheme);
   }
@@ -92,12 +95,13 @@ export class AppComponent implements OnInit {
   private getUrlParams(url: string) {
     const start = url.indexOf('?') + 1;
     const end =
-      url.indexOf('#') !== -1 && url.indexOf('#') > start
+      url.includes('#') && url.indexOf('#') > start
         ? url.indexOf('#')
         : url.length;
 
-    const pairsArray =
-      url.indexOf('?') > -1 ? url.slice(start, end).split('&') : [];
+    const pairsArray = url.includes('?')
+      ? url.slice(start, end).split('&')
+      : [];
 
     return pairsArray.reduce((cum, pair) => {
       const [key, val] = pair.split('=');

@@ -344,10 +344,8 @@ export class GithubDataService {
       map((organizations) =>
         organizations.map((organization) => ({
           ...organization,
-          repositories: organization.repositories.filter(
-            (repository) =>
-              repositoryNameWithOwnerList.indexOf(repository.nameWithOwner) !==
-              -1,
+          repositories: organization.repositories.filter((repository) =>
+            repositoryNameWithOwnerList.includes(repository.nameWithOwner),
           ),
         })),
       ),
