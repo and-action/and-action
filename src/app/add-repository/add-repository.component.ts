@@ -27,7 +27,7 @@ export class AddRepositoryComponent {
         },
       })
       .afterClosed()
-      .subscribe((repositoriesToAdd) => {
+      .subscribe((repositoriesToAdd: string[]) => {
         if (repositoriesToAdd) {
           this.addRepositories.emit(repositoriesToAdd);
         }
