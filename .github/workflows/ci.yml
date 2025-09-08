@@ -12,7 +12,7 @@ jobs:
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 22.18.0
+          node-version: 22.19.0
       - run: npm ci
       - run: npm audit || true
       - run: npm test
@@ -27,7 +27,7 @@ jobs:
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 22.18.0
+          node-version: 22.19.0
       - run: npm ci
       - run: npm run cy:run
       - name: Archive screenshots and videos
@@ -46,7 +46,7 @@ jobs:
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 22.18.0
+          node-version: 22.19.0
       - run: npm ci
       - run: npm run build -- --configuration=dev
       - name: Upload artifacts
