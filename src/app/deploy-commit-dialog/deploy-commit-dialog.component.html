@@ -154,13 +154,13 @@
     mat-button
     mat-dialog-close
     color="primary"
-    [disabled]="isLoading"
+    [disabled]="isLoading()"
   >
     Close
   </button>
 </div>
 
-@if (isLoading) {
+@if (isLoading()) {
   <div class="dialog-progress">
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
   </div>

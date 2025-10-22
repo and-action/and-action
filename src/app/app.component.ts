@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, Renderer2, viewChild } from '@angular/core';
 import { LoginService } from './core/login.service';
 import { AppRouting } from './app-routing';
 import { RepositoryFilterService } from './repository-filter.service';
@@ -36,7 +36,7 @@ import {
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  @ViewChild(MatSidenav) protected sideNav?: MatSidenav;
+  private sideNav = viewChild.required(MatSidenav);
   protected appRouting = AppRouting;
 
   protected isFilterToggleButtonActive = false;
@@ -67,7 +67,7 @@ export class AppComponent implements OnInit {
     router.events
       .pipe(filter((event) => event instanceof NavigationStart))
       .subscribe(() => {
-        this.sideNav?.close();
+        this.sideNav().close();
       });
 
     this.renderer.addClass(document.body, this.selectedTheme);

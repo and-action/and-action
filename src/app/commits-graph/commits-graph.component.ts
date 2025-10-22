@@ -1,14 +1,13 @@
 import {
   AfterViewInit,
   Component,
+  effect,
   ElementRef,
   inject,
-  Input,
-  OnDestroy,
-  ViewChild,
+  input,
+  viewChild,
 } from '@angular/core';
 import { Commit } from '../commits-dashboard/commits-dashboard-models';
-import { BehaviorSubject, Subscription } from 'rxjs';
 import { CommitsGraphService } from './commits-graph.service';
 
 @Component({
@@ -17,32 +16,24 @@ import { CommitsGraphService } from './commits-graph.service';
   templateUrl: './commits-graph.component.html',
   styleUrl: './commits-graph.component.scss',
 })
-export class CommitsGraphComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('graphContainer') private graphContainer?: ElementRef;
-
-  private commits$ = new BehaviorSubject<Commit[]>([]);
-  private commitsSubscription?: Subscription;
+export class CommitsGraphComponent implements AfterViewInit {
+  private graphContainer = viewChild.required<ElementRef>('graphContainer');
 
   private commitsGraphService = inject(CommitsGraphService);
 
   // TODO: Check why subject is needed. I would prefer calling drawGraph immediately.
-  @Input({ required: true })
-  set commits(commits: Commit[]) {
-    this.commits$.next(commits);
+  commits = input.required<Commit[]>();
+
+  constructor() {
+    effect(() => this.drawGraph(this.commits()));
   }
 
   ngAfterViewInit() {
-    this.commitsSubscription = this.commits$.subscribe((commits) =>
-      this.drawGraph(commits),
-    );
-  }
-
-  ngOnDestroy() {
-    this.commitsSubscription?.unsubscribe();
+    this.drawGraph(this.commits());
   }
 
   private drawGraph(commits: Commit[]) {
     const svg = this.commitsGraphService.createCommitsGraphSvg(commits);
-    this.graphContainer?.nativeElement.replaceChildren(svg.node());
+    this.graphContainer().nativeElement.replaceChildren(svg.node());
   }
 }

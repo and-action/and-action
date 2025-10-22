@@ -36,40 +36,40 @@
   </symbol>
 </svg>
 
-@if (link) {
+@if (link()) {
   <a
     class="tag"
-    [style.background-color]="color"
-    [href]="link"
+    [style.background-color]="color()"
+    [href]="link()"
     target="_blank"
     rel="noopener"
   >
     <ng-template [ngTemplateOutlet]="tagContent"></ng-template>
   </a>
 } @else {
-  <p class="tag" [style.background-color]="color">
+  <p class="tag" [style.background-color]="color()">
     <ng-template [ngTemplateOutlet]="tagContent"></ng-template>
   </p>
 }
 
 <ng-template #tagContent>
-  <span class="tag__name">{{ name }}</span>
-  @if (status !== statusTagStatus.NONE) {
+  <span class="tag__name">{{ name() }}</span>
+  @if (status() !== statusTagStatus.NONE) {
     <span class="tag__status">
-      <svg [class]="'tag__status-icon tag__status-icon--' + status">
-        @if (status === statusTagStatus.SUCCESS) {
+      <svg [class]="'tag__status-icon tag__status-icon--' + status()">
+        @if (status() === statusTagStatus.SUCCESS) {
           <use xlink:href="#check-circle-fill"></use>
         }
-        @if (status === statusTagStatus.ERROR) {
+        @if (status() === statusTagStatus.ERROR) {
           <use xlink:href="#x-circle-fill"></use>
         }
-        @if (status === statusTagStatus.IN_PROGRESS) {
+        @if (status() === statusTagStatus.IN_PROGRESS) {
           <use xlink:href="#loading-circle"></use>
         }
-        @if (status === statusTagStatus.WAITING) {
+        @if (status() === statusTagStatus.WAITING) {
           <use xlink:href="#dot-fill"></use>
         }
-        @if (status === statusTagStatus.SKIPPED) {
+        @if (status() === statusTagStatus.SKIPPED) {
           <use xlink:href="#skip-circle"></use>
         }
       </svg>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { Component, inject, OnInit, signal, Signal } from '@angular/core';
 import {
   Commit,
   DeploymentState,
@@ -72,7 +72,7 @@ export interface DialogData {
 })
 export class DeployCommitDialogComponent implements OnInit {
   protected environments$?: Observable<DeployCommitEnvironment[]>;
-  protected isLoading = false;
+  protected isLoading = signal<boolean>(false);
   protected environmentColorMapping: {
     [environment: string]: StatusTagColor;
   } = {};
@@ -146,7 +146,7 @@ export class DeployCommitDialogComponent implements OnInit {
     return (
       environment.canBeDeployed.value &&
       this.commitState()?.status === StatusWithTextStatus.SUCCESS &&
-      !this.isLoading
+      !this.isLoading()
     );
   }
 
@@ -154,7 +154,7 @@ export class DeployCommitDialogComponent implements OnInit {
     environment: DeployCommitEnvironment,
     environments: DeployCommitEnvironment[],
   ) {
-    this.isLoading = true;
+    this.isLoading.set(true);
     const {
       owner,
       name,
@@ -172,7 +172,7 @@ export class DeployCommitDialogComponent implements OnInit {
       )
       .pipe(
         catchError((error: unknown) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
           const errorMessage =
             error instanceof CommitNotFoundError
               ? 'Cannot trigger deployment, because commit to deploy could not be found.'
@@ -191,7 +191,7 @@ export class DeployCommitDialogComponent implements OnInit {
         }),
       )
       .subscribe(() => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         this.snackBarService.info('Deployment triggered successfully.');
         this.dialogRef.close(true);
       });

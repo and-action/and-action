@@ -6,6 +6,7 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('LoginService', () => {
   let service: LoginService;
@@ -16,6 +17,7 @@ describe('LoginService', () => {
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideZonelessChangeDetection(),
       ],
     });
     service = TestBed.inject(LoginService);

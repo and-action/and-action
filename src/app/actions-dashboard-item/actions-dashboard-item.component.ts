@@ -1,4 +1,4 @@
-import { Component, input, Input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Repository } from '../core/repository';
 import { WorkflowRun } from '../core/workflow-run';
 import { WorkflowRunStatus } from '../core/workflow-run-status';
@@ -27,7 +27,7 @@ import { NgClass } from '@angular/common';
   styleUrl: './actions-dashboard-item.component.scss',
 })
 export class ActionsDashboardItemComponent {
-  @Input({ required: true }) repository?: Repository;
+  repository = input.required<Repository>();
   dragDisabled = input<boolean>(false);
 
   readonly deleteRepository = output();

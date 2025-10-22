@@ -8,13 +8,13 @@
   <div class="repository-head__title">
     <a
       [routerLink]="['/', appRouting.COMMITS]"
-      [queryParams]="{ repository: repository?.name }"
+      [queryParams]="{ repository: repository().name }"
     >
-      <span>{{ repository?.owner?.login }} /</span><br />
-      <h2>{{ repository?.name }}</h2>
+      <span>{{ repository().owner.login }} /</span><br />
+      <h2>{{ repository().name }}</h2>
     </a>
   </div>
-  @if (repository?.isArchived) {
+  @if (repository().isArchived) {
     <p class="u-state-tag">Archived</p>
   }
   <button
@@ -26,10 +26,10 @@
     <mat-icon>close</mat-icon>
   </button>
 </div>
-@if (repository && repository.workflowsWithWorkflowRuns) {
-  @if (repository.workflowsWithWorkflowRuns.length > 0) {
+@if (repository().workflowsWithWorkflowRuns) {
+  @if (repository().workflowsWithWorkflowRuns.length > 0) {
     <a
-      [href]="repository.url"
+      [href]="repository().url"
       target="_blank"
       rel="noopener"
       class="branch-title"
@@ -37,12 +37,12 @@
       <svg class="branch-title__icon">
         <use xlink:href="#icon-git-branch"></use>
       </svg>
-      <span>{{ repository.defaultBranchRef.name }}</span>
+      <span>{{ repository().defaultBranchRef.name }}</span>
     </a>
 
     <ul class="workflow-list">
       @for (
-        workflowWithWorkflowRuns of repository.workflowsWithWorkflowRuns;
+        workflowWithWorkflowRuns of repository().workflowsWithWorkflowRuns;
         track workflowWithWorkflowRuns
       ) {
         @if (workflowWithWorkflowRuns.workflowRuns[0]) {
@@ -62,7 +62,7 @@
       }
     </ul>
   }
-  @if (repository.workflowsWithWorkflowRuns.length === 0) {
+  @if (repository().workflowsWithWorkflowRuns.length === 0) {
     <p class="u-text-placeholder">No workflows configured</p>
   }
 }

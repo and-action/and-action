@@ -3,10 +3,10 @@ import {
   ElementRef,
   HostListener,
   inject,
-  Input,
   OnDestroy,
   Renderer2,
   DOCUMENT,
+  input,
 } from '@angular/core';
 
 const tooltipDelayMs = 800;
@@ -16,7 +16,7 @@ const tooltipDelayMs = 800;
   selector: '[anaTooltip]',
 })
 export class TooltipDirective implements OnDestroy {
-  @Input({ required: true }) anaTooltip?: string;
+  anaTooltip = input.required<string | undefined>();
   private tooltipContainer?: HTMLElement;
 
   private elementRef = inject(ElementRef);
@@ -36,12 +36,13 @@ export class TooltipDirective implements OnDestroy {
   }
 
   private showTooltip() {
-    if (!this.anaTooltip) {
+    const anaTooltip = this.anaTooltip();
+    if (!anaTooltip) {
       return;
     }
     this.tooltipContainer = this.renderer.createElement('div');
     this.renderer.setStyle(this.tooltipContainer, 'visibility', 'hidden');
-    this.anaTooltip
+    anaTooltip
       .split('\n')
       .map((line) => {
         const paragraph = this.renderer.createElement('p');

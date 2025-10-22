@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActionsDashboardItemComponent } from './actions-dashboard-item.component';
 import { ApolloTestingModule } from 'apollo-angular/testing';
@@ -9,6 +9,7 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('ActionsDashboardItemComponent', () => {
   let component: ActionsDashboardItemComponent;
@@ -28,20 +29,21 @@ describe('ActionsDashboardItemComponent', () => {
     workflowsWithWorkflowRuns: [],
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [ApolloTestingModule, RouterTestingModule],
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ActionsDashboardItemComponent);
     component = fixture.componentInstance;
-    component.repository = repositoryMock;
+    fixture.componentRef.setInput('repository', repositoryMock);
 
     fixture.detectChanges();
   });
