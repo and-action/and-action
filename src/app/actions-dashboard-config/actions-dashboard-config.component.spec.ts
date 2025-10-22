@@ -11,6 +11,7 @@ import {
 } from '@angular/common/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAndActionApollo } from '../../provideApollo';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('ActionsDashboardConfigComponent', () => {
   let component: ActionsDashboardConfigComponent;
@@ -23,6 +24,7 @@ describe('ActionsDashboardConfigComponent', () => {
         provideAndActionApollo(),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
   }));

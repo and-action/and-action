@@ -11,6 +11,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAndActionApollo } from '../../provideApollo';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('ActionsDashboardComponent', () => {
   let component: ActionsDashboardComponent;
@@ -23,6 +24,7 @@ describe('ActionsDashboardComponent', () => {
         provideAndActionApollo(),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
   }));

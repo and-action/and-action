@@ -8,6 +8,7 @@ import { getCommitMock } from '../../test-utils/data-mocks';
 import { By } from '@angular/platform-browser';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { DEFAULT_DATE_TIME_FORMAT } from '../constants';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('CommitInfoComponent', () => {
   let component: CommitInfoComponent;
@@ -23,6 +24,7 @@ describe('CommitInfoComponent', () => {
             timezone: '+0200',
           },
         },
+        provideZonelessChangeDetection(),
       ],
     });
 

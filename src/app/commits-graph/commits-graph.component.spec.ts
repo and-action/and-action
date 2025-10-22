@@ -3,12 +3,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommitsGraphComponent } from './commits-graph.component';
 import { CommitsGraphService } from './commits-graph.service';
 import * as d3Selection from 'd3-selection';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('CommitsGraphComponent', () => {
   let component: CommitsGraphComponent;
   let fixture: ComponentFixture<CommitsGraphComponent>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
+
     const commitGraphService = TestBed.inject(CommitsGraphService);
 
     spyOn(commitGraphService, 'createCommitsGraphSvg').and.returnValue(

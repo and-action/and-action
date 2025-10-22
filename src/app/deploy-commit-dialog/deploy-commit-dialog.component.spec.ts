@@ -17,6 +17,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAndActionApollo } from '../../provideApollo';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 const getCommit = (): Commit => ({
   id: 'C_idOfCommit',
@@ -90,6 +91,7 @@ describe('DeployCommitDialogComponent', () => {
         provideAndActionApollo(),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
   });
