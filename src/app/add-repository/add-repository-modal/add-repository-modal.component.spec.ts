@@ -7,6 +7,7 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('AddRepositoryModalComponent', () => {
   let component: AddRepositoryModalComponent;
@@ -22,6 +23,7 @@ describe('AddRepositoryModalComponent', () => {
       providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
+        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
 

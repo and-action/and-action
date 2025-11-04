@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { StatusTagColor } from './status-tag-color';
 import { StatusTagStatus } from './status-tag-status';
 import { CommonModule } from '@angular/common';
@@ -10,10 +10,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './status-tag.component.scss',
 })
 export class StatusTagComponent {
-  @Input({ required: true }) name?: string;
-  @Input({ required: true }) color?: StatusTagColor;
-  @Input({ required: true }) status?: StatusTagStatus;
-  @Input({ required: true }) link?: string | null;
+  name = input.required<string>();
+  color = input.required<StatusTagColor>();
+  status = input.required<StatusTagStatus>();
+  link = input.required<string | null>();
 
   protected statusTagStatus = StatusTagStatus;
 }

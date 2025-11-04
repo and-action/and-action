@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatusWithTextComponent } from './status-with-text.component';
 import { StatusWithTextStatus } from '../core/status-with-text';
 import { By } from '@angular/platform-browser';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('StatusWithTextComponent', () => {
   let fixture: ComponentFixture<StatusWithTextComponent>;
@@ -13,6 +14,7 @@ describe('StatusWithTextComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [StatusWithTextComponent],
+      providers: [provideZonelessChangeDetection()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(StatusWithTextComponent);

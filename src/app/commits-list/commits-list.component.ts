@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import {
   Commit,
   Deployment,
@@ -32,28 +32,24 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './commits-list.component.scss',
 })
 export class CommitsListComponent {
-  private myRepository?: RepositoryWithCommits;
-
-  private environmentColorMapping: {
-    [environment: string]: StatusTagColor;
-  } = {};
-
   private dialog = inject(MatDialog);
 
-  get repository() {
-    return this.myRepository;
-  }
+  repository = input.required<RepositoryWithCommits | undefined>();
+  protected environmentColorMapping = computed(
+    (): {
+      [environment: string]: StatusTagColor;
+    } => {
+      const environments =
+        this.repository()?.commits.flatMap((commit) =>
+          commit.deployments.flatMap((deployment) => deployment.environment),
+        ) ?? [];
+      return getDeploymentEnvironmentColors(environments);
+    },
+  );
 
-  @Input({ required: true }) set repository(
-    repository: RepositoryWithCommits | undefined,
-  ) {
-    this.myRepository = repository;
-    this.environmentColorMapping = this.getDeploymentEnvironmentColors();
-  }
+  repositoryCommitDeployed = output();
 
-  @Output() repositoryCommitDeployed = new EventEmitter<void>();
-
-  getDeploymentStatusForStatusTag(deployment: Deployment) {
+  protected getDeploymentStatusForStatusTag(deployment: Deployment) {
     return {
       [DeploymentState.ABANDONED]: StatusTagStatus.ERROR,
       [DeploymentState.ACTIVE]: StatusTagStatus.SUCCESS,
@@ -68,11 +64,7 @@ export class CommitsListComponent {
     }[deployment.state];
   }
 
-  getDeploymentStatusTagColor(deployment: Deployment) {
-    return this.environmentColorMapping[deployment.environment];
-  }
-
-  getTooltipContent(deployment: Deployment) {
+  protected getTooltipContent(deployment: Deployment) {
     const datePipe = new DatePipe('en-US');
     const creatorName = deployment.creator.name
       ? ` (${deployment.creator.name})`
@@ -86,21 +78,21 @@ export class CommitsListComponent {
     ${deployment.description}`;
   }
 
-  isDeploymentActive(deployment: Deployment) {
+  protected isDeploymentActive(deployment: Deployment) {
     return deployment.state === DeploymentState.ACTIVE;
   }
 
-  openDeployDialog(commitToDeploy: Commit, commits: Commit[]) {
+  protected openDeployDialog(commitToDeploy: Commit, commits: Commit[]) {
     this.dialog
       .open(DeployCommitDialogComponent, {
-        data: { repository: this.repository, commitToDeploy, commits },
+        data: { repository: this.repository(), commitToDeploy, commits },
         width: '600px',
         autoFocus: false,
       })
       .afterClosed()
       .subscribe((isDeploymentTriggered) => {
         if (isDeploymentTriggered) {
-          this.repositoryCommitDeployed.next();
+          this.repositoryCommitDeployed.emit();
         }
       });
   }
@@ -111,13 +103,5 @@ export class CommitsListComponent {
 
   protected deploymentsTrackBy(_: number, item: Deployment) {
     return item.id;
-  }
-
-  private getDeploymentEnvironmentColors() {
-    const environments =
-      this.myRepository?.commits.flatMap((commit) =>
-        commit.deployments.flatMap((deployment) => deployment.environment),
-      ) ?? [];
-    return getDeploymentEnvironmentColors(environments);
   }
 }

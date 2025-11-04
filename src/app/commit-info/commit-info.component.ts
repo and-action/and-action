@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Commit } from '../commits-dashboard/commits-dashboard-models';
 import { DATE_TIME_FORMAT_WITH_TIMEZONE } from '../constants';
 import { CommonModule } from '@angular/common';
@@ -13,8 +13,8 @@ export const maxCommitMessageLength = 100;
   styleUrl: './commit-info.component.scss',
 })
 export class CommitInfoComponent {
-  @Input({ required: true }) commit?: Commit;
-  @Input({ required: true }) repositoryUrl?: string;
+  commit = input.required<Commit>();
+  repositoryUrl = input.required<string | undefined>();
 
   protected dateTimeFormat = DATE_TIME_FORMAT_WITH_TIMEZONE;
 

@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Spy = jasmine.Spy;
 import { QueryParamName } from './query-param-name';
 import { of } from 'rxjs';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('RepositoryFilterService', () => {
   let service: RepositoryFilterService;
@@ -19,6 +20,7 @@ describe('RepositoryFilterService', () => {
           provide: ActivatedRoute,
           useValue: { queryParams: of(queryParams), snapshot: { queryParams } },
         },
+        provideZonelessChangeDetection(),
       ],
     });
     service = TestBed.inject(RepositoryFilterService);

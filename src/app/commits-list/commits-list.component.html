@@ -1,10 +1,10 @@
 <ul class="repository__list">
-  @for (commit of repository?.commits; track commitsTrackBy($index, commit)) {
+  @for (commit of repository()?.commits; track commitsTrackBy($index, commit)) {
     <li class="repository__commit">
       <div class="repository__commit-content">
         <ana-commit-info
           [commit]="commit"
-          [repositoryUrl]="repository?.url"
+          [repositoryUrl]="repository()?.url"
         ></ana-commit-info>
         <div>
           @for (
@@ -14,7 +14,7 @@
             <ana-status-tag
               [name]="deployment.environment"
               [status]="getDeploymentStatusForStatusTag(deployment)"
-              [color]="getDeploymentStatusTagColor(deployment)"
+              [color]="environmentColorMapping()[deployment.environment]"
               [link]="deployment.logUrl"
               class="repository__deployment"
               [class.repository__deployment--light]="
@@ -28,7 +28,7 @@
       <button
         class="repository__commit-deploy"
         mat-icon-button
-        (click)="openDeployDialog(commit, repository?.commits ?? [])"
+        (click)="openDeployDialog(commit, repository()?.commits ?? [])"
       >
         <mat-icon>rocket_launch</mat-icon>
       </button>

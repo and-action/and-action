@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActionsDashboardComponent } from './actions-dashboard.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,21 +11,23 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAndActionApollo } from '../../provideApollo';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('ActionsDashboardComponent', () => {
   let component: ActionsDashboardComponent;
   let fixture: ComponentFixture<ActionsDashboardComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule, RouterTestingModule],
       providers: [
         provideAndActionApollo(),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     const andActionDataService = TestBed.inject(AndActionDataService);
