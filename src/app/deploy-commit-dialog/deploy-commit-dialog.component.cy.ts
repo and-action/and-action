@@ -21,6 +21,7 @@ import { DatePipe } from '@angular/common';
 import { DEFAULT_DATE_FORMAT } from '../constants';
 import { CommitState } from '../core/commit-state';
 import { StatusWithTextStatus } from '../core/status-with-text';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('DeployCommitDialogComponent', () => {
   const commits: Commit[] = [getCommitMock()];
@@ -114,6 +115,7 @@ describe('DeployCommitDialogComponent', () => {
             repository: { ...dialogData.repository, isArchived },
           },
         },
+        provideZonelessChangeDetection(),
       ],
       componentProperties: {},
     });
