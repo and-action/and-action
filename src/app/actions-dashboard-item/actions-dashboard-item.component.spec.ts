@@ -9,7 +9,6 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('ActionsDashboardItemComponent', () => {
   let component: ActionsDashboardItemComponent;
@@ -35,7 +34,6 @@ describe('ActionsDashboardItemComponent', () => {
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
   });

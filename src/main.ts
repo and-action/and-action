@@ -4,8 +4,6 @@ import {
   importProvidersFrom,
   inject,
   provideAppInitializer,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
 } from '@angular/core';
 
 import { environment } from './environments/environment';
@@ -112,8 +110,5 @@ bootstrapApplication(AppComponent, {
       RouterModule.forRoot(routes, { useHash: true }),
     ]),
     provideHttpClient(withInterceptorsFromDi()),
-    provideZonelessChangeDetection(),
-    // TODO: remove as soon as app runs stable without change detection
-    provideCheckNoChangesConfig({ exhaustive: true, interval: 10_000 }),
   ],
 }).catch((err) => console.error(err));

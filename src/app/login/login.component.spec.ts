@@ -7,7 +7,6 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
@@ -18,7 +17,6 @@ describe('LoginComponent', () => {
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
   });

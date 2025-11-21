@@ -20,7 +20,6 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAndActionApollo } from '../../provideApollo';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('DeployCommitDialogService', () => {
   let service: DeployCommitDialogService;
@@ -35,7 +34,6 @@ describe('DeployCommitDialogService', () => {
         provideAndActionApollo(),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-        provideZonelessChangeDetection(),
       ],
     });
     service = TestBed.inject(DeployCommitDialogService);
