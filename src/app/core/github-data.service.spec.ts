@@ -7,7 +7,6 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAndActionApollo } from '../../provideApollo';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 // TODO: implement unit tests.
 describe('GithubDataService', () => {
@@ -19,7 +18,6 @@ describe('GithubDataService', () => {
         provideAndActionApollo(),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-        provideZonelessChangeDetection(),
       ],
     });
     service = TestBed.inject(GithubDataService);

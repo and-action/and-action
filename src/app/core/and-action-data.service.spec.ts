@@ -1,15 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AndActionDataService } from './and-action-data.service';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('AndActionDataService', () => {
   let service: AndActionDataService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [provideZonelessChangeDetection()],
-    });
+    TestBed.configureTestingModule({});
     service = TestBed.inject(AndActionDataService);
   });
 

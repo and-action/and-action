@@ -7,7 +7,6 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('AppComponent', () => {
   beforeEach(() => {
@@ -16,7 +15,6 @@ describe('AppComponent', () => {
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
   });

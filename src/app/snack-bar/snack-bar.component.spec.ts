@@ -7,7 +7,6 @@ import {
 } from '@angular/material/snack-bar';
 import { SnackBarType } from './snack-bar-type';
 import { SnackBarData } from './snack-bar-data';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('SnackBarComponent', () => {
   let component: SnackBarComponent;
@@ -24,7 +23,6 @@ describe('SnackBarComponent', () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         { provide: MatSnackBarRef, useValue: { dismiss() {} } },
         { provide: MAT_SNACK_BAR_DATA, useValue: snackBarData },
-        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
   });

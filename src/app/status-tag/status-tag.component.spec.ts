@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatusTagComponent } from './status-tag.component';
 import { StatusTagStatus } from './status-tag-status';
 import { By } from '@angular/platform-browser';
-import { ComponentRef, provideZonelessChangeDetection } from '@angular/core';
+import { ComponentRef } from '@angular/core';
 import { StatusTagColor } from './status-tag-color';
 import { setInputs } from '../../test-utils/input';
 
@@ -12,9 +12,7 @@ describe('StatusTagComponent', () => {
   let fixture: ComponentFixture<StatusTagComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      providers: [provideZonelessChangeDetection()],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
 
     fixture = TestBed.createComponent(StatusTagComponent);
 
