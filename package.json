@@ -37,7 +37,7 @@
     "@apollo/client": "3.14.0",
     "@primer/octicons": "19.21.0",
     "@sentry/browser": "10.26.0",
-    "@sentry/node": "10.26.0",
+    "@sentry/node": "10.27.0",
     "@types/node": "22.19.1",
     "apollo-angular": "11.0.0",
     "core-js": "3.47.0",
