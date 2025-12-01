@@ -44,9 +44,9 @@ const routes: Routes = [
   {
     path: AppRouting.DASHBOARD_CONFIG,
     loadComponent: () =>
-      import(
-        './app/actions-dashboard-config/actions-dashboard-config.component'
-      ).then((mod) => mod.ActionsDashboardConfigComponent),
+      import('./app/actions-dashboard-config/actions-dashboard-config.component').then(
+        (mod) => mod.ActionsDashboardConfigComponent,
+      ),
     canActivate: [loginGuard],
   },
   {
