@@ -2,6 +2,7 @@
 
 @mixin color($theme) {
   background-color: mat.get-theme-color($theme, background);
+  color: mat.get-theme-color($theme, on-surface);
 
   a:not([class*='mdc-button']) {
     text-decoration: none;
